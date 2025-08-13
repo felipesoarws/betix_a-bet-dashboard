@@ -1,0 +1,99 @@
+import {
+  timestamp,
+  pgTable,
+  text,
+  numeric,
+  boolean,
+  index,
+  uuid,
+  pgEnum,
+} from "drizzle-orm/pg-core";
+import { relations } from "drizzle-orm";
+
+export const user = pgTable("user", {
+  id: text("id").primaryKey(),
+  name: text("name").notNull(),
+  email: text("email").notNull().unique(),
+  emailVerified: boolean("email_verified")
+    .$defaultFn(() => false)
+    .notNull(),
+  image: text("image"),
+  createdAt: timestamp("created_at")
+    .$defaultFn(() => /* @__PURE__ */ new Date())
+    .notNull(),
+  updatedAt: timestamp("updated_at")
+    .$defaultFn(() => /* @__PURE__ */ new Date())
+    .notNull(),
+});
+
+export const session = pgTable("session", {
+  id: text("id").primaryKey(),
+  expiresAt: timestamp("expires_at").notNull(),
+  token: text("token").notNull().unique(),
+  createdAt: timestamp("created_at").notNull(),
+  updatedAt: timestamp("updated_at").notNull(),
+  ipAddress: text("ip_address"),
+  userAgent: text("user_agent"),
+  userId: text("user_id")
+    .notNull()
+    .references(() => user.id, { onDelete: "cascade" }),
+});
+
+export const account = pgTable("account", {
+  id: text("id").primaryKey(),
+  accountId: text("account_id").notNull(),
+  providerId: text("provider_id").notNull(),
+  userId: text("user_id")
+    .notNull()
+    .references(() => user.id, { onDelete: "cascade" }),
+  accessToken: text("access_token"),
+  refreshToken: text("refresh_token"),
+  idToken: text("id_token"),
+  accessTokenExpiresAt: timestamp("access_token_expires_at"),
+  refreshTokenExpiresAt: timestamp("refresh_token_expires_at"),
+  scope: text("scope"),
+  password: text("password"),
+  createdAt: timestamp("created_at").notNull(),
+  updatedAt: timestamp("updated_at").notNull(),
+});
+
+export const resultEnum = pgEnum("result_enum", [
+  "Pendente",
+  "Ganha",
+  "Perdida",
+  "Anulada",
+]);
+
+export const betsTable = pgTable(
+  "bets",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    userId: text("user_id")
+      .notNull()
+      .references(() => user.id, { onDelete: "cascade" }),
+    event: text("event").notNull(),
+    category: text("category").notNull(),
+    betValue: numeric("bet_value", { precision: 10, scale: 2 }).notNull(),
+    odd: numeric("odd", { precision: 5, scale: 2 }).notNull(),
+    result: resultEnum("result").default("Pendente").notNull(),
+    profit: numeric("profit", { precision: 10, scale: 2 }),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+  },
+  (table) => {
+    return {
+      userIdIndex: index("user_id_idx").on(table.userId),
+      dateIndex: index("created_at_idx").on(table.createdAt),
+    };
+  }
+);
+
+export const usersRelations = relations(user, ({ many }) => ({
+  bets: many(betsTable),
+}));
+
+export const betsRelations = relations(betsTable, ({ one }) => ({
+  user: one(user, {
+    fields: [betsTable.userId],
+    references: [user.id],
+  }),
+}));
