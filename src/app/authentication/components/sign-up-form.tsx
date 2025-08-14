@@ -7,7 +7,6 @@ import {
   CardDescription,
   CardFooter,
   CardHeader,
-  CardTitle,
 } from "@/components/ui/card";
 import {
   Form,
@@ -41,7 +40,7 @@ const formSchema = z
     {
       error: "As senhas não coincidem.",
       path: ["passwordConfirmation"],
-    },
+    }
   );
 
 type FormValues = z.infer<typeof formSchema>;
@@ -93,9 +92,8 @@ const SignUpForm = () => {
 
   return (
     <>
-      <Card>
+      <Card className="bg-[var(--background)] rounded-[.8rem] border border-white/10">
         <CardHeader>
-          <CardTitle>Criar conta</CardTitle>
           <CardDescription>Crie uma conta para continuar.</CardDescription>
         </CardHeader>
         <Form {...form}>
@@ -108,9 +106,13 @@ const SignUpForm = () => {
                   <FormItem>
                     <FormLabel>Nome</FormLabel>
                     <FormControl>
-                      <Input placeholder="Digite seu nome" {...field} />
+                      <Input
+                        className="text-[.9rem] px-3 py-5 rounded-[.8rem] border border-white/10 placeholder:text-white/30"
+                        placeholder="Digite seu nome"
+                        {...field}
+                      />
                     </FormControl>
-                    <FormMessage />
+                    <FormMessage className="pl-2 text-[.85rem] text-[red]" />
                   </FormItem>
                 )}
               />
@@ -121,9 +123,13 @@ const SignUpForm = () => {
                   <FormItem>
                     <FormLabel>E-mail</FormLabel>
                     <FormControl>
-                      <Input placeholder="Digite seu e-mail" {...field} />
+                      <Input
+                        className="text-[.9rem] px-3 py-5 rounded-[.8rem] border border-white/10 placeholder:text-white/30"
+                        placeholder="Digite seu e-mail"
+                        {...field}
+                      />
                     </FormControl>
-                    <FormMessage />
+                    <FormMessage className="pl-2 text-[.85rem] text-[red]" />
                   </FormItem>
                 )}
               />
@@ -135,12 +141,13 @@ const SignUpForm = () => {
                     <FormLabel>Senha</FormLabel>
                     <FormControl>
                       <Input
+                        className="text-[.9rem] px-3 py-5 rounded-[.8rem] border border-white/10 placeholder:text-white/30"
                         placeholder="Digite sua senha"
                         type="password"
                         {...field}
                       />
                     </FormControl>
-                    <FormMessage />
+                    <FormMessage className="pl-2 text-[.85rem] text-[red]" />
                   </FormItem>
                 )}
               />
@@ -152,18 +159,24 @@ const SignUpForm = () => {
                     <FormLabel>Confirmar Senha</FormLabel>
                     <FormControl>
                       <Input
+                        className="text-[.9rem] px-3 py-5 rounded-[.8rem] border border-white/10 placeholder:text-white/30"
                         placeholder="Digite sua senha novamente"
                         type="password"
                         {...field}
                       />
                     </FormControl>
-                    <FormMessage />
+                    <FormMessage className="pl-2 text-[.85rem] text-[red]" />
                   </FormItem>
                 )}
               />
             </CardContent>
             <CardFooter>
-              <Button type="submit">Entrar</Button>
+              <Button
+                type="submit"
+                className="cursor-pointer rounded-[.8rem] px-6 py-2.5 font-bold bg-[var(--main-text)] text-[var(--background)] duration-[.3s] ease-in-out transition-all hover:scale-105 hover:bg-[var(--main-text)] hover:text-[var(--background)]"
+              >
+                Entrar
+              </Button>
             </CardFooter>
           </form>
         </Form>

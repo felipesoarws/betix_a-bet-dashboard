@@ -1,15 +1,8 @@
 "use client";
-import { LogInIcon, LogOutIcon, MenuIcon } from "lucide-react";
+import { LogOutIcon, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
-import Image from "next/image";
+
 import { authClient } from "@/lib/auth-client";
 import Link from "next/link";
 
@@ -18,66 +11,65 @@ export const Header = () => {
 
   return (
     <div>
-      <header className="flex items-center justify-between p-5">
-        <Link href="/">
-          <Image src="/logo.svg" alt="BEWEAR" width={100} height={26.14} />
-        </Link>
+      <header className="z-50 sticky top-0 ">
+        <div className="container">
+          <div className="w-full px-3 py-5 flex justify-between items-center border-b border-b-white/10 bg-black/20 backdrop-blur-md lg:px-[2vw]">
+            <Link href="/" className="flex items-center gap-2">
+              <Sparkles className="h-5 w-5 text-[var(--main-text)]" />
+              <span className="font-bold text-base text-[var(--main-text)]">
+                Betlytics
+              </span>
+            </Link>
 
-        <div className="flex items-center">
-          <Sheet>
-            <SheetTrigger asChild>
-              <Button variant="outline" size="icon">
-                <MenuIcon />
-              </Button>
-            </SheetTrigger>
-            <SheetContent>
-              <SheetHeader>
-                <SheetTitle>Olá!</SheetTitle>
-              </SheetHeader>
-              <div className="px-5">
-                {session?.user ? (
-                  <>
-                    <div className="flex justify-between">
-                      <div className="flex items-center gap-3">
-                        <Avatar>
-                          <AvatarImage
-                            src={session?.user?.image as string | undefined}
-                          />
-                          <AvatarFallback>
-                            {session?.user?.name?.split(" ")[0][0]}
-                            {session?.user?.name?.split(" ")[1][0]}
-                          </AvatarFallback>
-                        </Avatar>
+            <nav className="flex items-center gap-4">
+              {session?.user ? (
+                <>
+                  <div className="flex justify-between gap-8">
+                    <div className="hidden lg:flex items-center gap-3">
+                      <Avatar className="border border-white/10 bg-black/20 backdrop-blur-md p-2">
+                        <AvatarImage
+                          src={session?.user?.image as string | undefined}
+                        />
+                        <AvatarFallback>
+                          {session?.user?.name?.split(" ")[0][0]}
+                          {session?.user?.name?.split(" ")[1][0]}
+                        </AvatarFallback>
+                      </Avatar>
+                      <div className="leading-4">
+                        <h3 className="font-semibold text-[1rem]">
+                          {session?.user?.name}
+                        </h3>
+                        <span className="text-[var(--main-text)] block text-[.8rem]">
+                          {session?.user?.email}
+                        </span>
                       </div>
-                      <h3 className="font-semibold">{session?.user?.name}</h3>
-                      <span className="text-muted-foreground block text-xs">
-                        {session?.user?.email}
-                      </span>
-                      <Button
-                        size="icon"
-                        variant="outline"
-                        asChild
-                        onClick={() => authClient.signOut()}
-                      >
-                        <Link href="/">
-                          <LogOutIcon />
-                        </Link>
-                      </Button>
                     </div>
-                  </>
-                ) : (
-                  <div className="flex items-center justify-between">
-                    <h2 className="font-semibold">Olá. Faça seu login!</h2>
-                    <Button size="icon" asChild variant="outline">
-                      <Link href="/authentication">
-                        <LogInIcon />
+
+                    <Button
+                      asChild
+                      onClick={() => authClient.signOut()}
+                      className="cursor-pointer duration-[.3s] ease-in-out transition-all scale-125 hover:scale-140"
+                    >
+                      <Link href="/">
+                        <LogOutIcon color="rgb(250, 250, 250)" />
                       </Link>
                     </Button>
                   </div>
-                )}
-              </div>
-            </SheetContent>
-          </Sheet>
+                </>
+              ) : (
+                <div>
+                  <Link
+                    href="/authentication"
+                    className="flex items-center justify-between gap-4 "
+                  >
+                    <h2 className="text-[var(--main-text)] font-semibold">
+                      Entrar
+                    </h2>
+                  </Link>
+                </div>
+              )}
+            </nav>
+          </div>
         </div>
       </header>
     </div>

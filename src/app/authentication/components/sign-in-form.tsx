@@ -67,14 +67,13 @@ const SignInForm = () => {
 
   return (
     <>
-      <Card>
+      <Card className="bg-[var(--background)] rounded-[.8rem] border border-white/10">
         <CardHeader>
-          <CardTitle>Entrar</CardTitle>
           <CardDescription>Faça login para continuar.</CardDescription>
         </CardHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-            <CardContent className="grid gap-6">
+            <CardContent className="grid gap-6 ">
               <FormField
                 control={form.control}
                 name="email"
@@ -82,10 +81,14 @@ const SignInForm = () => {
                   <FormItem>
                     <FormLabel>E-mail</FormLabel>
                     <FormControl>
-                      <Input placeholder="Digite seu e-mail" {...field} />
+                      <Input
+                        className="text-[.9rem] px-3 py-5 rounded-[.8rem] border border-white/10 placeholder:text-white/30"
+                        placeholder="Digite seu e-mail"
+                        {...field}
+                      />
                     </FormControl>
 
-                    <FormMessage />
+                    <FormMessage className="pl-2 text-[.85rem] text-[red]" />
                   </FormItem>
                 )}
               />
@@ -97,19 +100,25 @@ const SignInForm = () => {
                     <FormLabel>Senha</FormLabel>
                     <FormControl>
                       <Input
+                        className="text-[.9rem] px-3 py-5 rounded-[.8rem] border border-white/10 placeholder:text-white/30"
                         placeholder="Digite sua senha"
                         type="password"
                         {...field}
                       />
                     </FormControl>
 
-                    <FormMessage />
+                    <FormMessage className="pl-2 text-[.85rem] text-[red]" />
                   </FormItem>
                 )}
               />
             </CardContent>
             <CardFooter>
-              <Button type="submit">Entrar</Button>
+              <Button
+                type="submit"
+                className="cursor-pointer rounded-[.8rem] px-6 py-2.5 font-bold bg-[var(--main-text)] text-[var(--background)] duration-[.3s] ease-in-out transition-all hover:scale-105 hover:bg-[var(--main-text)] hover:text-[var(--background)]"
+              >
+                Entrar
+              </Button>
             </CardFooter>
           </form>
         </Form>
