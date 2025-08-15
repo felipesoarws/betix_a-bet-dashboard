@@ -7,13 +7,12 @@ import { Button } from "@/components/ui/button";
 const Home = () => {
   return (
     <div className="relative isolate min-h-screen bg-black text-[var(--main-text)]">
+      <Header />
       <div className="absolute top-0 w-full h-[70vh] lg:h-[100vh]">
         <FlowingBackground />
       </div>
 
-      <div className="relative z-10 flex flex-col min-h-screen">
-        <Header />
-
+      <div className="relative z-10 flex flex-col items-center justify-center min-h-screen">
         <main className="container flex flex-col px-2 lg:px-[8vw]">
           <section className="flex flex-col items-center justify-center text-center flex-grow py-20">
             <div className="mb-6">

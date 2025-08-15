@@ -7,13 +7,12 @@ import { Header } from "@/components/ui/common/header";
 const Authentication = async () => {
   return (
     <div className="relative isolate min-h-screen bg-black text-[var(--main-text)]">
+      <Header />
       <div className="absolute top-0 w-full h-[70vh] lg:h-[90vh]">
         <FlowingBackground />
       </div>
 
-      <div className="relative z-10 flex flex-col ">
-        <Header />
-
+      <div className="relative z-10 flex flex-col items-center justify-center">
         <main className="container flex flex-col items-center justify-center px-2 lg:px-[8vw]">
           <div className="flex w-full flex-col gap-6 p-5 lg:w-[30vw]">
             <Tabs defaultValue="sign-in">

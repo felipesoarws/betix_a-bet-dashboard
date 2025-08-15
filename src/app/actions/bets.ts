@@ -1,73 +1,70 @@
 "use server";
 
-import { treeifyError, z } from "zod";
-import { authClient as auth } from "@/lib/auth-client";
 import { db } from "@/db";
 import { betsTable } from "@/db/schema";
 import { revalidatePath } from "next/cache";
 
-const allowedCategories = ["Futebol", "Basquete", "eSports", "Outro"];
+type BetResult = "Pendente" | "Ganha" | "Perdida" | "Anulada";
+type CategoryResult = "Futebol" | "Basquete" | "eSports" | "Outro";
 
-// zod
-const BetSchema = z.object({
-  event: z.string().min(3, { message: "O nome do evento é obrigatório." }),
-  category: z.enum(allowedCategories, {
-    message: "Selecione uma categoria válida.",
-  }),
-  betValue: z.coerce
-    .number()
-    .positive({ message: "O valor da aposta deve ser positivo." }),
-  odd: z.coerce.number().gt(1, { message: "A odd deve ser maior que 1." }),
-});
-
-type CreateBetFormState = {
-  success: boolean;
-  message: string;
-  errors?: Record<string, string[]>;
+type CreateBetInput = {
+  userId: string;
+  event: string;
+  category: CategoryResult;
+  betValue: string;
+  odd: string;
+  result: BetResult;
 };
 
-export async function createBetAction(
-  prevState: CreateBetFormState,
-  formData: FormData
-): Promise<CreateBetFormState> {
-  const session = await auth.getSession();
+export async function createBetAction(values: CreateBetInput) {
+  const betValueNum = Number(values.betValue);
+  const oddNum = Number(values.odd);
 
-  if (!session?.data?.user?.id) {
-    return { success: false, message: "Não autorizado." };
-  }
-
-  const userId = session.data.user.id;
-
-  const validatedFields = BetSchema.safeParse(
-    Object.fromEntries(formData.entries())
-  );
-
-  if (!validatedFields.success) {
+  if (isNaN(betValueNum) || isNaN(oddNum)) {
     return {
       success: false,
-      message: "Dados inválidos.",
-      errors: validatedFields.error.flatten().fieldErrors,
+      error: "Valor da aposta ou odd inválidos.",
     };
   }
 
-  const { event, category, betValue, odd } = validatedFields.data;
+  // calcula o lucro
+  let profit: number | null = null;
+  switch (values.result) {
+    case "Ganha":
+      profit = oddNum * betValueNum - betValueNum;
+      break;
+    case "Perdida":
+      profit = -betValueNum;
+      break;
+    case "Anulada":
+      profit = 0;
+      break;
+    default:
+      profit = null;
+  }
 
   try {
     await db.insert(betsTable).values({
-      userId,
-      event,
-      category,
-      betValue: String(betValue),
-      odd: String(odd),
+      userId: values.userId,
+      event: values.event,
+      category: values.category,
+      betValue: betValueNum.toString(),
+      odd: oddNum.toString(),
+      result: values.result,
+      profit: profit !== null ? profit.toString() : null,
     });
-  } catch (err) {
-    console.error("Erro ao registrar aposta:", err);
+
+    revalidatePath("/dashboard");
+
+    return {
+      success: true,
+      message: "Aposta criada com sucesso!",
+    };
+  } catch (error) {
+    console.error("Erro ao inserir aposta:", error);
     return {
       success: false,
-      message: "Erro no servidor ao tentar registrar a aposta.",
+      error: "Erro ao registrar aposta. Tente novamente.",
     };
   }
-
-  revalidatePath("/dashboard");
-  return { success: true, message: "Aposta registrada com sucesso." };
 }

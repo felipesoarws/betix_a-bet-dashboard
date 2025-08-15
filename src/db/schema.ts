@@ -6,7 +6,6 @@ import {
   boolean,
   index,
   uuid,
-  pgEnum,
 } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
 
@@ -57,13 +56,6 @@ export const account = pgTable("account", {
   updatedAt: timestamp("updated_at").notNull(),
 });
 
-export const resultEnum = pgEnum("result_enum", [
-  "Pendente",
-  "Ganha",
-  "Perdida",
-  "Anulada",
-]);
-
 export const betsTable = pgTable(
   "bets",
   {
@@ -75,7 +67,7 @@ export const betsTable = pgTable(
     category: text("category").notNull(),
     betValue: numeric("bet_value", { precision: 10, scale: 2 }).notNull(),
     odd: numeric("odd", { precision: 5, scale: 2 }).notNull(),
-    result: resultEnum("result").default("Pendente").notNull(),
+    result: text("result").default("Pendente").notNull(),
     profit: numeric("profit", { precision: 10, scale: 2 }),
     createdAt: timestamp("created_at").defaultNow().notNull(),
   },

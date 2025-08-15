@@ -22,6 +22,13 @@
       "when": 1755123985696,
       "tag": "0002_bouncy_annihilus",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1755277761247,
+      "tag": "0003_faithful_wilson_fisk",
+      "breakpoints": true
     }
   ]
 }
