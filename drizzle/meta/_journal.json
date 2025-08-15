@@ -29,6 +29,13 @@
       "when": 1755277761247,
       "tag": "0003_faithful_wilson_fisk",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1755284275666,
+      "tag": "0004_fearless_the_fury",
+      "breakpoints": true
     }
   ]
 }

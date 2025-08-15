@@ -64,6 +64,7 @@ export const betsTable = pgTable(
       .notNull()
       .references(() => user.id, { onDelete: "cascade" }),
     event: text("event").notNull(),
+    market: text("market").notNull(),
     category: text("category").notNull(),
     betValue: numeric("bet_value", { precision: 10, scale: 2 }).notNull(),
     odd: numeric("odd", { precision: 5, scale: 2 }).notNull(),

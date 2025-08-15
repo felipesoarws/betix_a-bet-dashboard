@@ -10,47 +10,45 @@ type CategoryResult = "Futebol" | "Basquete" | "eSports" | "Outro";
 type CreateBetInput = {
   userId: string;
   event: string;
+  market: string;
   category: CategoryResult;
-  betValue: string;
-  odd: string;
+  betValue: number;
+  odd: number;
   result: BetResult;
 };
 
 export async function createBetAction(values: CreateBetInput) {
-  const betValueNum = Number(values.betValue);
-  const oddNum = Number(values.odd);
-
-  if (isNaN(betValueNum) || isNaN(oddNum)) {
+  if (isNaN(values.betValue) || isNaN(values.odd)) {
     return {
       success: false,
       error: "Valor da aposta ou odd inválidos.",
     };
   }
 
-  // calcula o lucro
   let profit: number | null = null;
   switch (values.result) {
     case "Ganha":
-      profit = oddNum * betValueNum - betValueNum;
+      profit = values.odd * values.betValue - values.betValue;
       break;
     case "Perdida":
-      profit = -betValueNum;
+      profit = -values.betValue;
       break;
     case "Anulada":
       profit = 0;
       break;
     default:
-      profit = null;
+      profit = 0;
   }
 
   try {
     await db.insert(betsTable).values({
       userId: values.userId,
       event: values.event,
+      market: values.market,
       category: values.category,
-      betValue: betValueNum.toString(),
-      odd: oddNum.toString(),
-      result: values.result,
+      betValue: values.betValue.toString(),
+      odd: values.odd.toString(),
+      result: values.result.toString(),
       profit: profit !== null ? profit.toString() : null,
     });
 

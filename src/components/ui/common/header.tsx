@@ -10,7 +10,7 @@ export const Header = () => {
   const { data: session } = authClient.useSession();
 
   return (
-    <div>
+    <div className="w-full">
       <header className="z-50 sticky top-0 right-0 w-full">
         <div className="w-full px-3 py-5 flex justify-between items-center border-b border-b-white/10 bg-black/20 backdrop-blur-md lg:px-[2vw]">
           <Link href="/" className="flex items-center gap-2">
@@ -30,8 +30,8 @@ export const Header = () => {
                         src={session?.user?.image as string | undefined}
                       />
                       <AvatarFallback>
-                        {session?.user?.name?.split(" ")[0][0]}
-                        {session?.user?.name?.split(" ")[1][0]}
+                        {session?.user?.name?.split(" ")[0]?.[0]}
+                        {session?.user?.name?.split(" ")[1]?.[0]}
                       </AvatarFallback>
                     </Avatar>
                     <div className="leading-4">

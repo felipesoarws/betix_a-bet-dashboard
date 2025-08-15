@@ -1,0 +1,1 @@
+ALTER TABLE "bets" ADD COLUMN "market" text NOT NULL;
