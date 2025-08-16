@@ -70,7 +70,7 @@ export const betsTable = pgTable(
     odd: numeric("odd", { precision: 5, scale: 2 }).notNull(),
     result: text("result").default("Pendente").notNull(),
     profit: numeric("profit", { precision: 10, scale: 2 }),
-    createdAt: timestamp("created_at").defaultNow().notNull(),
+    createdAt: timestamp("created_at").notNull(),
   },
   (table) => {
     return {

@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { createBetAction } from "@/app/actions/bets";
+import { createBetAction } from "@/app/actions/bets.actions";
 import { authClient } from "@/lib/auth-client";
 import { toast } from "sonner";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
@@ -25,6 +25,14 @@ import {
 } from "@/components/ui/select";
 import * as z from "zod";
 import { BET_CATEGORIES, BET_RESULTS } from "@/lib/constants";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { ChevronDownIcon } from "lucide-react";
+import { Calendar } from "@/components/ui/calendar";
+import { useState } from "react";
 
 type BetResult = "Pendente" | "Ganha" | "Perdida" | "Anulada";
 type CategoryResult = "Futebol" | "Basquete" | "eSports" | "Outro";
@@ -37,6 +45,7 @@ type CreateBetInput = {
   betValue: number;
   odd: number;
   result: BetResult;
+  createdAt: Date;
 };
 
 const addBetSchema = z.object({
@@ -52,6 +61,7 @@ const addBetSchema = z.object({
     .number({ error: "Informe um valor válido para a aposta." })
     .gt(1, "A odd precisa ser maior que 1."),
   result: z.enum(BET_RESULTS, { message: "Selecione uma categoria." }),
+  createdAt: z.date("Informe uma data"),
 });
 
 type AddBetFormValues = z.infer<typeof addBetSchema>;
@@ -63,6 +73,11 @@ export function AddBetForm({
   onBetAdded?: () => void;
   setIsDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
+  const [open, setOpen] = useState(false);
+  const [date, setDate] = useState<Date | undefined>(undefined);
+
+  console.log(date);
+
   const form = useForm<AddBetFormValues>({
     resolver: zodResolver(addBetSchema),
     defaultValues: {
@@ -72,6 +87,7 @@ export function AddBetForm({
       betValue: 0,
       odd: 0,
       result: "Pendente",
+      createdAt: new Date(),
     },
   });
 
@@ -84,7 +100,11 @@ export function AddBetForm({
       return;
     }
 
-    const numericValues: CreateBetInput = {
+    const selectedDate = date ?? new Date();
+
+    console.log(date);
+
+    const numericValues: CreateBetInput & { createdAt: Date } = {
       userId,
       event: values.event,
       market: values.market,
@@ -92,6 +112,7 @@ export function AddBetForm({
       betValue: values.betValue,
       odd: values.odd,
       result: values.result as BetResult,
+      createdAt: selectedDate,
     };
 
     const res = await createBetAction(numericValues);
@@ -210,6 +231,42 @@ export function AddBetForm({
                   )}
                 />
               </div>
+              <FormField
+                control={form.control}
+                name="createdAt"
+                render={() => (
+                  <FormItem className="w-full">
+                    <FormLabel>Data da aposta</FormLabel>
+                    <Popover open={open} onOpenChange={setOpen}>
+                      <PopoverTrigger asChild>
+                        <Button
+                          variant="outline"
+                          id="date"
+                          className="bg-transparent w-full text-[.9rem] px-3 py-5 rounded-[.8rem] border border-white/10 text-left"
+                        >
+                          {date ? date.toLocaleDateString() : "Selecionar data"}
+                          <ChevronDownIcon />
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent
+                        className="w-auto overflow-hidden m-2 p-2 rounded-[.8rem] bg-[var(--main-text)] text-[var(--background)]"
+                        align="center"
+                      >
+                        <Calendar
+                          mode="single"
+                          selected={date}
+                          captionLayout="dropdown"
+                          onSelect={(date) => {
+                            if (date) setDate(date);
+                            setOpen(false);
+                          }}
+                        />
+                      </PopoverContent>
+                    </Popover>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
               <FormField
                 control={form.control}
                 name="betValue"
