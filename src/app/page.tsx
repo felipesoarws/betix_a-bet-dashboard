@@ -1,10 +1,22 @@
+"use client";
+
 import { Header } from "@/components/ui/common/header";
 import FlowingBackground from "@/components/ui/common/flowing-background";
-import { BarChart, Wallet, ShieldCheck } from "lucide-react";
+import { BarChart, Wallet, ShieldCheck, Loader2 } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 const Home = () => {
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
+
+  const handleEnter = async () => {
+    setLoading(true);
+
+    router.push("/dashboard");
+  };
   return (
     <div className="relative isolate min-h-screen bg-black text-[var(--main-text)]">
       <Header />
@@ -27,10 +39,18 @@ const Home = () => {
 
             <div className="mt-10 flex flex-wrap justify-center items-center gap-4">
               <Button
-                asChild
+                onClick={handleEnter}
+                disabled={loading}
                 className="cursor-pointer rounded-full px-6 py-2.5 font-bold bg-[var(--main-text)] text-[var(--background)] duration-[.3s] ease-in-out transition-all hover:scale-105 hover:bg-[var(--main-text)] hover:text-[var(--background)]"
               >
-                <Link href={"/dashboard"}>Entrar</Link>
+                {loading ? (
+                  <div className="flex items-center gap-2">
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                    Entrando...
+                  </div>
+                ) : (
+                  "Entrar"
+                )}
               </Button>
               <Button
                 asChild
@@ -101,7 +121,6 @@ const Home = () => {
                 <p className="text-sm text-white/60">Últimos 30 dias</p>
               </div>
               <div className="w-full h-48 bg-white/5 rounded-lg flex items-end justify-around px-4 gap-2">
-                {/* Barras do gráfico simuladas */}
                 <div
                   className="w-full bg-[rgb(var(--accent-purple))] rounded-t-md"
                   style={{ height: "40%" }}

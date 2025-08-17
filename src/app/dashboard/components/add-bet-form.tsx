@@ -30,7 +30,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { ChevronDownIcon } from "lucide-react";
+import { ChevronDownIcon, Loader2 } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
 import { useState } from "react";
 
@@ -73,10 +73,10 @@ export function AddBetForm({
   onBetAdded?: () => void;
   setIsDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
+  const [loading, setLoading] = useState(false);
+
   const [open, setOpen] = useState(false);
   const [date, setDate] = useState<Date | undefined>(undefined);
-
-  console.log(date);
 
   const form = useForm<AddBetFormValues>({
     resolver: zodResolver(addBetSchema),
@@ -92,6 +92,7 @@ export function AddBetForm({
   });
 
   const onSubmit = async (values: AddBetFormValues) => {
+    setLoading(true);
     const session = await authClient.getSession();
     const userId = session?.data?.user?.id;
 
@@ -101,8 +102,6 @@ export function AddBetForm({
     }
 
     const selectedDate = date ?? new Date();
-
-    console.log(date);
 
     const numericValues: CreateBetInput & { createdAt: Date } = {
       userId,
@@ -310,10 +309,18 @@ export function AddBetForm({
             </CardContent>
             <CardFooter className="mt-5">
               <Button
+                disabled={loading}
                 type="submit"
                 className="w-full cursor-pointer rounded-[.8rem] px-6 py-2.5 font-bold bg-[var(--main-text)] text-[var(--background)] duration-[.3s] ease-in-out transition-all hover:scale-105 hover:bg-[var(--main-text)] hover:text-[var(--background)]"
               >
-                Registrar Aposta
+                {loading ? (
+                  <div className="flex items-center gap-2">
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                    Registrando...
+                  </div>
+                ) : (
+                  "Registrar Aposta"
+                )}
               </Button>
             </CardFooter>
           </form>

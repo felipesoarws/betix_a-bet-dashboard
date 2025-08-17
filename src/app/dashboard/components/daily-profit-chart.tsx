@@ -1,21 +1,17 @@
 "use client";
 
 import { Bar, BarChart, Cell, XAxis } from "recharts";
-
 import {
   ChartConfig,
   ChartContainer,
-  ChartLegend,
-  ChartLegendContent,
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
 import { BetSchema } from "./bets-stats";
 
-// Config correta para ChartContainer
 const chartConfig = {
   profit: {
-    label: "Lucro por dia ",
+    label: "Lucro por dia",
     color: "#00ff00",
   },
 } satisfies ChartConfig;
@@ -23,18 +19,21 @@ const chartConfig = {
 export function DailyProfitChart({ bets }: { bets: BetSchema[] }) {
   const chartData = (bets: BetSchema[]) => {
     const profitsByDay = bets.reduce<Record<string, number>>((acc, bet) => {
-      const day = new Date(bet.createdAt).toLocaleDateString("pt-BR");
+      const day = new Date(bet.createdAt).toLocaleDateString("pt-BR", {
+        day: "2-digit",
+        month: "2-digit",
+      });
       acc[day] = (acc[day] || 0) + Number(bet.profit);
       return acc;
     }, {});
 
     return Object.entries(profitsByDay)
       .map(([day, profit]) => ({ day, profit }))
-      .sort(
-        (a, b) =>
-          new Date(a.day.split("/").reverse().join("-")).getTime() - // transforma dd/mm/yyyy em yyyy-mm-dd
-          new Date(b.day.split("/").reverse().join("-")).getTime()
-      );
+      .sort((a, b) => {
+        const dateA = new Date(a.day.split("/").reverse().join("-")).getTime();
+        const dateB = new Date(b.day.split("/").reverse().join("-")).getTime();
+        return dateA - dateB;
+      });
   };
 
   const data = chartData(bets);
@@ -42,30 +41,28 @@ export function DailyProfitChart({ bets }: { bets: BetSchema[] }) {
   return (
     <ChartContainer
       config={chartConfig}
-      className="min-h-[200px] w-full lg:max-h-[40vh] "
+      className="min-h-[250px] w-full lg:h-[200px]"
     >
       <BarChart accessibilityLayer data={data}>
         <XAxis
           dataKey="day"
           tickLine={false}
-          tickMargin={0}
+          tickMargin={10}
           axisLine={false}
-          tickFormatter={(value) => value}
-          className="font-bold"
+          tick={{ fontSize: 12, fill: "red" }}
         />
         <ChartTooltip
+          cursor={false}
           content={
-            <ChartTooltipContent className="border-white/10 p-2 rounded-[.5rem]" />
+            <ChartTooltipContent className="border-white/10 p-2 rounded-[.8rem]" />
           }
         />
-        <ChartLegend
-          content={
-            <ChartLegendContent className="text-[.9rem] pt-5 rounded-[.8rem] border-t border-white/10" />
-          }
-        />
-        <Bar dataKey="profit" radius={4} fill="#00ff00">
+        <Bar dataKey="profit" radius={5}>
           {data.map((entry, index) => (
-            <Cell key={index} fill={entry.profit < 0 ? "#ff0000" : "#00ff00"} />
+            <Cell
+              key={`cell-${index}`}
+              fill={entry.profit < 0 ? "red" : "#00ff00"}
+            />
           ))}
         </Bar>
       </BarChart>
