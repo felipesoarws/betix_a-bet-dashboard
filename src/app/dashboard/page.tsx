@@ -14,7 +14,6 @@ import { AddBetForm } from "./components/add-bet-form";
 import { BetsStats } from "./components/bets-stats";
 import { PlusCircle } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
-import { toast } from "sonner";
 import { BetSchema } from "./components/bets-stats";
 
 const Dashboard = () => {
@@ -47,7 +46,7 @@ const Dashboard = () => {
               </h1>
               <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                 <DialogTrigger asChild>
-                  <Button className="w-full max-w-xs rounded-[.8rem] bg-[var(--main-text)] text-[var(--background)] hover:bg-white/90 lg:w-auto lg:px-6">
+                  <Button className="cursor-pointer w-full max-w-xs rounded-[.8rem] bg-[var(--main-text)] text-[var(--background)] hover:bg-white/90 lg:w-auto lg:px-6">
                     <PlusCircle className="mr-2 h-4 w-4" />
                     Nova Aposta
                   </Button>
@@ -72,10 +71,10 @@ const Dashboard = () => {
           </div>
         </main>
       </div>
-      <footer className="w-full text-center py-4 border-t border-white/10 bg-black/20 backdrop-blur-sm">
+      <footer className="w-full text-center py-8 border-t border-white/10 bg-black/20 backdrop-blur-sm">
         <p className="text-white/60 text-sm">
-          © {new Date().getFullYear()} Betlytics.{" "}
-          <span className="block sm:inline">Aposte com responsabilidade.</span>
+          © {new Date().getFullYear()} Betix.
+          <span className="block">Aposte com responsabilidade.</span>
         </p>
       </footer>
     </div>

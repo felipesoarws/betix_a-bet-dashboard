@@ -1,5 +1,5 @@
 "use client";
-import { LogOutIcon, Sparkles } from "lucide-react";
+import { CircleDollarSign, LogOutIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
@@ -14,9 +14,9 @@ export const Header = () => {
       <header className="z-50 sticky top-0 right-0 w-full">
         <div className="w-full px-3 py-5 flex justify-between items-center border-b border-b-white/10 bg-black/20 backdrop-blur-md lg:px-[2vw]">
           <Link href="/" className="flex items-center gap-2">
-            <Sparkles className="h-5 w-5 text-[var(--main-text)]" />
+            <CircleDollarSign className="h-5 w-5 text-[var(--main-text)]" />
             <span className="font-bold text-base text-[var(--main-text)]">
-              Betlytics
+              Betix
             </span>
           </Link>
 

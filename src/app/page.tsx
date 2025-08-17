@@ -150,9 +150,10 @@ const Home = () => {
           </section>
         </main>
 
-        <footer className="text-center py-8 border-t border-white/10 bg-black/20 backdrop-blur-sm">
+        <footer className="w-full text-center py-8 border-t border-white/10 bg-black/20 backdrop-blur-sm">
           <p className="text-white/60 text-sm">
-            © {new Date().getFullYear()} Betlytics. Aposte com responsabilidade.
+            © {new Date().getFullYear()} Betix.
+            <span className="block">Aposte com responsabilidade.</span>
           </p>
         </footer>
       </div>
