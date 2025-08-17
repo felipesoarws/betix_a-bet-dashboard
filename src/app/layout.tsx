@@ -8,8 +8,11 @@ const inter = Inter({
 });
 
 export const metadata = {
-  title: "BetDashboard",
+  title: "Betix",
   description: "Assuma o controle total das suas apostas.",
+  icons: {
+    icon: "/icon.svg",
+  },
 };
 
 export default function RootLayout({

@@ -8,7 +8,7 @@ const Authentication = async () => {
   return (
     <div className="relative isolate min-h-screen bg-black text-[var(--main-text)]">
       <Header />
-      <div className="absolute top-0 w-full h-[70vh] lg:h-[90vh]">
+      <div className="absolute top-0 h-[70vh] w-full lg:h-[90vh]">
         <FlowingBackground />
       </div>
 
@@ -19,13 +19,13 @@ const Authentication = async () => {
               <TabsList className="space-x-[.5rem]">
                 <TabsTrigger
                   value="sign-in"
-                  className="cursor-pointer p-4 bg-[var(--accent-purple)] text-[var(--main-text)] rounded-[.8rem] border border-white/10  duration-[.3s] ease-in-out transition-all hover:bg-[#885aed]/50"
+                  className="cursor-pointer rounded-[.8rem] border border-white/10 bg-[var(--accent-purple)] p-4 text-[var(--main-text)] transition-all duration-[.3s] ease-in-out hover:bg-[#885aed]/50"
                 >
                   Entrar
                 </TabsTrigger>
                 <TabsTrigger
                   value="sign-up"
-                  className="cursor-pointer p-4 bg-[var(--accent-purple)] text-[var(--main-text)] rounded-[.8rem] border border-white/10  duration-[.3s] ease-in-out transition-all hover:bg-[#885aed]/50"
+                  className="cursor-pointer rounded-[.8rem] border border-white/10 bg-[var(--accent-purple)] p-4 text-[var(--main-text)] transition-all duration-[.3s] ease-in-out hover:bg-[#885aed]/50"
                 >
                   Criar conta
                 </TabsTrigger>

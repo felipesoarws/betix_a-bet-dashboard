@@ -35,23 +35,23 @@ const Dashboard = () => {
   }, []);
 
   return (
-    <div className="flex flex-col min-h-screen bg-[var(--background)] text-[var(--main-text)]">
+    <div className="flex min-h-screen flex-col bg-[var(--background)] text-[var(--main-text)]">
       <Header />
-      <div className="flex-grow w-full">
-        <main className="w-full max-w-7xl mx-auto p-4 md:p-6 flex flex-col flex-grow lg:max-w-[80vw]">
-          <div className="w-full px-4 py-6 bg-[var(--background-darker)] border border-white/10 rounded-[.8rem] lg:p-6 ">
+      <div className="w-full flex-grow">
+        <main className="mx-auto flex w-full max-w-7xl flex-grow flex-col p-4 md:p-6 lg:max-w-[80vw]">
+          <div className="w-full rounded-[.8rem] border border-white/10 bg-[var(--background-darker)] px-4 py-6 lg:p-6">
             <div className="flex flex-col items-center gap-4 lg:flex-row lg:justify-between">
-              <h1 className="text-3xl font-extrabold tracking-tight text-center md:text-4xl lg:text-5xl">
+              <h1 className="text-center text-3xl font-extrabold tracking-tight md:text-4xl lg:text-5xl">
                 Seu dashboard
               </h1>
               <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                 <DialogTrigger asChild>
-                  <Button className="cursor-pointer w-full max-w-xs rounded-[.8rem] bg-[var(--main-text)] text-[var(--background)] hover:bg-white/90 lg:w-auto lg:px-6">
+                  <Button className="w-full max-w-xs cursor-pointer rounded-[.8rem] bg-[var(--main-text)] text-[var(--background)] hover:bg-white/90 lg:w-auto lg:px-6">
                     <PlusCircle className="mr-2 h-4 w-4" />
                     Nova Aposta
                   </Button>
                 </DialogTrigger>
-                <DialogContent className="sm:max-w-[480px] bg-black/80 border-white/10 text-white backdrop-blur-md rounded-[.8rem]">
+                <DialogContent className="rounded-[.8rem] border-white/10 bg-black/80 text-white backdrop-blur-md sm:max-w-[480px]">
                   <DialogHeader>
                     <DialogTitle className="text-xl">Nova Aposta</DialogTitle>
                   </DialogHeader>
@@ -71,8 +71,8 @@ const Dashboard = () => {
           </div>
         </main>
       </div>
-      <footer className="w-full text-center py-8 border-t border-white/10 bg-black/20 backdrop-blur-sm">
-        <p className="text-white/60 text-sm">
+      <footer className="w-full border-t border-white/10 bg-black/20 py-8 text-center backdrop-blur-sm">
+        <p className="text-sm text-white/60">
           © {new Date().getFullYear()} Betix.
           <span className="block">Aposte com responsabilidade.</span>
         </p>

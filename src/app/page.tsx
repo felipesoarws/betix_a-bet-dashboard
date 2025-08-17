@@ -20,28 +20,28 @@ const Home = () => {
   return (
     <div className="relative isolate min-h-screen bg-black text-[var(--main-text)]">
       <Header />
-      <div className="absolute top-0 w-full h-[70vh] lg:h-[100vh]">
+      <div className="absolute top-0 h-[70vh] w-full lg:h-[100vh]">
         <FlowingBackground />
       </div>
 
-      <div className="relative z-10 flex flex-col items-center justify-center min-h-screen">
+      <div className="relative z-10 flex min-h-screen flex-col items-center justify-center">
         <main className="container flex flex-col px-2 lg:px-[8vw]">
-          <section className="flex flex-col items-center justify-center text-center flex-grow py-20">
+          <section className="flex flex-grow flex-col items-center justify-center py-20 text-center">
             <div className="mb-6">
-              <span className="inline-block px-4 py-1 text-sm rounded-full border border-white/10 bg-black/20 backdrop-blur-sm">
+              <span className="inline-block rounded-full border border-white/10 bg-black/20 px-4 py-1 text-sm backdrop-blur-sm">
                 Comece agora!
               </span>
             </div>
 
-            <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight leading-10 lg:leading-[3.5vw]">
+            <h1 className="text-4xl leading-10 font-extrabold tracking-tight md:text-6xl lg:leading-[3.5vw]">
               Descubra exatamente onde <br /> você ganha e perde dinheiro.
             </h1>
 
-            <div className="mt-10 flex flex-wrap justify-center items-center gap-4">
+            <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
               <Button
                 onClick={handleEnter}
                 disabled={loading}
-                className="cursor-pointer rounded-full px-6 py-2.5 font-bold bg-[var(--main-text)] text-[var(--background)] duration-[.3s] ease-in-out transition-all hover:scale-105 hover:bg-[var(--main-text)] hover:text-[var(--background)]"
+                className="cursor-pointer rounded-full bg-[var(--main-text)] px-6 py-2.5 font-bold text-[var(--background)] transition-all duration-[.3s] ease-in-out hover:scale-105 hover:bg-[var(--main-text)] hover:text-[var(--background)]"
               >
                 {loading ? (
                   <div className="flex items-center gap-2">
@@ -54,7 +54,7 @@ const Home = () => {
               </Button>
               <Button
                 asChild
-                className="cursor-pointer px-6 py-2.5 font-bold bg-white/5 border border-white/10 text-white/80  rounded-full  duration-[.3s] ease-in-out transition-all hover:scale-105 hover:bg-white/10"
+                className="cursor-pointer rounded-full border border-white/10 bg-white/5 px-6 py-2.5 font-bold text-white/80 transition-all duration-[.3s] ease-in-out hover:scale-105 hover:bg-white/10"
               >
                 <Link href="#features">Ver Funcionalidades</Link>
               </Button>
@@ -62,13 +62,13 @@ const Home = () => {
           </section>
 
           <section id="features" className="py-24">
-            <div className="grid md:grid-cols-3 gap-12 text-center">
+            <div className="grid gap-12 text-center md:grid-cols-3">
               <div>
                 <BarChart
-                  className="h-10 w-10 text-[rgb(var(--accent-purple))] mx-auto mb-4"
+                  className="mx-auto mb-4 h-10 w-10 text-[rgb(var(--accent-purple))]"
                   strokeWidth={1.5}
                 />
-                <h3 className="font-bold text-xl mb-2">
+                <h3 className="mb-2 text-xl font-bold">
                   Entenda seus Resultados
                 </h3>
                 <p className="text-white/60">
@@ -78,10 +78,10 @@ const Home = () => {
               </div>
               <div>
                 <Wallet
-                  className="h-10 w-10 text-[rgb(var(--accent-purple))] mx-auto mb-4"
+                  className="mx-auto mb-4 h-10 w-10 text-[rgb(var(--accent-purple))]"
                   strokeWidth={1.5}
                 />
-                <h3 className="font-bold text-xl mb-2">
+                <h3 className="mb-2 text-xl font-bold">
                   Gestão de Banca Simples
                 </h3>
                 <p className="text-white/60">
@@ -91,10 +91,10 @@ const Home = () => {
               </div>
               <div>
                 <ShieldCheck
-                  className="h-10 w-10 text-[rgb(var(--accent-purple))] mx-auto mb-4"
+                  className="mx-auto mb-4 h-10 w-10 text-[rgb(var(--accent-purple))]"
                   strokeWidth={1.5}
                 />
-                <h3 className="font-bold text-xl mb-2">
+                <h3 className="mb-2 text-xl font-bold">
                   Seus Dados, Suas Regras
                 </h3>
                 <p className="text-white/60">
@@ -106,43 +106,43 @@ const Home = () => {
           </section>
 
           <section className="py-24">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl font-bold">
+            <div className="mb-12 text-center">
+              <h2 className="text-3xl font-bold md:text-4xl">
                 Visualize a Clareza
               </h2>
-              <p className="text-white/60 mt-2 max-w-2xl mx-auto">
+              <p className="mx-auto mt-2 max-w-2xl text-white/60">
                 Sua jornada para o lucro começa com uma visão organizada dos
                 seus dados.
               </p>
             </div>
-            <div className="p-8 rounded-2xl border border-white/10 bg-black/20 backdrop-blur-md">
-              <div className="flex justify-between items-center mb-6">
+            <div className="rounded-2xl border border-white/10 bg-black/20 p-8 backdrop-blur-md">
+              <div className="mb-6 flex items-center justify-between">
                 <p className="font-bold">Desempenho: Premier League</p>
                 <p className="text-sm text-white/60">Últimos 30 dias</p>
               </div>
-              <div className="w-full h-48 bg-white/5 rounded-lg flex items-end justify-around px-4 gap-2">
+              <div className="flex h-48 w-full items-end justify-around gap-2 rounded-lg bg-white/5 px-4">
                 <div
-                  className="w-full bg-[rgb(var(--accent-purple))] rounded-t-md"
+                  className="w-full rounded-t-md bg-[rgb(var(--accent-purple))]"
                   style={{ height: "40%" }}
                 ></div>
                 <div
-                  className="w-full bg-[rgb(var(--accent-purple))] rounded-t-md"
+                  className="w-full rounded-t-md bg-[rgb(var(--accent-purple))]"
                   style={{ height: "65%" }}
                 ></div>
                 <div
-                  className="w-full bg-red-500/80 rounded-t-md"
+                  className="w-full rounded-t-md bg-red-500/80"
                   style={{ height: "25%" }}
                 ></div>
                 <div
-                  className="w-full bg-[rgb(var(--accent-purple))] rounded-t-md"
+                  className="w-full rounded-t-md bg-[rgb(var(--accent-purple))]"
                   style={{ height: "80%" }}
                 ></div>
                 <div
-                  className="w-full bg-red-500/80 rounded-t-md"
+                  className="w-full rounded-t-md bg-red-500/80"
                   style={{ height: "35%" }}
                 ></div>
                 <div
-                  className="w-full bg-[rgb(var(--accent-purple))] rounded-t-md"
+                  className="w-full rounded-t-md bg-[rgb(var(--accent-purple))]"
                   style={{ height: "55%" }}
                 ></div>
               </div>
@@ -150,8 +150,8 @@ const Home = () => {
           </section>
         </main>
 
-        <footer className="w-full text-center py-8 border-t border-white/10 bg-black/20 backdrop-blur-sm">
-          <p className="text-white/60 text-sm">
+        <footer className="w-full border-t border-white/10 bg-black/20 py-8 text-center backdrop-blur-sm">
+          <p className="text-sm text-white/60">
             © {new Date().getFullYear()} Betix.
             <span className="block">Aposte com responsabilidade.</span>
           </p>

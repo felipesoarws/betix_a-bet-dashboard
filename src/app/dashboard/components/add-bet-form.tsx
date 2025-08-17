@@ -140,7 +140,7 @@ export function AddBetForm({
                     <FormLabel>Evento</FormLabel>
                     <FormControl>
                       <Input
-                        className="text-[.9rem] px-3 py-5 rounded-[.8rem] border border-white/10 placeholder:text-white/30"
+                        className="rounded-[.8rem] border border-white/10 px-3 py-5 text-[.9rem] placeholder:text-white/30"
                         placeholder="São Paulo x Corinthians"
                         {...field}
                       />
@@ -157,7 +157,7 @@ export function AddBetForm({
                     <FormLabel>Mercado</FormLabel>
                     <FormControl>
                       <Input
-                        className="text-[.9rem] px-3 py-5 rounded-[.8rem] border border-white/10 placeholder:text-white/30"
+                        className="rounded-[.8rem] border border-white/10 px-3 py-5 text-[.9rem] placeholder:text-white/30"
                         placeholder="+1.5 Gols"
                         {...field}
                       />
@@ -178,7 +178,7 @@ export function AddBetForm({
                         value={field.value}
                       >
                         <FormControl className="w-full">
-                          <SelectTrigger className="text-[.9rem] px-3 py-5 rounded-[.8rem] border border-white/10 placeholder:text-white/30">
+                          <SelectTrigger className="rounded-[.8rem] border border-white/10 px-3 py-5 text-[.9rem] placeholder:text-white/30">
                             <SelectValue placeholder="Selecione uma categoria" />
                           </SelectTrigger>
                         </FormControl>
@@ -209,7 +209,7 @@ export function AddBetForm({
                         value={field.value}
                       >
                         <FormControl className="w-full">
-                          <SelectTrigger className="text-[.9rem] px-3 py-5 rounded-[.8rem] border border-white/10 placeholder:text-white/30">
+                          <SelectTrigger className="rounded-[.8rem] border border-white/10 px-3 py-5 text-[.9rem] placeholder:text-white/30">
                             <SelectValue placeholder="Selecione uma categoria" />
                           </SelectTrigger>
                         </FormControl>
@@ -241,14 +241,14 @@ export function AddBetForm({
                         <Button
                           variant="outline"
                           id="date"
-                          className="bg-transparent w-full text-[.9rem] px-3 py-5 rounded-[.8rem] border border-white/10 text-left"
+                          className="w-full rounded-[.8rem] border border-white/10 bg-transparent px-3 py-5 text-left text-[.9rem]"
                         >
                           {date ? date.toLocaleDateString() : "Selecionar data"}
                           <ChevronDownIcon />
                         </Button>
                       </PopoverTrigger>
                       <PopoverContent
-                        className="w-auto overflow-hidden m-2 p-2 rounded-[.8rem] bg-[var(--main-text)] text-[var(--background)]"
+                        className="m-2 w-auto overflow-hidden rounded-[.8rem] bg-[var(--main-text)] p-2 text-[var(--background)]"
                         align="center"
                       >
                         <Calendar
@@ -277,7 +277,7 @@ export function AddBetForm({
                         type="number"
                         step="0.01"
                         placeholder="10.00"
-                        className="[&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-outer-spin-button]:m-0 text-[.9rem] px-3 py-5 rounded-[.8rem] border border-white/10 placeholder:text-white/30 "
+                        className="rounded-[.8rem] border border-white/10 px-3 py-5 text-[.9rem] placeholder:text-white/30 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none"
                         value={field.value ?? ""}
                         onChange={(e) => field.onChange(e.target.valueAsNumber)}
                       />
@@ -297,7 +297,7 @@ export function AddBetForm({
                         type="number"
                         step="0.01"
                         placeholder="1.85"
-                        className="[&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-outer-spin-button]:m-0 text-[.9rem] px-3 py-5 rounded-[.8rem] border border-white/10 placeholder:text-white/30"
+                        className="rounded-[.8rem] border border-white/10 px-3 py-5 text-[.9rem] placeholder:text-white/30 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none"
                         value={field.value ?? ""}
                         onChange={(e) => field.onChange(e.target.valueAsNumber)}
                       />
@@ -311,7 +311,7 @@ export function AddBetForm({
               <Button
                 disabled={loading}
                 type="submit"
-                className="w-full cursor-pointer rounded-[.8rem] px-6 py-2.5 font-bold bg-[var(--main-text)] text-[var(--background)] duration-[.3s] ease-in-out transition-all hover:scale-105 hover:bg-[var(--main-text)] hover:text-[var(--background)]"
+                className="w-full cursor-pointer rounded-[.8rem] bg-[var(--main-text)] px-6 py-2.5 font-bold text-[var(--background)] transition-all duration-[.3s] ease-in-out hover:scale-105 hover:bg-[var(--main-text)] hover:text-[var(--background)]"
               >
                 {loading ? (
                   <div className="flex items-center gap-2">

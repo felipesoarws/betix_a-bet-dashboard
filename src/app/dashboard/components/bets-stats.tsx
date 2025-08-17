@@ -68,7 +68,7 @@ export function BetsStats({
 
   // criação de listas de anos e meses registrados nas bets
   const yearsAvailable = Array.from(
-    new Set(bets.map((bet) => new Date(bet.createdAt).getFullYear()))
+    new Set(bets.map((bet) => new Date(bet.createdAt).getFullYear())),
   ).sort((a, b) => b - a);
 
   const monthsAvailable = Array.from(
@@ -77,10 +77,10 @@ export function BetsStats({
         .filter((bet) =>
           yearFilter === "all"
             ? true
-            : new Date(bet.createdAt).getFullYear() === Number(yearFilter)
+            : new Date(bet.createdAt).getFullYear() === Number(yearFilter),
         )
-        .map((bet) => new Date(bet.createdAt).getMonth())
-    )
+        .map((bet) => new Date(bet.createdAt).getMonth()),
+    ),
   ).sort((a, b) => a - b);
 
   const filteredBetsByMonthYear = bets.filter((bet) => {
@@ -95,7 +95,7 @@ export function BetsStats({
   // filtros por clique na tabela
   const [resultFilter, setResultFilter] = useState<BetResult | "all">("all");
   const [categoryFilter, setCategoryFilter] = useState<CategoryResult | "all">(
-    "all"
+    "all",
   );
 
   const filteredBets = bets.filter((bet) => {
@@ -111,15 +111,15 @@ export function BetsStats({
   // bets ganhas + some das bets ganhas
   const wins = filteredBetsByMonthYear.filter((bet) => bet.result === "Ganha");
   const winsSum = Number(
-    wins.reduce((sum, b) => sum + Number(b.profit), 0).toFixed(2)
+    wins.reduce((sum, b) => sum + Number(b.profit), 0).toFixed(2),
   );
 
   // bets perdidas + some das bets perdidas
   const loses = filteredBetsByMonthYear.filter(
-    (bet) => bet.result === "Perdida"
+    (bet) => bet.result === "Perdida",
   );
   const losesSum = Number(
-    loses.reduce((sum, b) => sum + Number(b.profit), 0).toFixed(2)
+    loses.reduce((sum, b) => sum + Number(b.profit), 0).toFixed(2),
   );
 
   // lucro total
@@ -129,7 +129,7 @@ export function BetsStats({
   const gambledTotal = Number(
     filteredBetsByMonthYear
       .reduce((sum, b) => sum + Number(b.betValue), 0)
-      .toFixed(2)
+      .toFixed(2),
   ).toLocaleString("pt-BR");
 
   // porcentagem de vitória
@@ -143,8 +143,8 @@ export function BetsStats({
     <div>
       {!session ? (
         <>
-          <div className="h-[30vh] flex items-center justify-center text-center">
-            <h1 className="mt-8 text-2xl md:text-3xl font-bold tracking-tight lg:text-[1.5vw]">
+          <div className="flex h-[30vh] items-center justify-center text-center">
+            <h1 className="mt-8 text-2xl font-bold tracking-tight md:text-3xl lg:text-[1.5vw]">
               Registre para cadastrar e visualizar seus resultados.
             </h1>
           </div>
@@ -152,11 +152,11 @@ export function BetsStats({
       ) : (
         <>
           <div className="flex flex-col">
-            <div className="flex flex-wrap gap-2 mt-4 items-center justify-start">
+            <div className="mt-4 flex flex-wrap items-center justify-start gap-2">
               <div className="flex gap-4 lg:gap-[1vw]">
                 {(monthFilter !== "all" || yearFilter !== "all") && (
                   <Button
-                    className="cursor-pointer px-3 py-5 rounded-[.8rem] border border-white/10 hover:bg-[var(--background)]"
+                    className="cursor-pointer rounded-[.8rem] border border-white/10 px-3 py-5 hover:bg-[var(--background)]"
                     onClick={() => {
                       setMonthFilter("all");
                       setYearFilter("all");
@@ -170,7 +170,7 @@ export function BetsStats({
                     setYearFilter(value as string | "all")
                   }
                 >
-                  <SelectTrigger className="cursor-pointer text-[.9rem] px-3 py-5 rounded-[.8rem] border border-white/10 placeholder:text-white/30">
+                  <SelectTrigger className="cursor-pointer rounded-[.8rem] border border-white/10 px-3 py-5 text-[.9rem] placeholder:text-white/30">
                     <SelectValue placeholder="Ano" />
                   </SelectTrigger>
                   <SelectContent className="rounded-[.8rem] bg-[var(--main-text)] text-[var(--background)]">
@@ -191,7 +191,7 @@ export function BetsStats({
                     setMonthFilter(value as string | "all")
                   }
                 >
-                  <SelectTrigger className="cursor-pointer text-[.9rem] px-3 py-5 rounded-[.8rem] border border-white/10 placeholder:text-white/30">
+                  <SelectTrigger className="cursor-pointer rounded-[.8rem] border border-white/10 px-3 py-5 text-[.9rem] placeholder:text-white/30">
                     <SelectValue placeholder="Mês" />
                   </SelectTrigger>
                   <SelectContent className="rounded-[.8rem] bg-[var(--main-text)] text-[var(--background)]">
@@ -210,9 +210,9 @@ export function BetsStats({
               </div>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-6">
-              <div className="w-full flex flex-col items-start justify-center p-4 bg-[var(--background-darker)] border border-white/10 rounded-[.8rem]">
-                <h2 className="mb-2 text-base font-regular tracking-tight lg:text-[1.1vw]">
+            <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              <div className="flex w-full flex-col items-start justify-center rounded-[.8rem] border border-white/10 bg-[var(--background-darker)] p-4">
+                <h2 className="font-regular mb-2 text-base tracking-tight lg:text-[1.1vw]">
                   Total de apostas
                 </h2>
                 <h2 className="text-2xl font-bold tracking-tight lg:text-[1.5vw]">
@@ -223,8 +223,8 @@ export function BetsStats({
                   )}
                 </h2>
               </div>
-              <div className="w-full flex flex-col items-start justify-center p-4 bg-[var(--background-darker)] border border-white/10 rounded-[.8rem]">
-                <h2 className="mb-2 text-base font-regular tracking-tight lg:text-[1.1vw]">
+              <div className="flex w-full flex-col items-start justify-center rounded-[.8rem] border border-white/10 bg-[var(--background-darker)] p-4">
+                <h2 className="font-regular mb-2 text-base tracking-tight lg:text-[1.1vw]">
                   Total apostado
                 </h2>
                 <h2 className="text-2xl font-bold tracking-tight lg:text-[1.5vw]">
@@ -235,8 +235,8 @@ export function BetsStats({
                   )}
                 </h2>
               </div>
-              <div className="w-full flex flex-col items-start justify-center p-4 bg-[var(--background-darker)] border border-white/10 rounded-[.8rem]">
-                <h2 className="mb-2 text-base font-regular tracking-tight lg:text-[1.1vw]">
+              <div className="flex w-full flex-col items-start justify-center rounded-[.8rem] border border-white/10 bg-[var(--background-darker)] p-4">
+                <h2 className="font-regular mb-2 text-base tracking-tight lg:text-[1.1vw]">
                   Lucro / prejuízo total
                 </h2>
                 {totalProfit == "0.00" ? (
@@ -244,19 +244,19 @@ export function BetsStats({
                 ) : (
                   <>
                     {Number(totalProfit) > 0 ? (
-                      <h2 className="text-[#00ff00] text-2xl font-bold tracking-tight lg:text-[1.5vw]">
+                      <h2 className="text-2xl font-bold tracking-tight text-[#00ff00] lg:text-[1.5vw]">
                         R$ {Number(totalProfit).toLocaleString("pt-BR")}
                       </h2>
                     ) : (
-                      <h2 className="text-[#ff0000] text-2xl font-bold tracking-tight lg:text-[1.5vw]">
+                      <h2 className="text-2xl font-bold tracking-tight text-[#ff0000] lg:text-[1.5vw]">
                         R$ {Number(totalProfit).toLocaleString("pt-BR")}
                       </h2>
                     )}
                   </>
                 )}
               </div>
-              <div className="w-full flex flex-col items-start justify-center p-4 bg-[var(--background-darker)] border border-white/10 rounded-[.8rem]">
-                <h2 className="mb-2 text-base font-regular tracking-tight lg:text-[1.1vw]">
+              <div className="flex w-full flex-col items-start justify-center rounded-[.8rem] border border-white/10 bg-[var(--background-darker)] p-4">
+                <h2 className="font-regular mb-2 text-base tracking-tight lg:text-[1.1vw]">
                   % de vitórias
                 </h2>
                 <h2 className="text-2xl font-bold tracking-tight lg:text-[1.5vw]">
@@ -271,14 +271,14 @@ export function BetsStats({
           </div>
 
           <div className="hidden lg:block">
-            <h1 className="mt-8 text-2xl md:text-3xl font-bold tracking-tight lg:text-[1.3vw]">
+            <h1 className="mt-8 text-2xl font-bold tracking-tight md:text-3xl lg:text-[1.3vw]">
               Evolução
             </h1>
 
-            <div className="border border-white/10 rounded-[.8rem] p-2 mt-4 lg:p-4">
+            <div className="mt-4 rounded-[.8rem] border border-white/10 p-2 lg:p-4">
               {bets.length < 1 ? (
-                <div className="h-[30vh] flex items-center justify-center text-center">
-                  <h1 className="mt-8 text-2xl md:text-3xl font-bold tracking-tight lg:text-[1.3vw]">
+                <div className="flex h-[30vh] items-center justify-center text-center">
+                  <h1 className="mt-8 text-2xl font-bold tracking-tight md:text-3xl lg:text-[1.3vw]">
                     Ainda sem apostas registradas.
                     <span className="block">
                       Registre para visualizar seus resultados.
@@ -292,14 +292,14 @@ export function BetsStats({
           </div>
 
           <div className="mt-8">
-            <h1 className="text-2xl md:text-3xl font-bold tracking-tight lg:text-[1.3vw]">
+            <h1 className="text-2xl font-bold tracking-tight md:text-3xl lg:text-[1.3vw]">
               Apostas recentes
             </h1>
-            <div className="flex flex-wrap gap-2 mt-4 items-center justify-start">
+            <div className="mt-4 flex flex-wrap items-center justify-start gap-2">
               <div className="flex gap-4 lg:gap-[1vw]">
                 {(resultFilter !== "all" || categoryFilter !== "all") && (
                   <Button
-                    className="cursor-pointer px-3 py-5 rounded-[.8rem] border border-white/10 hover:bg-[var(--background)]"
+                    className="cursor-pointer rounded-[.8rem] border border-white/10 px-3 py-5 hover:bg-[var(--background)]"
                     onClick={() => {
                       setCategoryFilter("all");
                       setResultFilter("all");
@@ -313,7 +313,7 @@ export function BetsStats({
                     setResultFilter(value as BetResult | "all")
                   }
                 >
-                  <SelectTrigger className="text-[.9rem] px-3 py-5 rounded-[.8rem] border border-white/10 placeholder:text-white/30">
+                  <SelectTrigger className="rounded-[.8rem] border border-white/10 px-3 py-5 text-[.9rem] placeholder:text-white/30">
                     <SelectValue placeholder="Resultado" />
                   </SelectTrigger>
                   <SelectContent className="rounded-[.8rem] bg-[var(--main-text)] text-[var(--background)]">
@@ -339,7 +339,7 @@ export function BetsStats({
                     setCategoryFilter(value as CategoryResult | "all")
                   }
                 >
-                  <SelectTrigger className="text-[.9rem] px-3 py-5 rounded-[.8rem] border border-white/10 placeholder:text-white/30">
+                  <SelectTrigger className="rounded-[.8rem] border border-white/10 px-3 py-5 text-[.9rem] placeholder:text-white/30">
                     <SelectValue placeholder="Categoria" />
                   </SelectTrigger>
                   <SelectContent className="rounded-[.8rem] bg-[var(--main-text)] text-[var(--background)]">
@@ -361,10 +361,10 @@ export function BetsStats({
               </div>
             </div>
 
-            <div className="border border-white/10 rounded-[.8rem] p-2 lg:p-[1vw] hidden lg:block mt-4">
+            <div className="mt-4 hidden rounded-[.8rem] border border-white/10 p-2 lg:block lg:p-[1vw]">
               {bets.length < 1 ? (
-                <div className="h-[15vh] flex items-center justify-center text-center">
-                  <h1 className="text-2xl md:text-3xl font-bold tracking-tight lg:text-[1.3vw]">
+                <div className="flex h-[15vh] items-center justify-center text-center">
+                  <h1 className="text-2xl font-bold tracking-tight md:text-3xl lg:text-[1.3vw]">
                     Ainda sem apostas registradas.
                     <span className="block">
                       Registre para visualizar seus resultados.
@@ -375,28 +375,28 @@ export function BetsStats({
                 <Table>
                   <TableHeader>
                     <TableRow className="border-b border-white/15">
-                      <TableHead className="text-[.95rem] pb-2 font-bold lg:text-[.95vw]">
+                      <TableHead className="pb-2 text-[.95rem] font-bold lg:text-[.95vw]">
                         Evento
                       </TableHead>
-                      <TableHead className="text-[.95rem] pb-2 font-bold lg:text-[.95vw] text-center">
+                      <TableHead className="pb-2 text-center text-[.95rem] font-bold lg:text-[.95vw]">
                         Categoria
                       </TableHead>
-                      <TableHead className="text-[.95rem] pb-2 font-bold lg:text-[.95vw] text-center ">
+                      <TableHead className="pb-2 text-center text-[.95rem] font-bold lg:text-[.95vw]">
                         Valor da aposta
                       </TableHead>
-                      <TableHead className="text-[.95rem] pb-2 font-bold lg:text-[.95vw] text-center">
+                      <TableHead className="pb-2 text-center text-[.95rem] font-bold lg:text-[.95vw]">
                         Odd
                       </TableHead>
-                      <TableHead className="text-[.95rem] pb-2 font-bold lg:text-[.95vw] text-center">
+                      <TableHead className="pb-2 text-center text-[.95rem] font-bold lg:text-[.95vw]">
                         Resultado
                       </TableHead>
-                      <TableHead className="text-[.95rem] pb-2 font-bold lg:text-[.95vw] text-center">
+                      <TableHead className="pb-2 text-center text-[.95rem] font-bold lg:text-[.95vw]">
                         Lucro
                       </TableHead>
-                      <TableHead className="text-[.95rem] pb-2 font-bold lg:text-[.95vw] text-center">
+                      <TableHead className="pb-2 text-center text-[.95rem] font-bold lg:text-[.95vw]">
                         Data
                       </TableHead>
-                      <TableHead className="text-[.95rem] pb-2 font-bold lg:text-[.95vw] text-right">
+                      <TableHead className="pb-2 text-right text-[.95rem] font-bold lg:text-[.95vw]">
                         Editar
                       </TableHead>
                     </TableRow>
@@ -461,7 +461,7 @@ export function BetsStats({
 
                           <TableCell className="text-center">
                             {new Date(bet.createdAt).toLocaleDateString(
-                              "pt-BR"
+                              "pt-BR",
                             )}
                           </TableCell>
 
@@ -502,7 +502,7 @@ export function BetsStats({
               )}
             </div>
 
-            <div className="space-y-4 mt-4 lg:hidden">
+            <div className="mt-4 space-y-4 lg:hidden">
               <AnimatePresence>
                 {filteredBets.slice(0, 10).map((bet) => (
                   <motion.div
@@ -511,10 +511,10 @@ export function BetsStats({
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -20 }}
                     transition={{ duration: 0.3 }}
-                    className="p-4 border border-white/10 rounded-[.8rem]"
+                    className="rounded-[.8rem] border border-white/10 p-4"
                   >
-                    <div className="flex justify-between items-start mb-2">
-                      <span className="font-bold text-base pr-2">
+                    <div className="mb-2 flex items-start justify-between">
+                      <span className="pr-2 text-base font-bold">
                         {bet.event}
                       </span>
                       <Dialog
@@ -526,7 +526,7 @@ export function BetsStats({
                         <DialogTrigger asChild>
                           <Button
                             onClick={() => setEditingBet(bet)}
-                            className="border-none cursor-pointer transition-all duration-[.3s] ease-in-out scale-100 hover:scale-115"
+                            className="scale-100 cursor-pointer border-none transition-all duration-[.3s] ease-in-out hover:scale-115"
                           >
                             <Edit size={25} />
                           </Button>
@@ -547,9 +547,9 @@ export function BetsStats({
                         </DialogContent>
                       </Dialog>
                     </div>
-                    <p className="text-sm text-white/70 mb-4">{bet.market}</p>
+                    <p className="mb-4 text-sm text-white/70">{bet.market}</p>
 
-                    <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-sm border-t border-white/10 pt-4">
+                    <div className="grid grid-cols-2 gap-x-4 gap-y-2 border-t border-white/10 pt-4 text-sm">
                       <div>
                         <p className="text-white/60">Resultado</p>
                         <p
@@ -557,8 +557,8 @@ export function BetsStats({
                             bet.result === "Ganha"
                               ? "text-[#00ff00]"
                               : bet.result === "Perdida"
-                              ? "text-[#ff0000]"
-                              : ""
+                                ? "text-[#ff0000]"
+                                : ""
                           }`}
                         >
                           {bet.result}
@@ -571,8 +571,8 @@ export function BetsStats({
                             bet.profit > 0
                               ? "text-[#00ff00]"
                               : bet.profit < 0
-                              ? "text-[#ff0000]"
-                              : "text-[var(--main-text)]"
+                                ? "text-[#ff0000]"
+                                : "text-[var(--main-text)]"
                           }`}
                         >
                           R$ {String(bet.profit).replace(".", ",")}

@@ -40,7 +40,7 @@ const formSchema = z
     {
       error: "As senhas não coincidem.",
       path: ["passwordConfirmation"],
-    }
+    },
   );
 
 type FormValues = z.infer<typeof formSchema>;
@@ -92,7 +92,7 @@ const SignUpForm = () => {
 
   return (
     <>
-      <Card className="bg-[var(--background)] rounded-[.8rem] border border-white/10">
+      <Card className="rounded-[.8rem] border border-white/10 bg-[var(--background)]">
         <CardHeader>
           <CardDescription>Crie uma conta para continuar.</CardDescription>
         </CardHeader>
@@ -107,7 +107,7 @@ const SignUpForm = () => {
                     <FormLabel>Nome</FormLabel>
                     <FormControl>
                       <Input
-                        className="text-[.9rem] px-3 py-5 rounded-[.8rem] border border-white/10 placeholder:text-white/30"
+                        className="rounded-[.8rem] border border-white/10 px-3 py-5 text-[.9rem] placeholder:text-white/30"
                         placeholder="Digite seu nome"
                         {...field}
                       />
@@ -124,7 +124,7 @@ const SignUpForm = () => {
                     <FormLabel>E-mail</FormLabel>
                     <FormControl>
                       <Input
-                        className="text-[.9rem] px-3 py-5 rounded-[.8rem] border border-white/10 placeholder:text-white/30"
+                        className="rounded-[.8rem] border border-white/10 px-3 py-5 text-[.9rem] placeholder:text-white/30"
                         placeholder="Digite seu e-mail"
                         {...field}
                       />
@@ -141,7 +141,7 @@ const SignUpForm = () => {
                     <FormLabel>Senha</FormLabel>
                     <FormControl>
                       <Input
-                        className="text-[.9rem] px-3 py-5 rounded-[.8rem] border border-white/10 placeholder:text-white/30"
+                        className="rounded-[.8rem] border border-white/10 px-3 py-5 text-[.9rem] placeholder:text-white/30"
                         placeholder="Digite sua senha"
                         type="password"
                         {...field}
@@ -159,7 +159,7 @@ const SignUpForm = () => {
                     <FormLabel>Confirmar Senha</FormLabel>
                     <FormControl>
                       <Input
-                        className="text-[.9rem] px-3 py-5 rounded-[.8rem] border border-white/10 placeholder:text-white/30"
+                        className="rounded-[.8rem] border border-white/10 px-3 py-5 text-[.9rem] placeholder:text-white/30"
                         placeholder="Digite sua senha novamente"
                         type="password"
                         {...field}
@@ -173,7 +173,7 @@ const SignUpForm = () => {
             <CardFooter>
               <Button
                 type="submit"
-                className="cursor-pointer rounded-[.8rem] px-6 py-2.5 font-bold bg-[var(--main-text)] text-[var(--background)] duration-[.3s] ease-in-out transition-all hover:scale-105 hover:bg-[var(--main-text)] hover:text-[var(--background)]"
+                className="cursor-pointer rounded-[.8rem] bg-[var(--main-text)] px-6 py-2.5 font-bold text-[var(--background)] transition-all duration-[.3s] ease-in-out hover:scale-105 hover:bg-[var(--main-text)] hover:text-[var(--background)]"
               >
                 Entrar
               </Button>

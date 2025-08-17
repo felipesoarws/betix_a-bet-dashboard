@@ -11,11 +11,11 @@ export const Header = () => {
 
   return (
     <div className="w-full">
-      <header className="z-50 sticky top-0 right-0 w-full">
-        <div className="w-full px-3 py-5 flex justify-between items-center border-b border-b-white/10 bg-black/20 backdrop-blur-md lg:px-[2vw]">
+      <header className="sticky top-0 right-0 z-50 w-full">
+        <div className="flex w-full items-center justify-between border-b border-b-white/10 bg-black/20 px-3 py-5 backdrop-blur-md lg:px-[2vw]">
           <Link href="/" className="flex items-center gap-2">
             <CircleDollarSign className="h-5 w-5 text-[var(--main-text)]" />
-            <span className="font-bold text-base text-[var(--main-text)]">
+            <span className="text-base font-bold text-[var(--main-text)]">
               Betix
             </span>
           </Link>
@@ -24,8 +24,8 @@ export const Header = () => {
             {session?.user ? (
               <>
                 <div className="flex justify-between gap-8">
-                  <div className="hidden lg:flex items-center gap-3">
-                    <Avatar className="border border-white/10 bg-black/20 backdrop-blur-md p-2">
+                  <div className="hidden items-center gap-3 lg:flex">
+                    <Avatar className="border border-white/10 bg-black/20 p-2 backdrop-blur-md">
                       <AvatarImage
                         src={session?.user?.image as string | undefined}
                       />
@@ -35,10 +35,10 @@ export const Header = () => {
                       </AvatarFallback>
                     </Avatar>
                     <div className="leading-4">
-                      <h3 className="font-semibold text-[1rem]">
+                      <h3 className="text-[1rem] font-semibold">
                         {session?.user?.name}
                       </h3>
-                      <span className="text-[var(--main-text)] block text-[.8rem]">
+                      <span className="block text-[.8rem] text-[var(--main-text)]">
                         {session?.user?.email}
                       </span>
                     </div>
@@ -47,7 +47,7 @@ export const Header = () => {
                   <Button
                     asChild
                     onClick={() => authClient.signOut()}
-                    className="cursor-pointer duration-[.3s] ease-in-out transition-all scale-125 hover:scale-140"
+                    className="scale-125 cursor-pointer transition-all duration-[.3s] ease-in-out hover:scale-140"
                   >
                     <Link href="/">
                       <LogOutIcon color="rgb(250, 250, 250)" />
@@ -59,9 +59,9 @@ export const Header = () => {
               <div>
                 <Link
                   href="/authentication"
-                  className="flex items-center justify-between gap-4 "
+                  className="flex items-center justify-between gap-4"
                 >
-                  <h2 className="text-[var(--main-text)] font-semibold">
+                  <h2 className="font-semibold text-[var(--main-text)]">
                     Entrar
                   </h2>
                 </Link>
