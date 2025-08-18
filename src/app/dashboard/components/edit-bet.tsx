@@ -66,6 +66,8 @@ interface EditBetProps {
 }
 
 export function EditBet({ bet, onSave, onClose }: EditBetProps) {
+  console.log(bet);
+
   const [open, setOpen] = useState(false);
   const [date, setDate] = useState<Date | undefined>(undefined);
 
@@ -77,8 +79,8 @@ export function EditBet({ bet, onSave, onClose }: EditBetProps) {
           market: bet.market,
           category: bet.category,
           result: bet.result,
-          betValue: bet.betValue,
-          odd: bet.odd,
+          betValue: parseFloat(String(bet.betValue)),
+          odd: parseFloat(String(bet.odd)),
           createdAt: new Date(bet.createdAt),
         }
       : undefined,
@@ -91,14 +93,13 @@ export function EditBet({ bet, onSave, onClose }: EditBetProps) {
         market: bet.market,
         category: bet.category,
         result: bet.result,
-        betValue: bet.betValue,
-        odd: bet.odd,
+        betValue: parseFloat(String(bet.betValue)),
+        odd: parseFloat(String(bet.odd)),
         createdAt: new Date(bet.createdAt),
       });
       setDate(new Date(bet.createdAt));
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [bet]);
+  }, [bet, form]);
 
   const onSubmit = async (values: EditBetFormValues) => {
     let profit = 0;
@@ -154,7 +155,7 @@ export function EditBet({ bet, onSave, onClose }: EditBetProps) {
 
   return (
     <>
-      <Card className="border-none bg-transparent">
+      <Card className="border-none">
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
@@ -251,7 +252,7 @@ export function EditBet({ bet, onSave, onClose }: EditBetProps) {
                           <SelectItem
                             key={result}
                             value={result}
-                            className="bg-[var(--light-white)] text-[var(--light-white)] hover:bg-white/90"
+                            className="bg-[var(--light-white)] hover:bg-white/90"
                           >
                             {result}
                           </SelectItem>
@@ -299,49 +300,51 @@ export function EditBet({ bet, onSave, onClose }: EditBetProps) {
               )}
             />
 
-            <FormField
-              control={form.control}
-              name="betValue"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-[var(--light-white)]">
-                    Valor da aposta
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      type="number"
-                      step="0.01"
-                      value={field.value ?? "0"}
-                      onChange={(e) => field.onChange(e.target.valueAsNumber)}
-                      className="rounded-[.8rem] border border-white/10 px-3 py-5 text-[.9rem] text-[var(--light-white)] placeholder:text-white/30 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none"
-                    />
-                  </FormControl>
-                  <FormMessage className="pl-2 text-[.85rem] text-[red]" />
-                </FormItem>
-              )}
-            />
+            <div className="flex items-start justify-between gap-5">
+              <FormField
+                control={form.control}
+                name="betValue"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-[var(--light-white)]">
+                      Valor da aposta
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        type="number"
+                        step="0.01"
+                        value={field.value ?? ""}
+                        onChange={(e) => field.onChange(e.target.valueAsNumber)}
+                        className="rounded-[.8rem] border border-white/10 px-3 py-5 text-[.9rem] text-[var(--light-white)] placeholder:text-white/30 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none"
+                      />
+                    </FormControl>
+                    <FormMessage className="pl-2 text-[.85rem] text-[red]" />
+                  </FormItem>
+                )}
+              />
 
-            <FormField
-              control={form.control}
-              name="odd"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-[var(--light-white)]">
-                    Odd
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      type="number"
-                      step="0.01"
-                      value={field.value ?? ""}
-                      onChange={(e) => field.onChange(e.target.valueAsNumber)}
-                      className="rounded-[.8rem] border border-white/10 px-3 py-5 text-[.9rem] text-[var(--light-white)] placeholder:text-white/30 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none"
-                    />
-                  </FormControl>
-                  <FormMessage className="pl-2 text-[.85rem] text-[red]" />
-                </FormItem>
-              )}
-            />
+              <FormField
+                control={form.control}
+                name="odd"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-[var(--light-white)]">
+                      Odd
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        type="number"
+                        step="0.01"
+                        value={field.value ?? ""}
+                        onChange={(e) => field.onChange(e.target.valueAsNumber)}
+                        className="rounded-[.8rem] border border-white/10 px-3 py-5 text-[.9rem] text-[var(--light-white)] placeholder:text-white/30 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none"
+                      />
+                    </FormControl>
+                    <FormMessage className="pl-2 text-[.85rem] text-[red]" />
+                  </FormItem>
+                )}
+              />
+            </div>
 
             <div className="flex gap-5 lg:gap-[1vw]">
               <Button

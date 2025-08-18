@@ -429,6 +429,7 @@ export function BetsStats({
                             <TableCell className="text-center">
                               {String(bet.odd).replace(".", ",")}
                             </TableCell>
+
                             {bet.result === "Pendente" && (
                               <TableCell className="text-center">
                                 {bet.result}
@@ -539,7 +540,7 @@ export function BetsStats({
                               <Edit size={25} />
                             </Button>
                           </DialogTrigger>
-                          <DialogContent>
+                          <DialogContent className="rounded-[.8vw] bg-[var(--gray)]">
                             <DialogHeader>
                               <DialogTitle className="text-[var(--light-white)]">
                                 Editar Aposta

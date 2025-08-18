@@ -182,12 +182,12 @@ export function AddBetForm({
                             <SelectValue placeholder="Selecione uma categoria" />
                           </SelectTrigger>
                         </FormControl>
-                        <SelectContent className="rounded-[.8rem] bg-[var(--main-text)] text-[var(--background)]">
+                        <SelectContent className="rounded-[.8rem] bg-[var(--light-white)] text-[var(--gray)]">
                           {BET_CATEGORIES.map((category) => (
                             <SelectItem
                               key={category}
                               value={category}
-                              className="bg-[var(--main-text)] hover:bg-white/90"
+                              className="bg-[var(--light-white)] hover:bg-white/90"
                             >
                               {category}
                             </SelectItem>
@@ -213,12 +213,12 @@ export function AddBetForm({
                             <SelectValue placeholder="Selecione uma categoria" />
                           </SelectTrigger>
                         </FormControl>
-                        <SelectContent className="rounded-[.8rem] bg-[var(--main-text)] text-[var(--background)]">
+                        <SelectContent className="rounded-[.8rem] bg-[var(--light-white)] text-[var(--gray)]">
                           {BET_RESULTS.map((category) => (
                             <SelectItem
                               key={category}
                               value={category}
-                              className="bg-[var(--main-text)] hover:bg-white/90"
+                              className="bg-[var(--light-white)] hover:bg-white/90"
                             >
                               {category}
                             </SelectItem>
@@ -248,7 +248,7 @@ export function AddBetForm({
                         </Button>
                       </PopoverTrigger>
                       <PopoverContent
-                        className="m-2 w-auto overflow-hidden rounded-[.8rem] bg-[var(--main-text)] p-2 text-[var(--background)]"
+                        className="m-2 w-auto overflow-hidden rounded-[.8rem] bg-[var(--light-white)] p-2 text-[var(--gray)]"
                         align="center"
                       >
                         <Calendar
@@ -311,7 +311,7 @@ export function AddBetForm({
               <Button
                 disabled={loading}
                 type="submit"
-                className="w-full cursor-pointer rounded-[.8rem] bg-[var(--main-text)] px-6 py-2.5 font-bold text-[var(--background)] transition-all duration-[.3s] ease-in-out hover:scale-105 hover:bg-[var(--main-text)] hover:text-[var(--background)]"
+                className="w-full cursor-pointer rounded-[.8rem] bg-[var(--light-white)] px-6 py-2.5 font-bold text-[var(--gray)] transition-all duration-[.3s] ease-in-out hover:scale-105 hover:bg-[var(--light-white)] hover:text-[var(--gray)]"
               >
                 {loading ? (
                   <div className="flex items-center gap-2">
