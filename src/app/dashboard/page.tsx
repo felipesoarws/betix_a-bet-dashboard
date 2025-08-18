@@ -35,18 +35,18 @@ const Dashboard = () => {
   }, []);
 
   return (
-    <div className="flex min-h-screen flex-col bg-[var(--background)] text-[var(--main-text)]">
+    <div className="flex min-h-screen flex-col bg-[var(--gray)] text-[var(--light-white)]">
       <Header />
       <div className="w-full flex-grow">
         <main className="mx-auto flex w-full max-w-7xl flex-grow flex-col p-4 md:p-6 lg:max-w-[80vw]">
-          <div className="w-full rounded-[.8rem] border border-white/10 bg-[var(--background-darker)] px-4 py-6 lg:p-6">
+          <div className="w-full rounded-[.8rem] border border-white/10 bg-[var(--gray-darker)] px-4 py-6 lg:p-6">
             <div className="flex flex-col items-center gap-4 lg:flex-row lg:justify-between">
               <h1 className="text-center text-3xl font-extrabold tracking-tight md:text-4xl lg:text-5xl">
                 Seu dashboard
               </h1>
               <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                 <DialogTrigger asChild>
-                  <Button className="w-full max-w-xs cursor-pointer rounded-[.8rem] bg-[var(--main-text)] text-[var(--background)] hover:bg-white/90 lg:w-auto lg:px-6">
+                  <Button className="w-full max-w-xs cursor-pointer rounded-[.8rem] bg-[var(--light-white)] text-[var(--gray)] hover:bg-white/90 lg:w-auto lg:px-6">
                     <PlusCircle className="mr-2 h-4 w-4" />
                     Nova Aposta
                   </Button>

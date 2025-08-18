@@ -165,12 +165,12 @@ export function EditBet({ bet, onSave, onClose }: EditBetProps) {
               name="event"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-[var(--main-text)]">
+                  <FormLabel className="text-[var(--light-white)]">
                     Evento
                   </FormLabel>
                   <FormControl>
                     <Input
-                      className="rounded-[.8rem] border border-white/10 px-3 py-5 text-[.9rem] text-[var(--main-text)] placeholder:text-white/30"
+                      className="rounded-[.8rem] border border-white/10 px-3 py-5 text-[.9rem] text-[var(--light-white)] placeholder:text-white/30"
                       placeholder="São Paulo x Corinthians"
                       {...field}
                     />
@@ -185,12 +185,12 @@ export function EditBet({ bet, onSave, onClose }: EditBetProps) {
               name="market"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-[var(--main-text)]">
+                  <FormLabel className="text-[var(--light-white)]">
                     Mercado
                   </FormLabel>
                   <FormControl>
                     <Input
-                      className="rounded-[.8rem] border border-white/10 px-3 py-5 text-[.9rem] text-[var(--main-text)] placeholder:text-white/30"
+                      className="rounded-[.8rem] border border-white/10 px-3 py-5 text-[.9rem] text-[var(--light-white)] placeholder:text-white/30"
                       placeholder="+1.5 Gols"
                       {...field}
                     />
@@ -206,21 +206,21 @@ export function EditBet({ bet, onSave, onClose }: EditBetProps) {
                 name="category"
                 render={({ field }) => (
                   <FormItem className="w-full">
-                    <FormLabel className="text-[var(--main-text)]">
+                    <FormLabel className="text-[var(--light-white)]">
                       Categoria
                     </FormLabel>
                     <Select value={field.value} onValueChange={field.onChange}>
                       <FormControl className="w-full">
-                        <SelectTrigger className="rounded-[.8rem] border border-white/10 px-3 py-5 text-[.9rem] text-[var(--main-text)] placeholder:text-white/30">
+                        <SelectTrigger className="rounded-[.8rem] border border-white/10 px-3 py-5 text-[.9rem] text-[var(--light-white)] placeholder:text-white/30">
                           <SelectValue placeholder="Selecione uma categoria" />
                         </SelectTrigger>
                       </FormControl>
-                      <SelectContent className="rounded-[.8rem] bg-[var(--main-text)] text-[var(--background)]">
+                      <SelectContent className="rounded-[.8rem] bg-[var(--light-white)] text-[var(--gray)]">
                         {BET_CATEGORIES.map((category) => (
                           <SelectItem
                             key={category}
                             value={category}
-                            className="bg-[var(--main-text)] hover:bg-white/90"
+                            className="bg-[var(--light-white)] hover:bg-white/90"
                           >
                             {category}
                           </SelectItem>
@@ -237,21 +237,21 @@ export function EditBet({ bet, onSave, onClose }: EditBetProps) {
                 name="result"
                 render={({ field }) => (
                   <FormItem className="w-full">
-                    <FormLabel className="text-[var(--main-text)]">
+                    <FormLabel className="text-[var(--light-white)]">
                       Resultado
                     </FormLabel>
                     <Select value={field.value} onValueChange={field.onChange}>
                       <FormControl className="w-full">
-                        <SelectTrigger className="rounded-[.8rem] border border-white/10 px-3 py-5 text-[.9rem] text-[var(--main-text)] placeholder:text-white/30">
+                        <SelectTrigger className="rounded-[.8rem] border border-white/10 px-3 py-5 text-[.9rem] text-[var(--light-white)] placeholder:text-white/30">
                           <SelectValue placeholder=" Selecione um resultado" />
                         </SelectTrigger>
                       </FormControl>
-                      <SelectContent className="rounded-[.8rem] bg-[var(--main-text)] text-[var(--background)]">
+                      <SelectContent className="rounded-[.8rem] bg-[var(--light-white)] text-[var(--gray)]">
                         {BET_RESULTS.map((result) => (
                           <SelectItem
                             key={result}
                             value={result}
-                            className="bg-[var(--main-text)] text-[var(--main-text)] hover:bg-white/90"
+                            className="bg-[var(--light-white)] text-[var(--light-white)] hover:bg-white/90"
                           >
                             {result}
                           </SelectItem>
@@ -269,19 +269,19 @@ export function EditBet({ bet, onSave, onClose }: EditBetProps) {
               name="createdAt"
               render={() => (
                 <FormItem className="w-full">
-                  <FormLabel className="text-[var(--main-text)]">
+                  <FormLabel className="text-[var(--light-white)]">
                     Data da aposta
                   </FormLabel>
                   <Popover open={open} onOpenChange={setOpen}>
                     <PopoverTrigger asChild>
-                      <Button className="w-full rounded-[.8rem] border border-white/10 bg-transparent px-3 py-5 text-left text-[.9rem] text-[var(--main-text)]">
+                      <Button className="w-full rounded-[.8rem] border border-white/10 bg-transparent px-3 py-5 text-left text-[.9rem] text-[var(--light-white)]">
                         {date ? date.toLocaleDateString() : "Selecionar data"}{" "}
                         <ChevronDownIcon />
                       </Button>
                     </PopoverTrigger>
                     <PopoverContent
                       align="center"
-                      className="m-2 w-auto overflow-hidden rounded-[.8rem] bg-[var(--main-text)] p-2 text-[var(--background)]"
+                      className="m-2 w-auto overflow-hidden rounded-[.8rem] bg-[var(--light-white)] p-2 text-[var(--gray)]"
                     >
                       <Calendar
                         mode="single"
@@ -304,7 +304,7 @@ export function EditBet({ bet, onSave, onClose }: EditBetProps) {
               name="betValue"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-[var(--main-text)]">
+                  <FormLabel className="text-[var(--light-white)]">
                     Valor da aposta
                   </FormLabel>
                   <FormControl>
@@ -313,7 +313,7 @@ export function EditBet({ bet, onSave, onClose }: EditBetProps) {
                       step="0.01"
                       value={field.value ?? "0"}
                       onChange={(e) => field.onChange(e.target.valueAsNumber)}
-                      className="rounded-[.8rem] border border-white/10 px-3 py-5 text-[.9rem] text-[var(--main-text)] placeholder:text-white/30 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none"
+                      className="rounded-[.8rem] border border-white/10 px-3 py-5 text-[.9rem] text-[var(--light-white)] placeholder:text-white/30 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none"
                     />
                   </FormControl>
                   <FormMessage className="pl-2 text-[.85rem] text-[red]" />
@@ -326,14 +326,16 @@ export function EditBet({ bet, onSave, onClose }: EditBetProps) {
               name="odd"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-[var(--main-text)]">Odd</FormLabel>
+                  <FormLabel className="text-[var(--light-white)]">
+                    Odd
+                  </FormLabel>
                   <FormControl>
                     <Input
                       type="number"
                       step="0.01"
                       value={field.value ?? ""}
                       onChange={(e) => field.onChange(e.target.valueAsNumber)}
-                      className="rounded-[.8rem] border border-white/10 px-3 py-5 text-[.9rem] text-[var(--main-text)] placeholder:text-white/30 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none"
+                      className="rounded-[.8rem] border border-white/10 px-3 py-5 text-[.9rem] text-[var(--light-white)] placeholder:text-white/30 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none"
                     />
                   </FormControl>
                   <FormMessage className="pl-2 text-[.85rem] text-[red]" />
@@ -344,7 +346,7 @@ export function EditBet({ bet, onSave, onClose }: EditBetProps) {
             <div className="flex gap-5 lg:gap-[1vw]">
               <Button
                 type="submit"
-                className="ursor-pointer mt-4 flex-2 rounded-[.8rem] bg-[var(--main-text)] px-6 py-2.5 font-bold text-[var(--background)] transition-all duration-[.3s] ease-in-out hover:scale-105 hover:bg-[var(--main-text)] hover:text-[var(--background)]"
+                className="ursor-pointer mt-4 flex-2 rounded-[.8rem] bg-[var(--light-white)] px-6 py-2.5 font-bold text-[var(--gray)] transition-all duration-[.3s] ease-in-out hover:scale-105 hover:bg-[var(--light-white)] hover:text-[var(--gray)]"
               >
                 Salvar
               </Button>
@@ -352,7 +354,7 @@ export function EditBet({ bet, onSave, onClose }: EditBetProps) {
                 <DialogTrigger asChild>
                   <Button
                     type="button"
-                    className="mt-4 flex-1 cursor-pointer rounded-[.8rem] bg-[red] px-6 py-2.5 font-bold text-[var(--main-text)] transition-all duration-[.3s] ease-in-out hover:scale-105 hover:bg-[red]"
+                    className="mt-4 flex-1 cursor-pointer rounded-[.8rem] bg-[red] px-6 py-2.5 font-bold text-[var(--light-white)] transition-all duration-[.3s] ease-in-out hover:scale-105 hover:bg-[red]"
                   >
                     Deletar
                   </Button>
@@ -368,7 +370,7 @@ export function EditBet({ bet, onSave, onClose }: EditBetProps) {
                   </DialogDescription>
                   <Button
                     type="button"
-                    className="mt-4 flex-1 cursor-pointer rounded-[.8rem] bg-[red] px-6 py-2.5 font-bold text-[var(--main-text)] transition-all duration-[.3s] ease-in-out hover:scale-105 hover:bg-[red]"
+                    className="mt-4 flex-1 cursor-pointer rounded-[.8rem] bg-[red] px-6 py-2.5 font-bold text-[var(--light-white)] transition-all duration-[.3s] ease-in-out hover:scale-105 hover:bg-[red]"
                     onClick={() => onDelete(bet)}
                   >
                     Sim

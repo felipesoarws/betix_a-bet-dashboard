@@ -21,7 +21,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Edit, Loader2, X } from "lucide-react";
+import { Edit, Loader2 } from "lucide-react";
 
 import { BET_CATEGORIES, BET_RESULTS, MONTH_NAMES } from "@/lib/constants";
 import { DailyProfitChart } from "./daily-profit-chart";
@@ -34,6 +34,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { authClient } from "@/lib/auth-client";
+import { Input } from "@/components/ui/input";
 
 type BetResult = "Pendente" | "Ganha" | "Perdida" | "Anulada";
 type CategoryResult = "Futebol" | "Basquete" | "eSports" | "Outro";
@@ -64,9 +65,16 @@ export function BetsStats({
 
   const [isShowingAllBets, setIsShowingAllBets] = useState<boolean>(false);
 
-  // filtros por clique no grafico
-  const [monthFilter, setMonthFilter] = useState<string>("all");
-  const [yearFilter, setYearFilter] = useState<string>("all");
+  // filtros no geral e no grafico
+  const [monthTotalFilter, setMonthTotalFilter] = useState<string>("all");
+  const [yearTotalFilter, setYearTotalFilter] = useState<string>("all");
+
+  // filtros na tabela
+  const [resultFilter, setResultFilter] = useState<BetResult | "all">("all");
+  const [categoryFilter, setCategoryFilter] = useState<CategoryResult | "all">(
+    "all",
+  );
+  const [eventFilter, setEventFilter] = useState<string>("all");
 
   // criação de listas de anos e meses registrados nas bets
   const yearsAvailable = Array.from(
@@ -77,9 +85,9 @@ export function BetsStats({
     new Set(
       bets
         .filter((bet) =>
-          yearFilter === "all"
+          yearTotalFilter === "all"
             ? true
-            : new Date(bet.createdAt).getFullYear() === Number(yearFilter),
+            : new Date(bet.createdAt).getFullYear() === Number(yearTotalFilter),
         )
         .map((bet) => new Date(bet.createdAt).getMonth()),
     ),
@@ -88,23 +96,22 @@ export function BetsStats({
   const filteredBetsByMonthYear = bets.filter((bet) => {
     const date = new Date(bet.createdAt);
     const matchYear =
-      yearFilter === "all" || date.getFullYear() === Number(yearFilter);
+      yearTotalFilter === "all" ||
+      date.getFullYear() === Number(yearTotalFilter);
     const matchMonth =
-      monthFilter === "all" || date.getMonth() === Number(monthFilter);
+      monthTotalFilter === "all" ||
+      date.getMonth() === Number(monthTotalFilter);
     return matchYear && matchMonth;
   });
 
-  // filtros por clique na tabela
-  const [resultFilter, setResultFilter] = useState<BetResult | "all">("all");
-  const [categoryFilter, setCategoryFilter] = useState<CategoryResult | "all">(
-    "all",
-  );
-
   const filteredBets = bets.filter((bet) => {
+    const matchEvent =
+      eventFilter === "all" ||
+      bet.event.toLocaleLowerCase().includes(eventFilter);
     const matchResult = resultFilter === "all" || bet.result === resultFilter;
     const matchCategory =
       categoryFilter === "all" || bet.category === categoryFilter;
-    return matchResult && matchCategory;
+    return matchResult && matchCategory && matchEvent;
   });
 
   // total de bets
@@ -160,26 +167,15 @@ export function BetsStats({
           <div className="flex flex-col">
             <div className="mt-4 flex flex-wrap items-center justify-start gap-2">
               <div className="flex gap-4 lg:gap-[1vw]">
-                {(monthFilter !== "all" || yearFilter !== "all") && (
-                  <Button
-                    className="cursor-pointer rounded-[.8rem] border border-white/10 px-3 py-5 hover:bg-[var(--background)]"
-                    onClick={() => {
-                      setMonthFilter("all");
-                      setYearFilter("all");
-                    }}
-                  >
-                    <X />
-                  </Button>
-                )}
                 <Select
                   onValueChange={(value: string) =>
-                    setYearFilter(value as string | "all")
+                    setYearTotalFilter(value as string | "all")
                   }
                 >
                   <SelectTrigger className="cursor-pointer rounded-[.8rem] border border-white/10 px-3 py-5 text-[.9rem] placeholder:text-white/30">
                     <SelectValue placeholder="Ano" />
                   </SelectTrigger>
-                  <SelectContent className="rounded-[.8rem] bg-[var(--main-text)] text-[var(--background)]">
+                  <SelectContent className="rounded-[.8rem] bg-[var(--light-white)] text-[var(--gray)]">
                     <SelectGroup>
                       <SelectLabel className="text-[black]/80">Ano</SelectLabel>
 
@@ -192,15 +188,16 @@ export function BetsStats({
                     </SelectGroup>
                   </SelectContent>
                 </Select>
+
                 <Select
                   onValueChange={(value: string) =>
-                    setMonthFilter(value as string | "all")
+                    setMonthTotalFilter(value as string | "all")
                   }
                 >
                   <SelectTrigger className="cursor-pointer rounded-[.8rem] border border-white/10 px-3 py-5 text-[.9rem] placeholder:text-white/30">
                     <SelectValue placeholder="Mês" />
                   </SelectTrigger>
-                  <SelectContent className="rounded-[.8rem] bg-[var(--main-text)] text-[var(--background)]">
+                  <SelectContent className="rounded-[.8rem] bg-[var(--light-white)] text-[var(--gray)]">
                     <SelectGroup>
                       <SelectLabel className="text-[black]/80">Mês</SelectLabel>
 
@@ -217,7 +214,7 @@ export function BetsStats({
             </div>
 
             <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-              <div className="flex w-full flex-col items-start justify-center rounded-[.8rem] border border-white/10 bg-[var(--background-darker)] p-4">
+              <div className="flex w-full flex-col items-start justify-center rounded-[.8rem] border border-white/10 bg-[var(--gray-darker)] p-4">
                 <h2 className="font-regular mb-2 text-base tracking-tight lg:text-[1.1vw]">
                   Total de apostas
                 </h2>
@@ -229,7 +226,7 @@ export function BetsStats({
                   )}
                 </h2>
               </div>
-              <div className="flex w-full flex-col items-start justify-center rounded-[.8rem] border border-white/10 bg-[var(--background-darker)] p-4">
+              <div className="flex w-full flex-col items-start justify-center rounded-[.8rem] border border-white/10 bg-[var(--gray-darker)] p-4">
                 <h2 className="font-regular mb-2 text-base tracking-tight lg:text-[1.1vw]">
                   Total apostado
                 </h2>
@@ -241,7 +238,7 @@ export function BetsStats({
                   )}
                 </h2>
               </div>
-              <div className="flex w-full flex-col items-start justify-center rounded-[.8rem] border border-white/10 bg-[var(--background-darker)] p-4">
+              <div className="flex w-full flex-col items-start justify-center rounded-[.8rem] border border-white/10 bg-[var(--gray-darker)] p-4">
                 <h2 className="font-regular mb-2 text-base tracking-tight lg:text-[1.1vw]">
                   Lucro / prejuízo total
                 </h2>
@@ -261,7 +258,7 @@ export function BetsStats({
                   </>
                 )}
               </div>
-              <div className="flex w-full flex-col items-start justify-center rounded-[.8rem] border border-white/10 bg-[var(--background-darker)] p-4">
+              <div className="flex w-full flex-col items-start justify-center rounded-[.8rem] border border-white/10 bg-[var(--gray-darker)] p-4">
                 <h2 className="font-regular mb-2 text-base tracking-tight lg:text-[1.1vw]">
                   % de vitórias
                 </h2>
@@ -303,17 +300,6 @@ export function BetsStats({
             </h1>
             <div className="mt-4 flex flex-wrap items-center justify-start gap-2">
               <div className="flex gap-4 lg:gap-[1vw]">
-                {(resultFilter !== "all" || categoryFilter !== "all") && (
-                  <Button
-                    className="cursor-pointer rounded-[.8rem] border border-white/10 px-3 py-5 hover:bg-[var(--background)]"
-                    onClick={() => {
-                      setCategoryFilter("all");
-                      setResultFilter("all");
-                    }}
-                  >
-                    <X />
-                  </Button>
-                )}
                 <Select
                   onValueChange={(value: string) =>
                     setResultFilter(value as BetResult | "all")
@@ -322,7 +308,7 @@ export function BetsStats({
                   <SelectTrigger className="rounded-[.8rem] border border-white/10 px-3 py-5 text-[.9rem] placeholder:text-white/30">
                     <SelectValue placeholder="Resultado" />
                   </SelectTrigger>
-                  <SelectContent className="rounded-[.8rem] bg-[var(--main-text)] text-[var(--background)]">
+                  <SelectContent className="rounded-[.8rem] bg-[var(--light-white)] text-[var(--gray)]">
                     <SelectGroup>
                       <SelectLabel className="text-[black]/80">
                         Resultado
@@ -348,7 +334,7 @@ export function BetsStats({
                   <SelectTrigger className="rounded-[.8rem] border border-white/10 px-3 py-5 text-[.9rem] placeholder:text-white/30">
                     <SelectValue placeholder="Categoria" />
                   </SelectTrigger>
-                  <SelectContent className="rounded-[.8rem] bg-[var(--main-text)] text-[var(--background)]">
+                  <SelectContent className="rounded-[.8rem] bg-[var(--light-white)] text-[var(--gray)]">
                     <SelectGroup>
                       <SelectLabel className="text-[black]/80">
                         Categoria
@@ -364,6 +350,14 @@ export function BetsStats({
                     </SelectGroup>
                   </SelectContent>
                 </Select>
+
+                <Input
+                  type="text"
+                  className="rounded-[.8rem] border border-white/10 px-3 py-5 text-[.9rem] placeholder:text-white/30"
+                  placeholder="Filtrar por evento"
+                  onChange={(e) => setEventFilter(e.target.value)}
+                  value={eventFilter === "all" ? "" : eventFilter}
+                />
               </div>
             </div>
             <div className="mt-4 hidden rounded-[.8rem] border border-white/10 p-2 lg:block lg:p-[1vw]">
@@ -467,7 +461,7 @@ export function BetsStats({
                               </TableCell>
                             )}
                             {bet.profit == 0 && (
-                              <TableCell className="text-center text-[var(--main-text)]">
+                              <TableCell className="text-center text-[var(--light-white)]">
                                 R$ {String(bet.profit).replace(".", ",")}
                               </TableCell>
                             )}
@@ -547,7 +541,7 @@ export function BetsStats({
                           </DialogTrigger>
                           <DialogContent>
                             <DialogHeader>
-                              <DialogTitle className="text-[var(--main-text)]">
+                              <DialogTitle className="text-[var(--light-white)]">
                                 Editar Aposta
                               </DialogTitle>
                             </DialogHeader>
@@ -586,7 +580,7 @@ export function BetsStats({
                                 ? "text-[#00ff00]"
                                 : bet.profit < 0
                                   ? "text-[#ff0000]"
-                                  : "text-[var(--main-text)]"
+                                  : "text-[var(--light-white)]"
                             }`}
                           >
                             R$ {String(bet.profit).replace(".", ",")}

@@ -18,7 +18,7 @@ const Home = () => {
     router.push("/dashboard");
   };
   return (
-    <div className="relative isolate min-h-screen bg-black text-[var(--main-text)]">
+    <div className="relative isolate min-h-screen bg-black text-[var(--light-white)]">
       <Header />
       <div className="absolute top-0 h-[70vh] w-full lg:h-[100vh]">
         <FlowingBackground />
@@ -41,7 +41,7 @@ const Home = () => {
               <Button
                 onClick={handleEnter}
                 disabled={loading}
-                className="cursor-pointer rounded-full bg-[var(--main-text)] px-6 py-2.5 font-bold text-[var(--background)] transition-all duration-[.3s] ease-in-out hover:scale-105 hover:bg-[var(--main-text)] hover:text-[var(--background)]"
+                className="cursor-pointer rounded-full bg-[var(--light-white)] px-6 py-2.5 font-bold text-[var(--gray)] transition-all duration-[.3s] ease-in-out hover:scale-105 hover:bg-[var(--light-white)] hover:text-[var(--gray)]"
               >
                 {loading ? (
                   <div className="flex items-center gap-2">
@@ -120,34 +120,11 @@ const Home = () => {
                 <p className="font-bold">Desempenho: Premier League</p>
                 <p className="text-sm text-white/60">Últimos 30 dias</p>
               </div>
-              <div className="flex h-48 w-full items-end justify-around gap-2 rounded-lg bg-white/5 px-4">
-                <div
-                  className="w-full rounded-t-md bg-[rgb(var(--accent-purple))]"
-                  style={{ height: "40%" }}
-                ></div>
-                <div
-                  className="w-full rounded-t-md bg-[rgb(var(--accent-purple))]"
-                  style={{ height: "65%" }}
-                ></div>
-                <div
-                  className="w-full rounded-t-md bg-red-500/80"
-                  style={{ height: "25%" }}
-                ></div>
-                <div
-                  className="w-full rounded-t-md bg-[rgb(var(--accent-purple))]"
-                  style={{ height: "80%" }}
-                ></div>
-                <div
-                  className="w-full rounded-t-md bg-red-500/80"
-                  style={{ height: "35%" }}
-                ></div>
-                <div
-                  className="w-full rounded-t-md bg-[rgb(var(--accent-purple))]"
-                  style={{ height: "55%" }}
-                ></div>
-              </div>
+              <div className="flex h-48 w-full items-end justify-around gap-2 rounded-lg bg-white/5 px-4"></div>
             </div>
           </section>
+
+          <section></section>
         </main>
 
         <footer className="w-full border-t border-white/10 bg-black/20 py-8 text-center backdrop-blur-sm">

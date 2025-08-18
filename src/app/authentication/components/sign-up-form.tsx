@@ -92,7 +92,7 @@ const SignUpForm = () => {
 
   return (
     <>
-      <Card className="rounded-[.8rem] border border-white/10 bg-[var(--background)]">
+      <Card className="rounded-[.8rem] border border-white/10 bg-[var(--gray)]">
         <CardHeader>
           <CardDescription>Crie uma conta para continuar.</CardDescription>
         </CardHeader>
@@ -173,7 +173,7 @@ const SignUpForm = () => {
             <CardFooter>
               <Button
                 type="submit"
-                className="cursor-pointer rounded-[.8rem] bg-[var(--main-text)] px-6 py-2.5 font-bold text-[var(--background)] transition-all duration-[.3s] ease-in-out hover:scale-105 hover:bg-[var(--main-text)] hover:text-[var(--background)]"
+                className="cursor-pointer rounded-[.8rem] bg-[var(--light-white)] px-6 py-2.5 font-bold text-[var(--gray)] transition-all duration-[.3s] ease-in-out hover:scale-105 hover:bg-[var(--light-white)] hover:text-[var(--gray)]"
               >
                 Entrar
               </Button>

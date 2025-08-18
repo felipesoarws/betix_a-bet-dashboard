@@ -1,8 +1,21 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+:root {
+  --accent-purple: #885aed;
+  --dark-gray: rgb(0, 0, 0);
+  --gray: rgb(10, 10, 10);
+  --light-white: rgb(250, 250, 250);
+  --muted-foreground: rgb(250, 250, 250);
+}
+
 * {
   scroll-behavior: smooth;
+}
+
+*::selection {
+  color: var(--dark-gray);
+  background-color: var(--light-white);
 }
 
 @theme inline {
@@ -43,12 +56,4 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
-}
-
-:root {
-  --accent-purple: #885aed;
-  --background-darker: rgb(0, 0, 0);
-  --background: rgb(10, 10, 10);
-  --main-text: rgb(250, 250, 250);
-  --muted-foreground: rgb(250, 250, 250);
 }

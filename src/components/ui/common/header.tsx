@@ -14,8 +14,8 @@ export const Header = () => {
       <header className="sticky top-0 right-0 z-50 w-full">
         <div className="flex w-full items-center justify-between border-b border-b-white/10 bg-black/20 px-3 py-5 backdrop-blur-md lg:px-[2vw]">
           <Link href="/" className="flex items-center gap-2">
-            <CircleDollarSign className="h-5 w-5 text-[var(--main-text)]" />
-            <span className="text-base font-bold text-[var(--main-text)]">
+            <CircleDollarSign className="h-5 w-5 text-[var(--light-white)]" />
+            <span className="text-base font-bold text-[var(--light-white)]">
               Betix
             </span>
           </Link>
@@ -38,7 +38,7 @@ export const Header = () => {
                       <h3 className="text-[1rem] font-semibold">
                         {session?.user?.name}
                       </h3>
-                      <span className="block text-[.8rem] text-[var(--main-text)]">
+                      <span className="block text-[.8rem] text-[var(--light-white)]">
                         {session?.user?.email}
                       </span>
                     </div>
@@ -61,7 +61,7 @@ export const Header = () => {
                   href="/authentication"
                   className="flex items-center justify-between gap-4"
                 >
-                  <h2 className="font-semibold text-[var(--main-text)]">
+                  <h2 className="font-semibold text-[var(--light-white)]">
                     Entrar
                   </h2>
                 </Link>
