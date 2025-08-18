@@ -6,13 +6,22 @@ import { eq } from "drizzle-orm";
 export async function PUT(req: Request) {
   try {
     const data = await req.json();
-    const { id, event, category, betValue, odd, result, createdAt, profit } =
-      data;
+    const {
+      id,
+      event,
+      market,
+      category,
+      betValue,
+      odd,
+      result,
+      createdAt,
+      profit,
+    } = data;
 
     if (!id) {
       return NextResponse.json(
         { error: "a ID da aposta é obrigatória." },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -20,6 +29,7 @@ export async function PUT(req: Request) {
       .update(betsTable)
       .set({
         event,
+        market,
         category,
         betValue,
         odd,
@@ -34,7 +44,7 @@ export async function PUT(req: Request) {
     console.error(err);
     return NextResponse.json(
       { error: "Erro em atualizar aposta." },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

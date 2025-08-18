@@ -62,6 +62,8 @@ export function BetsStats({
 
   const [editingBet, setEditingBet] = useState<BetSchema | null>(null);
 
+  const [isShowingAllBets, setIsShowingAllBets] = useState<boolean>(false);
+
   // filtros por clique no grafico
   const [monthFilter, setMonthFilter] = useState<string>("all");
   const [yearFilter, setYearFilter] = useState<string>("all");
@@ -132,10 +134,14 @@ export function BetsStats({
       .toFixed(2),
   ).toLocaleString("pt-BR");
 
+  const filteredBetsByMonthYearButPendent = filteredBetsByMonthYear.filter(
+    (bet) => bet.result !== "Pendente",
+  );
+
   // porcentagem de vitória
   const percentVictory = (
     filteredBetsByMonthYear.length > 0
-      ? (wins.length / filteredBetsByMonthYear.length) * 100
+      ? (wins.length / filteredBetsByMonthYearButPendent.length) * 100
       : 0
   ).toFixed(0);
 
@@ -360,7 +366,6 @@ export function BetsStats({
                 </Select>
               </div>
             </div>
-
             <div className="mt-4 hidden rounded-[.8rem] border border-white/10 p-2 lg:block lg:p-[1vw]">
               {bets.length < 1 ? (
                 <div className="flex h-[15vh] items-center justify-center text-center">
@@ -377,6 +382,9 @@ export function BetsStats({
                     <TableRow className="border-b border-white/15">
                       <TableHead className="pb-2 text-[.95rem] font-bold lg:text-[.95vw]">
                         Evento
+                      </TableHead>
+                      <TableHead className="pb-2 text-left text-[.95rem] font-bold lg:text-[.95vw]">
+                        Mercado
                       </TableHead>
                       <TableHead className="pb-2 text-center text-[.95rem] font-bold lg:text-[.95vw]">
                         Categoria
@@ -403,203 +411,228 @@ export function BetsStats({
                   </TableHeader>
                   <TableBody>
                     <AnimatePresence>
-                      {filteredBets.slice(0, 10).map((bet) => (
-                        <motion.tr
-                          key={bet.id}
-                          initial={{ opacity: 0 }}
-                          animate={{ opacity: 1 }}
-                          exit={{ opacity: 0 }}
-                          transition={{ duration: 0.3 }}
-                          className="border-b border-white/15"
-                        >
-                          <TableCell>{bet.event}</TableCell>
-                          <TableCell className="text-center">
-                            {bet.category}
-                          </TableCell>
-                          <TableCell className="text-center">
-                            R$ {String(bet.betValue).replace(".", ",")}
-                          </TableCell>
-                          <TableCell className="text-center">
-                            {String(bet.odd).replace(".", ",")}
-                          </TableCell>
-                          {bet.result === "Pendente" && (
+                      {filteredBets
+                        .slice(0, isShowingAllBets ? bets.length : 5)
+                        .map((bet) => (
+                          <motion.tr
+                            key={bet.id}
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            transition={{ duration: 0.3 }}
+                            className="border-b border-white/15"
+                          >
+                            <TableCell>{bet.event}</TableCell>
+                            <TableCell className="text-left text-[.8rem] text-[white]/50">
+                              {bet.market}
+                            </TableCell>
                             <TableCell className="text-center">
-                              {bet.result}
+                              {bet.category}
                             </TableCell>
-                          )}
-                          {bet.result === "Ganha" && (
-                            <TableCell className="text-center text-[#00ff00]">
-                              {bet.result}
-                            </TableCell>
-                          )}
-                          {bet.result === "Perdida" && (
-                            <TableCell className="text-center text-[#ff0000]">
-                              {bet.result}
-                            </TableCell>
-                          )}
-                          {bet.result === "Anulada" && (
                             <TableCell className="text-center">
-                              {bet.result}
+                              R$ {String(bet.betValue).replace(".", ",")}
                             </TableCell>
-                          )}
-
-                          {bet.profit && String(bet.profit).includes("-") && (
-                            <TableCell className="text-center text-[#ff0000]">
-                              R$ {String(bet.profit).replace(".", ",")}
+                            <TableCell className="text-center">
+                              {String(bet.odd).replace(".", ",")}
                             </TableCell>
-                          )}
-                          {bet.profit > 0 && (
-                            <TableCell className="text-center text-[#00ff00]">
-                              R$ {String(bet.profit).replace(".", ",")}
-                            </TableCell>
-                          )}
-                          {bet.profit == 0 && (
-                            <TableCell className="text-center text-[var(--main-text)]">
-                              R$ {String(bet.profit).replace(".", ",")}
-                            </TableCell>
-                          )}
-
-                          <TableCell className="text-center">
-                            {new Date(bet.createdAt).toLocaleDateString(
-                              "pt-BR",
+                            {bet.result === "Pendente" && (
+                              <TableCell className="text-center">
+                                {bet.result}
+                              </TableCell>
                             )}
-                          </TableCell>
+                            {bet.result === "Ganha" && (
+                              <TableCell className="text-center text-[#00ff00]">
+                                {bet.result}
+                              </TableCell>
+                            )}
+                            {bet.result === "Perdida" && (
+                              <TableCell className="text-center text-[#ff0000]">
+                                {bet.result}
+                              </TableCell>
+                            )}
+                            {bet.result === "Anulada" && (
+                              <TableCell className="text-center">
+                                {bet.result}
+                              </TableCell>
+                            )}
 
-                          <TableCell className="flex items-center justify-end">
-                            <Dialog
-                              open={editingBet?.id === bet.id}
-                              onOpenChange={(isOpen) =>
-                                !isOpen && setEditingBet(null)
-                              }
-                            >
-                              <DialogTrigger asChild>
-                                <Button
-                                  onClick={() => setEditingBet(bet)}
-                                  className="..."
-                                >
-                                  <Edit size={25} />
-                                </Button>
-                              </DialogTrigger>
-                              <DialogContent>
-                                <DialogHeader>
-                                  <DialogTitle>Editar Aposta</DialogTitle>
-                                </DialogHeader>
-                                <div>
-                                  <EditBet
-                                    bet={editingBet}
-                                    onSave={fetchBets}
-                                    onClose={() => setEditingBet(null)}
-                                  />
-                                </div>
-                              </DialogContent>
-                            </Dialog>
-                          </TableCell>
-                        </motion.tr>
-                      ))}
+                            {bet.profit && String(bet.profit).includes("-") && (
+                              <TableCell className="text-center text-[#ff0000]">
+                                R$ {String(bet.profit).replace(".", ",")}
+                              </TableCell>
+                            )}
+                            {bet.profit > 0 && (
+                              <TableCell className="text-center text-[#00ff00]">
+                                R$ {String(bet.profit).replace(".", ",")}
+                              </TableCell>
+                            )}
+                            {bet.profit == 0 && (
+                              <TableCell className="text-center text-[var(--main-text)]">
+                                R$ {String(bet.profit).replace(".", ",")}
+                              </TableCell>
+                            )}
+
+                            <TableCell className="text-center">
+                              {new Date(bet.createdAt).toLocaleDateString(
+                                "pt-BR",
+                              )}
+                            </TableCell>
+
+                            <TableCell className="flex items-center justify-end">
+                              <Dialog
+                                open={editingBet?.id === bet.id}
+                                onOpenChange={(isOpen) =>
+                                  !isOpen && setEditingBet(null)
+                                }
+                              >
+                                <DialogTrigger asChild>
+                                  <Button
+                                    onClick={() => setEditingBet(bet)}
+                                    className="..."
+                                  >
+                                    <Edit size={25} />
+                                  </Button>
+                                </DialogTrigger>
+                                <DialogContent>
+                                  <DialogHeader>
+                                    <DialogTitle>Editar Aposta</DialogTitle>
+                                  </DialogHeader>
+                                  <div>
+                                    <EditBet
+                                      bet={editingBet}
+                                      onSave={fetchBets}
+                                      onClose={() => setEditingBet(null)}
+                                    />
+                                  </div>
+                                </DialogContent>
+                              </Dialog>
+                            </TableCell>
+                          </motion.tr>
+                        ))}
                     </AnimatePresence>
                   </TableBody>
                 </Table>
               )}
             </div>
-
             <div className="mt-4 space-y-4 lg:hidden">
               <AnimatePresence>
-                {filteredBets.slice(0, 10).map((bet) => (
-                  <motion.div
-                    key={bet.id}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -20 }}
-                    transition={{ duration: 0.3 }}
-                    className="rounded-[.8rem] border border-white/10 p-4"
-                  >
-                    <div className="mb-2 flex items-start justify-between">
-                      <span className="pr-2 text-base font-bold">
-                        {bet.event}
-                      </span>
-                      <Dialog
-                        open={editingBet?.id === bet.id}
-                        onOpenChange={(isOpen) =>
-                          !isOpen && setEditingBet(null)
-                        }
-                      >
-                        <DialogTrigger asChild>
-                          <Button
-                            onClick={() => setEditingBet(bet)}
-                            className="scale-100 cursor-pointer border-none transition-all duration-[.3s] ease-in-out hover:scale-115"
-                          >
-                            <Edit size={25} />
-                          </Button>
-                        </DialogTrigger>
-                        <DialogContent>
-                          <DialogHeader>
-                            <DialogTitle className="text-[var(--main-text)]">
-                              Editar Aposta
-                            </DialogTitle>
-                          </DialogHeader>
-                          <div>
-                            <EditBet
-                              bet={editingBet}
-                              onSave={fetchBets}
-                              onClose={() => setEditingBet(null)}
-                            />
-                          </div>
-                        </DialogContent>
-                      </Dialog>
-                    </div>
-                    <p className="mb-4 text-sm text-white/70">{bet.market}</p>
+                {filteredBets
+                  .slice(0, isShowingAllBets ? bets.length : 5)
+                  .map((bet) => (
+                    <motion.div
+                      key={bet.id}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -20 }}
+                      transition={{ duration: 0.3 }}
+                      className="rounded-[.8rem] border border-white/10 p-4"
+                    >
+                      <div className="mb-2 flex items-start justify-between">
+                        <span className="pr-2 text-base font-bold">
+                          {bet.event}
+                        </span>
+                        <Dialog
+                          open={editingBet?.id === bet.id}
+                          onOpenChange={(isOpen) =>
+                            !isOpen && setEditingBet(null)
+                          }
+                        >
+                          <DialogTrigger asChild>
+                            <Button
+                              onClick={() => setEditingBet(bet)}
+                              className="scale-100 cursor-pointer border-none transition-all duration-[.3s] ease-in-out hover:scale-115"
+                            >
+                              <Edit size={25} />
+                            </Button>
+                          </DialogTrigger>
+                          <DialogContent>
+                            <DialogHeader>
+                              <DialogTitle className="text-[var(--main-text)]">
+                                Editar Aposta
+                              </DialogTitle>
+                            </DialogHeader>
+                            <div>
+                              <EditBet
+                                bet={editingBet}
+                                onSave={fetchBets}
+                                onClose={() => setEditingBet(null)}
+                              />
+                            </div>
+                          </DialogContent>
+                        </Dialog>
+                      </div>
+                      <p className="mb-4 text-sm text-white/70">{bet.market}</p>
 
-                    <div className="grid grid-cols-2 gap-x-4 gap-y-2 border-t border-white/10 pt-4 text-sm">
-                      <div>
-                        <p className="text-white/60">Resultado</p>
-                        <p
-                          className={`font-semibold ${
-                            bet.result === "Ganha"
-                              ? "text-[#00ff00]"
-                              : bet.result === "Perdida"
-                                ? "text-[#ff0000]"
-                                : ""
-                          }`}
-                        >
-                          {bet.result}
-                        </p>
+                      <div className="grid grid-cols-2 gap-x-4 gap-y-2 border-t border-white/10 pt-4 text-sm">
+                        <div>
+                          <p className="text-white/60">Resultado</p>
+                          <p
+                            className={`font-semibold ${
+                              bet.result === "Ganha"
+                                ? "text-[#00ff00]"
+                                : bet.result === "Perdida"
+                                  ? "text-[#ff0000]"
+                                  : ""
+                            }`}
+                          >
+                            {bet.result}
+                          </p>
+                        </div>
+                        <div>
+                          <p className="text-white/60">Lucro</p>
+                          <p
+                            className={`font-semibold ${
+                              bet.profit > 0
+                                ? "text-[#00ff00]"
+                                : bet.profit < 0
+                                  ? "text-[#ff0000]"
+                                  : "text-[var(--main-text)]"
+                            }`}
+                          >
+                            R$ {String(bet.profit).replace(".", ",")}
+                          </p>
+                        </div>
+                        <div>
+                          <p className="text-white/60">Valor</p>
+                          <p>R$ {String(bet.betValue).replace(".", ",")}</p>
+                        </div>
+                        <div>
+                          <p className="text-white/60">Odd</p>
+                          <p>{String(bet.odd).replace(".", ",")}</p>
+                        </div>
+                        <div>
+                          <p className="text-white/60">Categoria</p>
+                          <p>{bet.category}</p>
+                        </div>
+                        <div>
+                          <p className="text-white/60">Data</p>
+                          <p>
+                            {new Date(bet.createdAt).toLocaleDateString(
+                              "pt-BR",
+                            )}
+                          </p>
+                        </div>
                       </div>
-                      <div>
-                        <p className="text-white/60">Lucro</p>
-                        <p
-                          className={`font-semibold ${
-                            bet.profit > 0
-                              ? "text-[#00ff00]"
-                              : bet.profit < 0
-                                ? "text-[#ff0000]"
-                                : "text-[var(--main-text)]"
-                          }`}
-                        >
-                          R$ {String(bet.profit).replace(".", ",")}
-                        </p>
-                      </div>
-                      <div>
-                        <p className="text-white/60">Valor</p>
-                        <p>R$ {String(bet.betValue).replace(".", ",")}</p>
-                      </div>
-                      <div>
-                        <p className="text-white/60">Odd</p>
-                        <p>{String(bet.odd).replace(".", ",")}</p>
-                      </div>
-                      <div>
-                        <p className="text-white/60">Categoria</p>
-                        <p>{bet.category}</p>
-                      </div>
-                      <div>
-                        <p className="text-white/60">Data</p>
-                        <p>
-                          {new Date(bet.createdAt).toLocaleDateString("pt-BR")}
-                        </p>
-                      </div>
-                    </div>
-                  </motion.div>
-                ))}
+                    </motion.div>
+                  ))}
               </AnimatePresence>
+            </div>
+            <div className="py-2 text-right">
+              {isShowingAllBets ? (
+                <Button
+                  className="cursor-pointer underline underline-offset-4 transition-all duration-[.3s] ease-in-out hover:text-[var(--accent-purple)]"
+                  onClick={() => setIsShowingAllBets(false)}
+                >
+                  Desver todas as apostas
+                </Button>
+              ) : (
+                <Button
+                  className="cursor-pointer underline underline-offset-4 transition-all duration-[.3s] ease-in-out hover:text-[var(--accent-purple)]"
+                  onClick={() => setIsShowingAllBets(true)}
+                >
+                  Ver todas as apostas
+                </Button>
+              )}
             </div>
           </div>
         </>
