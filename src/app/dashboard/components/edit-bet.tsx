@@ -31,7 +31,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
-import { ChevronDownIcon } from "lucide-react";
+import { ChevronDownIcon, Save, Trash } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -351,6 +351,7 @@ export function EditBet({ bet, onSave, onClose }: EditBetProps) {
                 type="submit"
                 className="ursor-pointer mt-4 flex-2 rounded-[.8rem] bg-[var(--light-white)] px-6 py-2.5 font-bold text-[var(--gray)] transition-all duration-[.3s] ease-in-out hover:scale-105 hover:bg-[var(--light-white)] hover:text-[var(--gray)]"
               >
+                <Save />
                 Salvar
               </Button>
               <Dialog>
@@ -359,6 +360,7 @@ export function EditBet({ bet, onSave, onClose }: EditBetProps) {
                     type="button"
                     className="mt-4 flex-1 cursor-pointer rounded-[.8rem] bg-[red] px-6 py-2.5 font-bold text-[var(--light-white)] transition-all duration-[.3s] ease-in-out hover:scale-105 hover:bg-[red]"
                   >
+                    <Trash />
                     Deletar
                   </Button>
                 </DialogTrigger>

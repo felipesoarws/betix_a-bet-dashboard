@@ -54,7 +54,7 @@ export function DailyProfitChart({ bets }: { bets: BetSchema[] }) {
         <ChartTooltip
           cursor={false}
           content={
-            <ChartTooltipContent className="rounded-[.8rem] border-white/10 p-2" />
+            <ChartTooltipContent className="rounded-[.8rem] border-2 border-white/10 bg-[var(--gray)] p-2" />
           }
         />
         <Bar dataKey="profit" radius={5}>

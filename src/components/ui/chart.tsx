@@ -153,7 +153,13 @@ function ChartTooltipContent({
       return null;
     }
 
-    return <div className={cn("font-medium", labelClassName)}>{value}</div>;
+    return (
+      <div
+        className={cn("font-medium text-[var(--light-white)]", labelClassName)}
+      >
+        Dia {value}
+      </div>
+    );
   }, [
     label,
     labelFormatter,
@@ -188,7 +194,7 @@ function ChartTooltipContent({
             <div
               key={item.dataKey}
               className={cn(
-                "[&>svg]:text-muted-foreground flex w-full flex-wrap items-stretch gap-2 [&>svg]:h-2.5 [&>svg]:w-2.5",
+                "flex w-full flex-wrap items-stretch gap-2 [&>svg]:h-2.5 [&>svg]:w-2.5 [&>svg]:text-[red]",
                 indicator === "dot" && "items-center",
               )}
             >
@@ -228,14 +234,26 @@ function ChartTooltipContent({
                   >
                     <div className="grid gap-1.5">
                       {nestLabel ? tooltipLabel : null}
-                      <span className="text-muted-foreground">
+                      <span className="translate-x-[-1.1vw] text-[var(--light-white)]">
                         {itemConfig?.label || item.name}
                       </span>
                     </div>
                     {item.value && (
-                      <span className="text-foreground font-mono font-medium tabular-nums">
-                        {item.value.toLocaleString()}
-                      </span>
+                      <>
+                        {Number(item.value) > 0 ? (
+                          <>
+                            <span className="ml-2 font-mono text-[.8rem] font-bold text-[#00ff00] tabular-nums">
+                              R$ {item.value.toLocaleString()}
+                            </span>
+                          </>
+                        ) : (
+                          <>
+                            <span className="ml-2 font-mono text-[.8rem] font-bold text-[red] tabular-nums">
+                              R$ {item.value.toLocaleString()}
+                            </span>
+                          </>
+                        )}
+                      </>
                     )}
                   </div>
                 </>

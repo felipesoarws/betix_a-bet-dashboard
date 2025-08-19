@@ -104,15 +104,17 @@ export function BetsStats({
     return matchYear && matchMonth;
   });
 
-  const filteredBets = bets.filter((bet) => {
-    const matchEvent =
-      eventFilter === "all" ||
-      bet.event.toLocaleLowerCase().includes(eventFilter);
-    const matchResult = resultFilter === "all" || bet.result === resultFilter;
-    const matchCategory =
-      categoryFilter === "all" || bet.category === categoryFilter;
-    return matchResult && matchCategory && matchEvent;
-  });
+  const filteredBets = bets
+    .filter((bet) => {
+      const matchEvent =
+        eventFilter === "all" ||
+        bet.event.toLocaleLowerCase().includes(eventFilter);
+      const matchResult = resultFilter === "all" || bet.result === resultFilter;
+      const matchCategory =
+        categoryFilter === "all" || bet.category === categoryFilter;
+      return matchResult && matchCategory && matchEvent;
+    })
+    .sort((a, b) => b.createdAt.localeCompare(a.createdAt));
 
   // total de bets
   const betsTotal = filteredBetsByMonthYear.length;
@@ -299,7 +301,7 @@ export function BetsStats({
               Apostas recentes
             </h1>
             <div className="mt-4 flex flex-wrap items-center justify-start gap-2">
-              <div className="flex gap-4 lg:gap-[1vw]">
+              <div className="flex flex-wrap gap-4 lg:flex-nowrap lg:gap-[1vw]">
                 <Select
                   onValueChange={(value: string) =>
                     setResultFilter(value as BetResult | "all")
@@ -488,9 +490,11 @@ export function BetsStats({
                                     <Edit size={25} />
                                   </Button>
                                 </DialogTrigger>
-                                <DialogContent>
+                                <DialogContent className="rounded-[.8rem] border-white/10 bg-black/80 text-white backdrop-blur-md sm:max-w-[480px]">
                                   <DialogHeader>
-                                    <DialogTitle>Editar Aposta</DialogTitle>
+                                    <DialogTitle className="text-[var(--light-white)]">
+                                      Editar Aposta
+                                    </DialogTitle>
                                   </DialogHeader>
                                   <div>
                                     <EditBet
@@ -509,7 +513,7 @@ export function BetsStats({
                 </Table>
               )}
             </div>
-            <div className="mt-4 space-y-4 lg:hidden">
+            <div className="mt-4 space-y-4 md:hidden">
               <AnimatePresence>
                 {filteredBets
                   .slice(0, isShowingAllBets ? bets.length : 5)
@@ -540,7 +544,7 @@ export function BetsStats({
                               <Edit size={25} />
                             </Button>
                           </DialogTrigger>
-                          <DialogContent className="rounded-[.8vw] bg-[var(--gray)]">
+                          <DialogContent className="rounded-[.8rem] border-white/10 bg-black/80 text-white backdrop-blur-md sm:max-w-[480px]">
                             <DialogHeader>
                               <DialogTitle className="text-[var(--light-white)]">
                                 Editar Aposta
