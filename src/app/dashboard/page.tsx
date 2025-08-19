@@ -41,6 +41,8 @@ const Dashboard = () => {
     const session = await authClient.getSession();
     const userId = session?.data?.user?.id;
 
+    if (userId) return setIsDialogOpen(true);
+
     if (!userId)
       toast.message("Erro! ⚠", {
         description: "Não é possível registrar uma aposta sem estar logado.",
