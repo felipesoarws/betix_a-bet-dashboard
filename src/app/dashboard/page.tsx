@@ -3,6 +3,9 @@
 import { useState, useEffect } from "react";
 import { Header } from "@/components/ui/common/header";
 import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
+import { Toaster } from "@/components/ui/sonner";
+
 import {
   Dialog,
   DialogContent,
@@ -34,6 +37,22 @@ const Dashboard = () => {
     fetchBets();
   }, []);
 
+  const checkIfHasUserLogged = async () => {
+    const session = await authClient.getSession();
+    const userId = session?.data?.user?.id;
+
+    if (!userId)
+      toast.message("Erro! ⚠", {
+        description: "Não é possível registrar uma aposta sem estar logado.",
+        action: {
+          label: "Confirmar",
+          onClick: () => console.log("Confirmar"),
+        },
+      });
+
+    return setIsDialogOpen(false);
+  };
+
   return (
     <div className="flex min-h-screen flex-col bg-[var(--gray)] text-[var(--light-white)]">
       <Header />
@@ -44,9 +63,13 @@ const Dashboard = () => {
               <h1 className="text-center text-3xl font-extrabold tracking-tight md:text-4xl lg:text-5xl">
                 Seu dashboard
               </h1>
+
               <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                 <DialogTrigger asChild>
-                  <Button className="w-full max-w-xs cursor-pointer rounded-[.8rem] bg-[var(--light-white)] text-[var(--gray)] hover:bg-white/90 lg:w-auto lg:px-6">
+                  <Button
+                    className="w-full max-w-xs cursor-pointer rounded-[.8rem] bg-[var(--light-white)] text-[var(--gray)] hover:bg-white/90 lg:w-auto lg:px-6"
+                    onClick={() => checkIfHasUserLogged()}
+                  >
                     <PlusCircle className="mr-2 h-4 w-4" />
                     Nova Aposta
                   </Button>
@@ -67,6 +90,7 @@ const Dashboard = () => {
                 </DialogContent>
               </Dialog>
             </div>
+            <Toaster />
             <BetsStats bets={bets} fetchBets={fetchBets} />
           </div>
         </main>

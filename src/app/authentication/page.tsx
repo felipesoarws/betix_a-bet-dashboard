@@ -19,13 +19,13 @@ const Authentication = async () => {
               <TabsList className="space-x-[.5rem]">
                 <TabsTrigger
                   value="sign-in"
-                  className="cursor-pointer rounded-[.8rem] border border-white/10 bg-[var(--accent-purple)] p-4 text-[var(--light-white)] transition-all duration-[.3s] ease-in-out hover:bg-[#885aed]/50"
+                  className="m- cursor-pointer rounded-[.8rem] border border-white/10 bg-[var(--light-white)] p-4 text-[var(--light-white)] transition-all duration-[.3s] ease-in-out hover:bg-[var(--light-white)]/80"
                 >
                   Entrar
                 </TabsTrigger>
                 <TabsTrigger
                   value="sign-up"
-                  className="cursor-pointer rounded-[.8rem] border border-white/10 bg-[var(--accent-purple)] p-4 text-[var(--light-white)] transition-all duration-[.3s] ease-in-out hover:bg-[#885aed]/50"
+                  className="cursor-pointer rounded-[.8rem] border border-white/10 bg-[var(--light-white)] p-4 text-[var(--light-white)] transition-all duration-[.3s] ease-in-out hover:bg-[var(--light-white)]/80"
                 >
                   Criar conta
                 </TabsTrigger>

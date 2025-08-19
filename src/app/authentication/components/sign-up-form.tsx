@@ -19,7 +19,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { authClient } from "@/lib/auth-client";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import z from "zod";
@@ -46,6 +48,7 @@ const formSchema = z
 type FormValues = z.infer<typeof formSchema>;
 
 const SignUpForm = () => {
+  const [loading, setLoading] = useState<boolean>(false);
   const router = useRouter();
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -58,6 +61,7 @@ const SignUpForm = () => {
   });
 
   async function onSubmit(values: FormValues) {
+    setLoading(true);
     await authClient.signUp.email({
       name: values.name,
       email: values.email,
@@ -94,7 +98,9 @@ const SignUpForm = () => {
     <>
       <Card className="rounded-[.8rem] border border-white/10 bg-[var(--gray)]">
         <CardHeader>
-          <CardDescription>Crie uma conta para continuar.</CardDescription>
+          <CardDescription className="text-[var(--light-white) font-semibold">
+            Crie uma conta para continuar.
+          </CardDescription>
         </CardHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -175,7 +181,14 @@ const SignUpForm = () => {
                 type="submit"
                 className="cursor-pointer rounded-[.8rem] bg-[var(--light-white)] px-6 py-2.5 font-bold text-[var(--gray)] transition-all duration-[.3s] ease-in-out hover:scale-105 hover:bg-[var(--light-white)] hover:text-[var(--gray)]"
               >
-                Entrar
+                {loading ? (
+                  <div className="flex items-center gap-2">
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                    Entrando...
+                  </div>
+                ) : (
+                  "Entrar"
+                )}
               </Button>
             </CardFooter>
           </form>
