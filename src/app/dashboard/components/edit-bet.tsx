@@ -53,6 +53,9 @@ const editBetSchema = z.object({
   odd: z
     .number({ error: "Informe um valor válido para a aposta." })
     .gt(1, "A odd precisa ser maior que 1."),
+  unit: z
+    .number({ error: "Informe um valor válido para a aposta." })
+    .gt(0, "O valor precisa ser maior que 0."),
   result: z.enum(BET_RESULTS, { message: "Selecione uma categoria." }),
   createdAt: z.date("Informe uma data"),
 });
@@ -80,6 +83,7 @@ export function EditBet({ bet, onSave, onClose }: EditBetProps) {
           result: bet.result,
           betValue: parseFloat(String(bet.betValue)),
           odd: parseFloat(String(bet.odd)),
+          unit: parseFloat(String(bet.unit)),
           createdAt: new Date(bet.createdAt),
         }
       : undefined,
@@ -94,6 +98,7 @@ export function EditBet({ bet, onSave, onClose }: EditBetProps) {
         result: bet.result,
         betValue: parseFloat(String(bet.betValue)),
         odd: parseFloat(String(bet.odd)),
+        unit: parseFloat(String(bet.unit)),
         createdAt: new Date(bet.createdAt),
       });
       setDate(new Date(bet.createdAt));
@@ -308,6 +313,28 @@ export function EditBet({ bet, onSave, onClose }: EditBetProps) {
                   <FormItem>
                     <FormLabel className="text-[var(--light-white)]">
                       Valor da aposta
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        type="number"
+                        step="0.01"
+                        value={field.value ?? ""}
+                        onChange={(e) => field.onChange(e.target.valueAsNumber)}
+                        className="rounded-[.8rem] border border-white/10 px-3 py-5 text-[.9rem] text-[var(--light-white)] placeholder:text-white/30 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none"
+                      />
+                    </FormControl>
+                    <FormMessage className="pl-2 text-[.85rem] text-[red]" />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="unit"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-[var(--light-white)]">
+                      Unidade(s)
                     </FormLabel>
                     <FormControl>
                       <Input

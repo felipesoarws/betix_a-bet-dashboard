@@ -67,6 +67,7 @@ export const betsTable = pgTable(
     market: text("market").notNull(),
     category: text("category").notNull(),
     betValue: numeric("bet_value", { precision: 10, scale: 2 }).notNull(),
+    unit: numeric("unit", { precision: 10, scale: 2 }).notNull(),
     odd: numeric("odd", { precision: 5, scale: 2 }).notNull(),
     result: text("result").default("Pendente").notNull(),
     profit: numeric("profit", { precision: 10, scale: 2 }),
@@ -77,7 +78,7 @@ export const betsTable = pgTable(
       userIdIndex: index("user_id_idx").on(table.userId),
       dateIndex: index("created_at_idx").on(table.createdAt),
     };
-  }
+  },
 );
 
 export const usersRelations = relations(user, ({ many }) => ({

@@ -44,6 +44,7 @@ type CreateBetInput = {
   category: CategoryResult;
   betValue: number;
   odd: number;
+  unit: number;
   result: BetResult;
   createdAt: Date;
 };
@@ -55,6 +56,9 @@ const addBetSchema = z.object({
     message: "Selecione uma categoria.",
   }),
   betValue: z
+    .number({ error: "Informe um valor válido para a aposta." })
+    .gt(0, "O valor precisa ser maior que 0."),
+  unit: z
     .number({ error: "Informe um valor válido para a aposta." })
     .gt(0, "O valor precisa ser maior que 0."),
   odd: z
@@ -86,6 +90,7 @@ export function AddBetForm({
       category: "Outro",
       betValue: 0,
       odd: 0,
+      unit: 0,
       result: "Pendente",
       createdAt: new Date(),
     },
@@ -110,6 +115,7 @@ export function AddBetForm({
       category: values.category as CategoryResult,
       betValue: values.betValue,
       odd: values.odd,
+      unit: values.unit,
       result: values.result as BetResult,
       createdAt: selectedDate,
     };
@@ -266,46 +272,76 @@ export function AddBetForm({
                   </FormItem>
                 )}
               />
-              <FormField
-                control={form.control}
-                name="betValue"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Valor (R$)</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="number"
-                        step="0.01"
-                        placeholder="10.00"
-                        className="rounded-[.8rem] border border-white/10 px-3 py-5 text-[.9rem] placeholder:text-white/30 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none"
-                        value={field.value ?? ""}
-                        onChange={(e) => field.onChange(e.target.valueAsNumber)}
-                      />
-                    </FormControl>
-                    <FormMessage className="pl-2 text-[.85rem] text-[red]" />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="odd"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Odd</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="number"
-                        step="0.01"
-                        placeholder="1.85"
-                        className="rounded-[.8rem] border border-white/10 px-3 py-5 text-[.9rem] placeholder:text-white/30 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none"
-                        value={field.value ?? ""}
-                        onChange={(e) => field.onChange(e.target.valueAsNumber)}
-                      />
-                    </FormControl>
-                    <FormMessage className="pl-2 text-[.85rem] text-[red]" />
-                  </FormItem>
-                )}
-              />
+
+              <div className="flex items-start justify-between gap-5">
+                <FormField
+                  control={form.control}
+                  name="betValue"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Valor (R$)</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="number"
+                          step="0.01"
+                          placeholder="10.00"
+                          className="rounded-[.8rem] border border-white/10 px-3 py-5 text-[.9rem] placeholder:text-white/30 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none"
+                          value={field.value ?? ""}
+                          onChange={(e) =>
+                            field.onChange(e.target.valueAsNumber)
+                          }
+                        />
+                      </FormControl>
+                      <FormMessage className="pl-2 text-[.85rem] text-[red]" />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="unit"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Unidade(s)</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="number"
+                          step="0.01"
+                          placeholder="1 / 1.5 / 2"
+                          className="rounded-[.8rem] border border-white/10 px-3 py-5 text-[.9rem] placeholder:text-white/30 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none"
+                          value={field.value ?? ""}
+                          onChange={(e) =>
+                            field.onChange(e.target.valueAsNumber)
+                          }
+                        />
+                      </FormControl>
+                      <FormMessage className="pl-2 text-[.85rem] text-[red]" />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="odd"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Odd</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="number"
+                          step="0.01"
+                          placeholder="1.85"
+                          className="rounded-[.8rem] border border-white/10 px-3 py-5 text-[.9rem] placeholder:text-white/30 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none"
+                          value={field.value ?? ""}
+                          onChange={(e) =>
+                            field.onChange(e.target.valueAsNumber)
+                          }
+                        />
+                      </FormControl>
+                      <FormMessage className="pl-2 text-[.85rem] text-[red]" />
+                    </FormItem>
+                  )}
+                />
+              </div>
             </CardContent>
             <CardFooter className="mt-5">
               <Button

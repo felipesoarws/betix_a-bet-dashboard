@@ -7,6 +7,8 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { DailyProfitChart } from "./dashboard/components/daily-profit-chart";
+import { SEED_BETS } from "@/lib/constants";
 
 const Home = () => {
   const [loading, setLoading] = useState(false);
@@ -17,6 +19,7 @@ const Home = () => {
 
     router.push("/dashboard");
   };
+
   return (
     <div className="relative isolate min-h-screen bg-black text-[var(--light-white)]">
       <Header />
@@ -115,12 +118,18 @@ const Home = () => {
                 seus dados.
               </p>
             </div>
-            <div className="rounded-2xl border border-white/10 bg-black/20 p-8 backdrop-blur-md">
-              <div className="mb-6 flex items-center justify-between">
-                <p className="font-bold">Desempenho: Premier League</p>
-                <p className="text-sm text-white/60">Últimos 30 dias</p>
+            <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              <div className="flex w-full flex-col items-start justify-center rounded-[.8rem] border border-white/10 bg-[var(--gray-darker)] p-4">
+                <h2 className="font-regular mb-2 text-base tracking-tight lg:text-[1.1vw]">
+                  Total de apostas
+                </h2>
+                <h2 className="text-2xl font-bold tracking-tight lg:text-[1.5vw]">
+                  {SEED_BETS.length}
+                </h2>
               </div>
-              <div className="flex h-48 w-full items-end justify-around gap-2 rounded-lg bg-white/5 px-4"></div>
+            </div>
+            <div className="mt-4 rounded-[.8rem] border border-white/10 p-2 lg:p-4">
+              <DailyProfitChart bets={SEED_BETS} />
             </div>
           </section>
 

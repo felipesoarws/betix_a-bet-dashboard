@@ -21,7 +21,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Edit, Loader2 } from "lucide-react";
+import { Edit, Info, Loader2 } from "lucide-react";
 
 import { BET_CATEGORIES, BET_RESULTS, MONTH_NAMES } from "@/lib/constants";
 import { DailyProfitChart } from "./daily-profit-chart";
@@ -35,6 +35,11 @@ import {
 } from "@/components/ui/dialog";
 import { authClient } from "@/lib/auth-client";
 import { Input } from "@/components/ui/input";
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card";
 
 type BetResult = "Pendente" | "Ganha" | "Perdida" | "Anulada";
 type CategoryResult = "Futebol" | "Basquete" | "eSports" | "Outro";
@@ -46,6 +51,7 @@ export type BetSchema = {
   category: CategoryResult;
   profit: number;
   betValue: number;
+  unit: number;
   odd: number;
   result: BetResult;
   createdAt: string;
@@ -119,6 +125,23 @@ export function BetsStats({
   // total de bets
   const betsTotal = filteredBetsByMonthYear.length;
 
+  // soma das unidades ganhas e perdidas
+  const totalUnits = filteredBetsByMonthYear
+    .reduce((sum, bet) => {
+      const unitValue = Number(bet.unit);
+
+      if (bet.result === "Ganha") {
+        return sum + unitValue;
+      }
+
+      if (bet.result === "Perdida") {
+        return sum - unitValue;
+      }
+
+      return sum;
+    }, 0)
+    .toFixed(2);
+
   // bets ganhas + some das bets ganhas
   const wins = filteredBetsByMonthYear.filter((bet) => bet.result === "Ganha");
   const winsSum = Number(
@@ -153,6 +176,27 @@ export function BetsStats({
       ? (wins.length / filteredBetsByMonthYearButPendent.length) * 100
       : 0
   ).toFixed(0);
+
+  // odd geral média
+  const averageOddAll =
+    filteredBetsByMonthYearButPendent.length > 0
+      ? filteredBetsByMonthYearButPendent.reduce(
+          (sum, b) => sum + Number(b.odd),
+          0,
+        ) / filteredBetsByMonthYearButPendent.length
+      : 0;
+
+  // odd de ganhos média
+  const averageOddWins =
+    wins.length > 0
+      ? wins.reduce((sum, b) => sum + Number(b.odd), 0) / wins.length
+      : 0;
+
+  // odd de percas média
+  const averageOddLoses =
+    loses.length > 0
+      ? loses.reduce((sum, b) => sum + Number(b.odd), 0) / loses.length
+      : 0;
 
   return (
     <div>
@@ -217,7 +261,7 @@ export function BetsStats({
 
             <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
               <div className="flex w-full flex-col items-start justify-center rounded-[.8rem] border border-white/10 bg-[var(--gray-darker)] p-4">
-                <h2 className="font-regular mb-2 text-base tracking-tight lg:text-[1.1vw]">
+                <h2 className="font-regular mb-2 text-base tracking-tight lg:text-[1vw]">
                   Total de apostas
                 </h2>
                 <h2 className="text-2xl font-bold tracking-tight lg:text-[1.5vw]">
@@ -229,7 +273,7 @@ export function BetsStats({
                 </h2>
               </div>
               <div className="flex w-full flex-col items-start justify-center rounded-[.8rem] border border-white/10 bg-[var(--gray-darker)] p-4">
-                <h2 className="font-regular mb-2 text-base tracking-tight lg:text-[1.1vw]">
+                <h2 className="font-regular mb-2 text-base tracking-tight lg:text-[1vw]">
                   Total apostado
                 </h2>
                 <h2 className="text-2xl font-bold tracking-tight lg:text-[1.5vw]">
@@ -241,8 +285,8 @@ export function BetsStats({
                 </h2>
               </div>
               <div className="flex w-full flex-col items-start justify-center rounded-[.8rem] border border-white/10 bg-[var(--gray-darker)] p-4">
-                <h2 className="font-regular mb-2 text-base tracking-tight lg:text-[1.1vw]">
-                  Lucro / prejuízo total
+                <h2 className="font-regular mb-2 text-base tracking-tight lg:text-[1vw]">
+                  Lucro / prejuízo total (R$)
                 </h2>
                 {totalProfit == "0.00" ? (
                   <Loader2 className="h-4 w-4 animate-spin" />
@@ -261,7 +305,27 @@ export function BetsStats({
                 )}
               </div>
               <div className="flex w-full flex-col items-start justify-center rounded-[.8rem] border border-white/10 bg-[var(--gray-darker)] p-4">
-                <h2 className="font-regular mb-2 text-base tracking-tight lg:text-[1.1vw]">
+                <h2 className="font-regular mb-2 text-base tracking-tight lg:text-[1vw]">
+                  Lucro / prejuízo total (un.)
+                </h2>
+                {totalUnits == "0.00" ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  <>
+                    {Number(totalUnits) > 0 ? (
+                      <h2 className="text-2xl font-bold tracking-tight text-[#00ff00] lg:text-[1.5vw]">
+                        +{Number(totalUnits).toLocaleString("pt-BR")}un
+                      </h2>
+                    ) : (
+                      <h2 className="text-2xl font-bold tracking-tight text-[#ff0000] lg:text-[1.5vw]">
+                        -{Number(totalUnits).toLocaleString("pt-BR")}un
+                      </h2>
+                    )}
+                  </>
+                )}
+              </div>
+              <div className="flex w-full flex-col items-start justify-center rounded-[.8rem] border border-white/10 bg-[var(--gray-darker)] p-4">
+                <h2 className="font-regular mb-2 text-base tracking-tight lg:text-[1vw]">
                   % de vitórias
                 </h2>
                 <h2 className="text-2xl font-bold tracking-tight lg:text-[1.5vw]">
@@ -269,6 +333,95 @@ export function BetsStats({
                     <Loader2 className="h-4 w-4 animate-spin" />
                   ) : (
                     <>{percentVictory}%</>
+                  )}
+                </h2>
+              </div>
+              <div className="flex w-full flex-col items-start justify-center rounded-[.8rem] border border-white/10 bg-[var(--gray-darker)] p-4">
+                <div className="flex w-full items-start justify-between">
+                  <h2 className="font-regular mb-2 text-base tracking-tight lg:text-[1vw]">
+                    Odd média (geral)
+                  </h2>
+                  <HoverCard>
+                    <HoverCardTrigger>
+                      <Info className="h-4 w-4" color="gray" />
+                    </HoverCardTrigger>
+                    <HoverCardContent className="w-80 bg-[var(--light-white)] text-[var(--gray)]">
+                      <div className="flex justify-between gap-4">
+                        <div className="space-y-1">
+                          <p className="text-sm">
+                            Indica o seu perfil de risco. Odds mais altas podem
+                            significar mais risco e maior retorno potencial.
+                          </p>
+                        </div>
+                      </div>
+                    </HoverCardContent>
+                  </HoverCard>
+                </div>
+                <h2 className="text-2xl font-bold tracking-tight lg:text-[1.5vw]">
+                  {!averageOddAll ? (
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  ) : (
+                    <>{Number(averageOddAll).toFixed(2)}</>
+                  )}
+                </h2>
+              </div>
+              <div className="flex w-full flex-col items-start justify-center rounded-[.8rem] border border-white/10 bg-[var(--gray-darker)] p-4">
+                <div className="flex w-full items-start justify-between">
+                  <h2 className="font-regular mb-2 text-base tracking-tight lg:text-[1vw]">
+                    Odd média (ganhos)
+                  </h2>
+                  <HoverCard>
+                    <HoverCardTrigger>
+                      <Info className="h-4 w-4" color="gray" />
+                    </HoverCardTrigger>
+                    <HoverCardContent className="w-80 bg-[var(--light-white)] text-[var(--gray)]">
+                      <div className="flex justify-between gap-4">
+                        <div className="space-y-1">
+                          <p className="text-sm">
+                            Mostra a qualidade dos seus acertos. Odds de ganho
+                            muito baixas podem não ser suficientes para cobrir
+                            as perdas.
+                          </p>
+                        </div>
+                      </div>
+                    </HoverCardContent>
+                  </HoverCard>
+                </div>
+                <h2 className="text-2xl font-bold tracking-tight lg:text-[1.5vw]">
+                  {!averageOddWins ? (
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  ) : (
+                    <>{Number(averageOddWins).toFixed(2)}</>
+                  )}
+                </h2>
+              </div>
+              <div className="flex w-full flex-col items-start justify-center rounded-[.8rem] border border-white/10 bg-[var(--gray-darker)] p-4">
+                <div className="flex w-full items-start justify-between">
+                  <h2 className="font-regular mb-2 text-base tracking-tight lg:text-[1vw]">
+                    Odd média (perdas)
+                  </h2>
+                  <HoverCard>
+                    <HoverCardTrigger>
+                      <Info className="h-4 w-4" color="gray" />
+                    </HoverCardTrigger>
+                    <HoverCardContent className="w-80 bg-[var(--light-white)] text-[var(--gray)]">
+                      <div className="flex justify-between gap-4">
+                        <div className="space-y-1">
+                          <p className="text-sm">
+                            Use para comparar com a odd de ganhos. Perder com
+                            odds baixas é um sinal de alerta, indicando que
+                            apostas seguras estão falhando.
+                          </p>
+                        </div>
+                      </div>
+                    </HoverCardContent>
+                  </HoverCard>
+                </div>
+                <h2 className="text-2xl font-bold tracking-tight lg:text-[1.5vw]">
+                  {!averageOddLoses ? (
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  ) : (
+                    <>{Number(averageOddLoses).toFixed(2)}</>
                   )}
                 </h2>
               </div>
@@ -389,6 +542,9 @@ export function BetsStats({
                         Valor da aposta
                       </TableHead>
                       <TableHead className="pb-2 text-center text-[.95rem] font-bold lg:text-[.95vw]">
+                        Unidade(s)
+                      </TableHead>
+                      <TableHead className="pb-2 text-center text-[.95rem] font-bold lg:text-[.95vw]">
                         Odd
                       </TableHead>
                       <TableHead className="pb-2 text-center text-[.95rem] font-bold lg:text-[.95vw]">
@@ -427,6 +583,9 @@ export function BetsStats({
                             </TableCell>
                             <TableCell className="text-center">
                               R$ {String(bet.betValue).replace(".", ",")}
+                            </TableCell>
+                            <TableCell className="text-center">
+                              {String(bet.unit).replace(".", ",")}
                             </TableCell>
                             <TableCell className="text-center">
                               {String(bet.odd).replace(".", ",")}
@@ -490,7 +649,7 @@ export function BetsStats({
                                     <Edit size={25} />
                                   </Button>
                                 </DialogTrigger>
-                                <DialogContent className="rounded-[.8rem] border-white/10 bg-black/80 text-white backdrop-blur-md sm:max-w-[480px]">
+                                <DialogContent className="rounded-[.8rem] border-white/10 bg-black/80 text-white backdrop-blur-md sm:max-w-[550px]">
                                   <DialogHeader>
                                     <DialogTitle className="text-[var(--light-white)]">
                                       Editar Aposta
@@ -544,7 +703,7 @@ export function BetsStats({
                               <Edit size={25} />
                             </Button>
                           </DialogTrigger>
-                          <DialogContent className="rounded-[.8rem] border-white/10 bg-black/80 text-white backdrop-blur-md sm:max-w-[480px]">
+                          <DialogContent className="rounded-[.8rem] border-white/10 bg-black/80 text-white backdrop-blur-md sm:max-w-[550px]">
                             <DialogHeader>
                               <DialogTitle className="text-[var(--light-white)]">
                                 Editar Aposta

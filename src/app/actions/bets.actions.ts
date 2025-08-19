@@ -14,6 +14,7 @@ type CreateBetInput = {
   category: CategoryResult;
   betValue: number;
   odd: number;
+  unit: number;
   result: BetResult;
   createdAt: Date;
 };
@@ -49,6 +50,7 @@ export async function createBetAction(values: CreateBetInput) {
       category: values.category,
       betValue: values.betValue.toString(),
       odd: values.odd.toString(),
+      unit: values.unit.toString(),
       result: values.result.toString(),
       profit: profit !== null ? profit.toString() : null,
       createdAt: values.createdAt,
