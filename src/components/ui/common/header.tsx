@@ -4,7 +4,6 @@ import { SidebarTrigger } from "@/components/ui/sidebar";
 import { authClient } from "@/lib/auth-client";
 import { Undo2 } from "lucide-react";
 import Link from "next/link";
-import { Avatar, AvatarFallback, AvatarImage } from "../avatar";
 
 export const Header = ({
   path,
@@ -31,27 +30,7 @@ export const Header = ({
           )}
           <nav className="flex items-center gap-4">
             {session?.user ? (
-              <div className="flex items-center justify-end gap-3">
-                {/*     <div>
-                  <Avatar className="border border-white/10 bg-black/20 p-5 backdrop-blur-md">
-                    <AvatarImage
-                      src={session?.user?.image as string | undefined}
-                    />
-                    <AvatarFallback className="text-[1.2rem]">
-                      {session?.user?.name?.split(" ")[0]?.[0]}
-                      {session?.user?.name?.split(" ")[1]?.[0]}
-                    </AvatarFallback>
-                  </Avatar>
-                </div>
-                <div className="leading-5">
-                  <h3 className="text-[1.3rem] font-bold">
-                    {session.user.name}
-                  </h3>
-                  <h4 className="font-regular text-[.8rem] italic">
-                    {session.user.email}
-                  </h4>
-                </div> */}
-              </div>
+              <div className="flex items-center justify-end gap-3"></div>
             ) : (
               <div>
                 <Link

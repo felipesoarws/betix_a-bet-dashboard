@@ -22,7 +22,7 @@ const Home = () => {
 
   return (
     <div className="relative isolate min-h-screen w-full bg-black text-[var(--light-white)]">
-      <Header />
+      <Header backIcon={false} path="homepage" />
       <div className="absolute top-0 h-[70vh] w-full lg:h-[100vh]">
         <FlowingBackground />
       </div>
