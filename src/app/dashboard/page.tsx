@@ -57,12 +57,12 @@ const Dashboard = () => {
 
   return (
     <div className="flex min-h-screen flex-col bg-[var(--gray)] text-[var(--light-white)]">
-      <Header />
+      <Header path="dashboard" backIcon={false} />
       <div className="w-full flex-grow">
         <main className="mx-auto flex w-full max-w-7xl flex-grow flex-col p-4 md:p-6 lg:max-w-[85vw]">
           <div className="w-full rounded-[.8rem] border border-white/10 bg-[var(--gray-darker)] px-4 py-6 lg:p-6">
             <div className="flex flex-col items-center gap-4 lg:flex-row lg:justify-between">
-              <h1 className="text-center text-3xl font-extrabold tracking-tight md:text-4xl lg:text-5xl">
+              <h1 className="text-center text-3xl font-extrabold tracking-tight md:text-4xl lg:text-3xl">
                 Seu dashboard
               </h1>
 

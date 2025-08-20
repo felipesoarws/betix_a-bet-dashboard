@@ -7,7 +7,7 @@ import { Header } from "@/components/ui/common/header";
 const Authentication = async () => {
   return (
     <div className="relative isolate min-h-screen bg-black text-[var(--light-white)]">
-      <Header />
+      <Header backIcon={false} path="sign-in-up" />
       <div className="absolute top-0 h-[70vh] w-full lg:h-[90vh]">
         <FlowingBackground />
       </div>
@@ -19,13 +19,13 @@ const Authentication = async () => {
               <TabsList className="space-x-[.5rem]">
                 <TabsTrigger
                   value="sign-in"
-                  className="m- cursor-pointer rounded-[.8rem] border border-white/10 bg-[var(--light-white)] p-4 text-[var(--light-white)] transition-all duration-[.3s] ease-in-out hover:bg-[var(--light-white)]/80"
+                  className="cursor-pointer rounded-[.8rem] border border-white/10 bg-[var(--gray)] p-4 text-[var(--light-white)] transition-all duration-[.3s] ease-in-out hover:bg-black"
                 >
                   Entrar
                 </TabsTrigger>
                 <TabsTrigger
                   value="sign-up"
-                  className="cursor-pointer rounded-[.8rem] border border-white/10 bg-[var(--light-white)] p-4 text-[var(--light-white)] transition-all duration-[.3s] ease-in-out hover:bg-[var(--light-white)]/80"
+                  className="cursor-pointer rounded-[.8rem] border border-white/10 bg-[var(--gray)] p-4 text-[var(--light-white)] transition-all duration-[.3s] ease-in-out hover:bg-black"
                 >
                   Criar conta
                 </TabsTrigger>

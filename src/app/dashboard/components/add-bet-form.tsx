@@ -50,8 +50,14 @@ type CreateBetInput = {
 };
 
 const addBetSchema = z.object({
-  event: z.string().min(2, "Informe o evento."),
-  market: z.string().min(2, "Informe o mercado."),
+  event: z
+    .string()
+    .min(2, "Informe o evento.")
+    .max(32, "Diminua o nome do evento."),
+  market: z
+    .string()
+    .min(2, "Informe o mercado.")
+    .max(41, "Diminua o nome do mercado."),
   category: z.enum(BET_CATEGORIES, {
     message: "Selecione uma categoria.",
   }),

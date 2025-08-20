@@ -42,8 +42,14 @@ import { Card } from "@/components/ui/card";
 import { DialogDescription } from "@radix-ui/react-dialog";
 
 const editBetSchema = z.object({
-  event: z.string().min(2, "Informe o evento."),
-  market: z.string().min(2, "Informe o mercado."),
+  event: z
+    .string()
+    .min(2, "Informe o evento.")
+    .max(32, "Diminua o nome do evento."),
+  market: z
+    .string()
+    .min(2, "Informe o mercado.")
+    .max(41, "Diminua o nome do mercado."),
   category: z.enum(BET_CATEGORIES, {
     message: "Selecione uma categoria.",
   }),
