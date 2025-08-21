@@ -16,7 +16,13 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-export function DailyProfitChart({ bets }: { bets: BetSchema[] }) {
+export function DailyProfitChart({
+  bets,
+  hideResults,
+}: {
+  bets: BetSchema[];
+  hideResults: boolean;
+}) {
   const chartData = (bets: BetSchema[]) => {
     const profitsByDay = bets.reduce<Record<string, number>>((acc, bet) => {
       const day = new Date(bet.createdAt).toLocaleDateString("pt-BR", {
@@ -54,7 +60,13 @@ export function DailyProfitChart({ bets }: { bets: BetSchema[] }) {
         <ChartTooltip
           cursor={false}
           content={
-            <ChartTooltipContent className="rounded-[.8rem] border-2 border-white/10 bg-[var(--gray)] p-2" />
+            <ChartTooltipContent
+              className={
+                hideResults
+                  ? "rounded-[.8rem] border-2 border-white/10 bg-[var(--gray)] p-2 blur-[.2rem] select-none"
+                  : "rounded-[.8rem] border-2 border-white/10 bg-[var(--gray)] p-2"
+              }
+            />
           }
         />
         <Bar dataKey="profit" radius={5}>

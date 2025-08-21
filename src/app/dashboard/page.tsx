@@ -20,7 +20,10 @@ import { authClient } from "@/lib/auth-client";
 import { BetSchema } from "./components/bets-stats";
 
 const Dashboard = () => {
-  const [isResultsHidden, setIsResultsHidden] = useState<boolean>(false);
+  const [isResultsHidden, setIsResultsHidden] = useState<boolean>(() => {
+    const localSave = localStorage.getItem("hideResults") || false;
+    return localSave === "true";
+  });
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [bets, setBets] = useState<BetSchema[]>([]);
 
@@ -36,6 +39,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     const localSave = localStorage.getItem("hideResults");
+
     setIsResultsHidden(localSave === "true");
     fetchBets();
   }, []);
@@ -67,25 +71,35 @@ const Dashboard = () => {
       <Header path="dashboard" backIcon={false} />
       <div className="w-full flex-grow">
         <main className="mx-auto flex w-full max-w-7xl flex-grow flex-col p-4 md:p-6 lg:max-w-[85vw]">
-          <div className="w-full rounded-[.8rem] border border-white/10 bg-[var(--gray-darker)] px-4 py-6 lg:p-6">
+          <div className="relative w-full rounded-[.8rem] border border-white/10 bg-[var(--gray-darker)] px-4 py-6 lg:p-6">
             <div className="flex flex-col items-center gap-4 lg:flex-row lg:justify-between">
-              <h1 className="text-center text-3xl font-extrabold tracking-tight md:text-4xl lg:text-3xl">
-                Seu dashboard
-              </h1>
+              <div className="flex items-center justify-between gap-4">
+                <h1 className="text-center text-3xl font-extrabold tracking-tight md:text-4xl lg:text-3xl">
+                  Seu dashboard
+                </h1>
+
+                <div>
+                  {isResultsHidden ? (
+                    <div className="rounded-full bg-[var(--light-white)]/20 p-[.5rem]">
+                      <EyeClosed
+                        className="cursor-pointer"
+                        color="var(--gray)"
+                        onClick={() => setIsResultsHidden(false)}
+                      />
+                    </div>
+                  ) : (
+                    <div className="rounded-full bg-[var(--light-white)]/80 p-[.5rem]">
+                      <Eye
+                        className="cursor-pointer"
+                        color="var(--gray)"
+                        onClick={() => setIsResultsHidden(true)}
+                      />
+                    </div>
+                  )}
+                </div>
+              </div>
 
               <div className="flex items-center justify-center gap-4">
-                {isResultsHidden ? (
-                  <EyeClosed
-                    className="cursor-pointer"
-                    onClick={() => setIsResultsHidden(false)}
-                  />
-                ) : (
-                  <Eye
-                    className="cursor-pointer"
-                    onClick={() => setIsResultsHidden(true)}
-                  />
-                )}
-
                 <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                   <DialogTrigger asChild>
                     <Button

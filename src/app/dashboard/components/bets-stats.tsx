@@ -40,6 +40,7 @@ import {
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
 import Link from "next/link";
+import { Input } from "@/components/ui/input";
 
 type BetResult = "Pendente" | "Ganha" | "Perdida" | "Anulada";
 type CategoryResult = "Futebol" | "Basquete" | "eSports" | "Outro";
@@ -75,6 +76,9 @@ export function BetsStats({
   const [monthTotalFilter, setMonthTotalFilter] = useState<string>("all");
   const [yearTotalFilter, setYearTotalFilter] = useState<string>("all");
 
+  // filtros na tabela
+  const [eventFilter, setEventFilter] = useState<string>("all");
+
   // criação de listas de anos e meses registrados nas bets
   const yearsAvailable = Array.from(
     new Set(bets.map((bet) => new Date(bet.createdAt).getFullYear())),
@@ -103,9 +107,18 @@ export function BetsStats({
     return matchYear && matchMonth;
   });
 
-  const pendentBets = bets.filter((bet) => {
-    return bet.result == "Pendente";
-  });
+  // totald de apostas pendentes
+  const pendentBets = bets
+    .filter((bet) => {
+      const matchEvent =
+        eventFilter === "all" ||
+        bet.event.toLocaleLowerCase().includes(eventFilter);
+
+      const matchResult = bet.result === "Pendente";
+
+      return matchEvent && matchResult;
+    })
+    .sort((a, b) => b.createdAt.localeCompare(a.createdAt));
 
   // total de bets
   const betsTotal = filteredBetsByMonthYear.length;
@@ -250,7 +263,9 @@ export function BetsStats({
                   Total de apostas
                 </h2>
                 <h2 className="text-2xl font-bold tracking-tight lg:text-[1.5vw]">
-                  <div className={hideResults ? "blur-[.5rem]" : ""}>
+                  <div
+                    className={hideResults ? "blur-[.5rem] select-none" : ""}
+                  >
                     {betsTotal == 0 ? (
                       <Loader2 className="h-4 w-4 animate-spin" />
                     ) : (
@@ -265,7 +280,9 @@ export function BetsStats({
                 </h2>
 
                 <h2 className="text-2xl font-bold tracking-tight lg:text-[1.5vw]">
-                  <div className={hideResults ? "blur-[.5rem]" : ""}>
+                  <div
+                    className={hideResults ? "blur-[.5rem] select-none" : ""}
+                  >
                     {gambledTotal == "0" ? (
                       <Loader2 className="h-4 w-4 animate-spin" />
                     ) : (
@@ -280,7 +297,7 @@ export function BetsStats({
                 <h2 className="font-regular mb-2 text-base tracking-tight lg:text-[1vw]">
                   Lucro / prejuízo total (R$)
                 </h2>
-                <div className={hideResults ? "blur-[.5rem]" : ""}>
+                <div className={hideResults ? "blur-[.5rem] select-none" : ""}>
                   {totalProfit == "0.00" ? (
                     <Loader2 className="h-4 w-4 animate-spin" />
                   ) : (
@@ -302,7 +319,7 @@ export function BetsStats({
                 <h2 className="font-regular mb-2 text-base tracking-tight lg:text-[1vw]">
                   Lucro / prejuízo total (un.)
                 </h2>
-                <div className={hideResults ? "blur-[.5rem]" : ""}>
+                <div className={hideResults ? "blur-[.5rem] select-none" : ""}>
                   {totalUnits == "0.00" ? (
                     <Loader2 className="h-4 w-4 animate-spin" />
                   ) : (
@@ -325,7 +342,9 @@ export function BetsStats({
                   % de vitórias
                 </h2>
                 <h2 className="text-2xl font-bold tracking-tight lg:text-[1.5vw]">
-                  <div className={hideResults ? "blur-[.5rem]" : ""}>
+                  <div
+                    className={hideResults ? "blur-[.5rem] select-none" : ""}
+                  >
                     {percentVictory == "0" ? (
                       <Loader2 className="h-4 w-4 animate-spin" />
                     ) : (
@@ -356,7 +375,9 @@ export function BetsStats({
                   </HoverCard>
                 </div>
                 <h2 className="text-2xl font-bold tracking-tight lg:text-[1.5vw]">
-                  <div className={hideResults ? "blur-[.5rem]" : ""}>
+                  <div
+                    className={hideResults ? "blur-[.5rem] select-none" : ""}
+                  >
                     {!averageOddAll ? (
                       <Loader2 className="h-4 w-4 animate-spin" />
                     ) : (
@@ -388,7 +409,9 @@ export function BetsStats({
                   </HoverCard>
                 </div>
                 <h2 className="text-2xl font-bold tracking-tight lg:text-[1.5vw]">
-                  <div className={hideResults ? "blur-[.5rem]" : ""}>
+                  <div
+                    className={hideResults ? "blur-[.5rem] select-none" : ""}
+                  >
                     {!averageOddWins ? (
                       <Loader2 className="h-4 w-4 animate-spin" />
                     ) : (
@@ -420,7 +443,9 @@ export function BetsStats({
                   </HoverCard>
                 </div>
                 <h2 className="text-2xl font-bold tracking-tight lg:text-[1.5vw]">
-                  <div className={hideResults ? "blur-[.5rem]" : ""}>
+                  <div
+                    className={hideResults ? "blur-[.5rem] select-none" : ""}
+                  >
                     {!averageOddLoses ? (
                       <Loader2 className="h-4 w-4 animate-spin" />
                     ) : (
@@ -448,7 +473,10 @@ export function BetsStats({
                   </h1>
                 </div>
               ) : (
-                <DailyProfitChart bets={filteredBetsByMonthYear} />
+                <DailyProfitChart
+                  bets={filteredBetsByMonthYear}
+                  hideResults={hideResults}
+                />
               )}
             </div>
           </div>
@@ -457,6 +485,15 @@ export function BetsStats({
             <h1 className="text-2xl font-bold tracking-tight md:text-3xl lg:text-[1.3vw]">
               Apostas pendentes
             </h1>
+            <div className="mt-4 w-full lg:w-[15vw]">
+              <Input
+                type="text"
+                className="rounded-[.8rem] border border-white/10 px-3 py-5 text-[.9rem] placeholder:text-white/30"
+                placeholder="Filtrar por evento"
+                onChange={(e) => setEventFilter(e.target.value)}
+                value={eventFilter === "all" ? "" : eventFilter}
+              />
+            </div>
 
             <div className="mt-4 hidden rounded-[.8rem] border border-white/10 p-2 lg:block lg:p-[1vw]">
               {pendentBets.length < 1 ? (
@@ -524,13 +561,31 @@ export function BetsStats({
                           <TableCell className="text-center text-[.85rem] lg:text-[.75vw]">
                             {bet.category}
                           </TableCell>
-                          <TableCell className="text-center text-[.85rem] lg:text-[.75vw]">
+                          <TableCell
+                            className={
+                              hideResults
+                                ? "text-center text-[.85rem] blur-[.5rem] select-none lg:text-[.75vw]"
+                                : "text-center text-[.85rem] lg:text-[.75vw]"
+                            }
+                          >
                             R$ {String(bet.betValue).replace(".", ",")}
                           </TableCell>
-                          <TableCell className="text-center text-[.85rem] lg:text-[.75vw]">
+                          <TableCell
+                            className={
+                              hideResults
+                                ? "text-center text-[.85rem] blur-[.5rem] select-none lg:text-[.75vw]"
+                                : "text-center text-[.85rem] lg:text-[.75vw]"
+                            }
+                          >
                             {String(bet.unit).replace(".", ",")}
                           </TableCell>
-                          <TableCell className="text-center text-[.85rem] lg:text-[.75vw]">
+                          <TableCell
+                            className={
+                              hideResults
+                                ? "text-center text-[.85rem] blur-[.5rem] select-none lg:text-[.75vw]"
+                                : "text-center text-[.85rem] lg:text-[.75vw]"
+                            }
+                          >
                             {String(bet.odd).replace(".", ",")}
                           </TableCell>
 
@@ -556,17 +611,35 @@ export function BetsStats({
                           )}
 
                           {bet.profit && String(bet.profit).includes("-") && (
-                            <TableCell className="text-center text-[.85rem] text-[#ff0000] lg:text-[.75vw]">
+                            <TableCell
+                              className={
+                                hideResults
+                                  ? "text-center text-[.85rem] text-[#ff0000] blur-[.5rem] select-none lg:text-[.75vw]"
+                                  : "text-center text-[.85rem] text-[#ff0000] lg:text-[.75vw]"
+                              }
+                            >
                               R$ {String(bet.profit).replace(".", ",")}
                             </TableCell>
                           )}
                           {bet.profit > 0 && (
-                            <TableCell className="text-center text-[.85rem] text-[#00ff00] lg:text-[.75vw]">
+                            <TableCell
+                              className={
+                                hideResults
+                                  ? "text-center text-[.85rem] text-[#00ff00] blur-[.5rem] select-none lg:text-[.75vw]"
+                                  : "text-center text-[.85rem] text-[#00ff00] lg:text-[.75vw]"
+                              }
+                            >
                               R$ {String(bet.profit).replace(".", ",")}
                             </TableCell>
                           )}
                           {bet.profit == 0 && (
-                            <TableCell className="text-center text-[.85rem] text-[var(--light-white)] lg:text-[.75vw]">
+                            <TableCell
+                              className={
+                                hideResults
+                                  ? "text-center text-[.85rem] text-[var(--light-white)] blur-[.5rem] select-none lg:text-[.75vw]"
+                                  : "text-center text-[.85rem] text-[var(--light-white)] lg:text-[.75vw]"
+                              }
+                            >
                               R$ {String(bet.profit).replace(".", ",")}
                             </TableCell>
                           )}
@@ -713,107 +786,6 @@ export function BetsStats({
                   </motion.div>
                 ))}
               </AnimatePresence>
-              {/*   <AnimatePresence>
-                {filteredBets
-                  .slice(0, isShowingAllBets ? bets.length : 5)
-                  .map((bet) => (
-                    <motion.div
-                      key={bet.id}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -20 }}
-                      transition={{ duration: 0.3 }}
-                      className="rounded-[.8rem] border border-white/10 p-4"
-                    >
-                      <div className="mb-2 flex items-start justify-between">
-                        <span className="pr-2 text-base font-bold">
-                          {bet.event}
-                        </span>
-                        <Dialog
-                          open={editingBet?.id === bet.id}
-                          onOpenChange={(isOpen) =>
-                            !isOpen && setEditingBet(null)
-                          }
-                        >
-                          <DialogTrigger asChild>
-                            <Button
-                              onClick={() => setEditingBet(bet)}
-                              className="scale-100 cursor-pointer border-none transition-all duration-[.3s] ease-in-out hover:scale-115"
-                            >
-                              <Edit size={25} />
-                            </Button>
-                          </DialogTrigger>
-                          <DialogContent className="rounded-[.8rem] border-white/10 bg-black/80 text-white backdrop-blur-md sm:max-w-[550px]">
-                            <DialogHeader>
-                              <DialogTitle className="text-[var(--light-white)]">
-                                Editar Aposta
-                              </DialogTitle>
-                            </DialogHeader>
-                            <div>
-                              <EditBet
-                                bet={editingBet}
-                                onSave={fetchBets}
-                                onClose={() => setEditingBet(null)}
-                              />
-                            </div>
-                          </DialogContent>
-                        </Dialog>
-                      </div>
-                      <p className="mb-4 text-sm text-white/70">{bet.market}</p>
-
-                      <div className="grid grid-cols-2 gap-x-4 gap-y-2 border-t border-white/10 pt-4 text-sm">
-                        <div>
-                          <p className="text-white/60">Resultado</p>
-                          <p
-                            className={`font-semibold ${
-                              bet.result === "Ganha"
-                                ? "text-[#00ff00]"
-                                : bet.result === "Perdida"
-                                  ? "text-[#ff0000]"
-                                  : ""
-                            }`}
-                          >
-                            {bet.result}
-                          </p>
-                        </div>
-                        <div>
-                          <p className="text-white/60">Lucro</p>
-                          <p
-                            className={`font-semibold ${
-                              bet.profit > 0
-                                ? "text-[#00ff00]"
-                                : bet.profit < 0
-                                  ? "text-[#ff0000]"
-                                  : "text-[var(--light-white)]"
-                            }`}
-                          >
-                            R$ {String(bet.profit).replace(".", ",")}
-                          </p>
-                        </div>
-                        <div>
-                          <p className="text-white/60">Valor</p>
-                          <p>R$ {String(bet.betValue).replace(".", ",")}</p>
-                        </div>
-                        <div>
-                          <p className="text-white/60">Odd</p>
-                          <p>{String(bet.odd).replace(".", ",")}</p>
-                        </div>
-                        <div>
-                          <p className="text-white/60">Categoria</p>
-                          <p>{bet.category}</p>
-                        </div>
-                        <div>
-                          <p className="text-white/60">Data</p>
-                          <p>
-                            {new Date(bet.createdAt).toLocaleDateString(
-                              "pt-BR",
-                            )}
-                          </p>
-                        </div>
-                      </div>
-                    </motion.div>
-                  ))}
-              </AnimatePresence> */}
             </div>
             <div className="py-2 text-right">
               <Button
