@@ -80,7 +80,7 @@ export function DashSidedarMenu() {
                     <SidebarMenuItem>
                       <SidebarMenuButton className="flex rounded-[.8rem] p-5 pr-4 text-[.9rem] font-medium transition-all duration-[.3s] ease-in-out hover:bg-[var(--gray)] hover:text-[var(--light-white)]">
                         <Link
-                          href="/dashboard"
+                          href="/dashboard/categories"
                           className="flex items-center justify-between gap-3"
                         >
                           Resultados por categoria

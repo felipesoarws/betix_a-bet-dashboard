@@ -41,9 +41,10 @@ import {
 } from "@/components/ui/hover-card";
 import Link from "next/link";
 import { Input } from "@/components/ui/input";
+import { DashboardResults } from "@/components/ui/common/dashboard-results";
 
-type BetResult = "Pendente" | "Ganha" | "Perdida" | "Anulada";
-type CategoryResult = "Futebol" | "Basquete" | "eSports" | "Outro";
+export type BetResult = "Pendente" | "Ganha" | "Perdida" | "Anulada";
+export type CategoryResult = "Futebol" | "Basquete" | "eSports" | "Outro";
 
 export type BetSchema = {
   userId: string;
@@ -79,6 +80,19 @@ export function BetsStats({
   // filtros na tabela
   const [eventFilter, setEventFilter] = useState<string>("all");
 
+  // totald de apostas pendentes
+  const pendentBets = bets
+    .filter((bet) => {
+      const matchEvent =
+        eventFilter === "all" ||
+        bet.event.toLocaleLowerCase().includes(eventFilter);
+
+      const matchResult = bet.result === "Pendente";
+
+      return matchEvent && matchResult;
+    })
+    .sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+
   // criação de listas de anos e meses registrados nas bets
   const yearsAvailable = Array.from(
     new Set(bets.map((bet) => new Date(bet.createdAt).getFullYear())),
@@ -106,95 +120,6 @@ export function BetsStats({
       date.getMonth() === Number(monthTotalFilter);
     return matchYear && matchMonth;
   });
-
-  // totald de apostas pendentes
-  const pendentBets = bets
-    .filter((bet) => {
-      const matchEvent =
-        eventFilter === "all" ||
-        bet.event.toLocaleLowerCase().includes(eventFilter);
-
-      const matchResult = bet.result === "Pendente";
-
-      return matchEvent && matchResult;
-    })
-    .sort((a, b) => b.createdAt.localeCompare(a.createdAt));
-
-  // total de bets
-  const betsTotal = filteredBetsByMonthYear.length;
-
-  // soma das unidades ganhas e perdidas
-  const totalUnits = filteredBetsByMonthYear
-    .reduce((sum, bet) => {
-      const unitValue = Number(bet.unit);
-
-      if (bet.result === "Ganha") {
-        return sum + unitValue;
-      }
-
-      if (bet.result === "Perdida") {
-        return sum - unitValue;
-      }
-
-      return sum;
-    }, 0)
-    .toFixed(2);
-
-  // bets ganhas + some das bets ganhas
-  const wins = filteredBetsByMonthYear.filter((bet) => bet.result === "Ganha");
-  const winsSum = Number(
-    wins.reduce((sum, b) => sum + Number(b.profit), 0).toFixed(2),
-  );
-
-  // bets perdidas + some das bets perdidas
-  const loses = filteredBetsByMonthYear.filter(
-    (bet) => bet.result === "Perdida",
-  );
-  const losesSum = Number(
-    loses.reduce((sum, b) => sum + Number(b.profit), 0).toFixed(2),
-  );
-
-  // lucro total
-  const totalProfit = (winsSum + losesSum).toFixed(2);
-
-  // total apostado
-  const gambledTotal = Number(
-    filteredBetsByMonthYear
-      .reduce((sum, b) => sum + Number(b.betValue), 0)
-      .toFixed(2),
-  ).toLocaleString("pt-BR");
-
-  const filteredBetsByMonthYearButPendent = filteredBetsByMonthYear.filter(
-    (bet) => bet.result !== "Pendente",
-  );
-
-  // porcentagem de vitória
-  const percentVictory = (
-    filteredBetsByMonthYear.length > 0
-      ? (wins.length / filteredBetsByMonthYearButPendent.length) * 100
-      : 0
-  ).toFixed(0);
-
-  // odd geral média
-  const averageOddAll =
-    filteredBetsByMonthYearButPendent.length > 0
-      ? filteredBetsByMonthYearButPendent.reduce(
-          (sum, b) => sum + Number(b.odd),
-          0,
-        ) / filteredBetsByMonthYearButPendent.length
-      : 0;
-
-  // odd de ganhos média
-  const averageOddWins =
-    wins.length > 0
-      ? wins.reduce((sum, b) => sum + Number(b.odd), 0) / wins.length
-      : 0;
-
-  // odd de percas média
-  const averageOddLoses =
-    loses.length > 0
-      ? loses.reduce((sum, b) => sum + Number(b.odd), 0) / loses.length
-      : 0;
 
   return (
     <div>
@@ -257,207 +182,13 @@ export function BetsStats({
               </div>
             </div>
 
-            <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-              <div className="flex w-full flex-col items-start justify-center rounded-[.8rem] border border-white/10 bg-[var(--gray-darker)] p-4">
-                <h2 className="font-regular mb-2 text-base tracking-tight lg:text-[1vw]">
-                  Total de apostas
-                </h2>
-                <h2 className="text-2xl font-bold tracking-tight lg:text-[1.5vw]">
-                  <div
-                    className={hideResults ? "blur-[.5rem] select-none" : ""}
-                  >
-                    {betsTotal == 0 ? (
-                      <Loader2 className="h-4 w-4 animate-spin" />
-                    ) : (
-                      <>{betsTotal}</>
-                    )}
-                  </div>
-                </h2>
-              </div>
-              <div className="flex w-full flex-col items-start justify-center rounded-[.8rem] border border-white/10 bg-[var(--gray-darker)] p-4">
-                <h2 className="font-regular mb-2 text-base tracking-tight lg:text-[1vw]">
-                  Total apostado
-                </h2>
-
-                <h2 className="text-2xl font-bold tracking-tight lg:text-[1.5vw]">
-                  <div
-                    className={hideResults ? "blur-[.5rem] select-none" : ""}
-                  >
-                    {gambledTotal == "0" ? (
-                      <Loader2 className="h-4 w-4 animate-spin" />
-                    ) : (
-                      <>
-                        R$ {Number(gambledTotal.replace(",", ".")).toFixed(2)}
-                      </>
-                    )}
-                  </div>
-                </h2>
-              </div>
-              <div className="flex w-full flex-col items-start justify-center rounded-[.8rem] border border-white/10 bg-[var(--gray-darker)] p-4">
-                <h2 className="font-regular mb-2 text-base tracking-tight lg:text-[1vw]">
-                  Lucro / prejuízo total (R$)
-                </h2>
-                <div className={hideResults ? "blur-[.5rem] select-none" : ""}>
-                  {totalProfit == "0.00" ? (
-                    <Loader2 className="h-4 w-4 animate-spin" />
-                  ) : (
-                    <>
-                      {Number(totalProfit) > 0 ? (
-                        <h2 className="text-2xl font-bold tracking-tight text-[#00ff00] lg:text-[1.5vw]">
-                          R$ {Number(totalProfit).toFixed(2)}
-                        </h2>
-                      ) : (
-                        <h2 className="text-2xl font-bold tracking-tight text-[#ff0000] lg:text-[1.5vw]">
-                          R$ {Number(totalProfit).toFixed(2)}
-                        </h2>
-                      )}
-                    </>
-                  )}
-                </div>
-              </div>
-              <div className="flex w-full flex-col items-start justify-center rounded-[.8rem] border border-white/10 bg-[var(--gray-darker)] p-4">
-                <h2 className="font-regular mb-2 text-base tracking-tight lg:text-[1vw]">
-                  Lucro / prejuízo total (un.)
-                </h2>
-                <div className={hideResults ? "blur-[.5rem] select-none" : ""}>
-                  {totalUnits == "0.00" ? (
-                    <Loader2 className="h-4 w-4 animate-spin" />
-                  ) : (
-                    <>
-                      {Number(totalUnits) > 0 ? (
-                        <h2 className="text-2xl font-bold tracking-tight text-[#00ff00] lg:text-[1.5vw]">
-                          +{Number(totalUnits).toLocaleString("pt-BR")}un
-                        </h2>
-                      ) : (
-                        <h2 className="text-2xl font-bold tracking-tight text-[#ff0000] lg:text-[1.5vw]">
-                          {Number(totalUnits).toLocaleString("pt-BR")}un
-                        </h2>
-                      )}
-                    </>
-                  )}
-                </div>
-              </div>
-              <div className="flex w-full flex-col items-start justify-center rounded-[.8rem] border border-white/10 bg-[var(--gray-darker)] p-4">
-                <h2 className="font-regular mb-2 text-base tracking-tight lg:text-[1vw]">
-                  % de vitórias
-                </h2>
-                <h2 className="text-2xl font-bold tracking-tight lg:text-[1.5vw]">
-                  <div
-                    className={hideResults ? "blur-[.5rem] select-none" : ""}
-                  >
-                    {percentVictory == "0" ? (
-                      <Loader2 className="h-4 w-4 animate-spin" />
-                    ) : (
-                      <>{percentVictory}%</>
-                    )}
-                  </div>
-                </h2>
-              </div>
-              <div className="flex w-full flex-col items-start justify-center rounded-[.8rem] border border-white/10 bg-[var(--gray-darker)] p-4">
-                <div className="flex w-full items-start justify-between">
-                  <h2 className="font-regular mb-2 text-base tracking-tight lg:text-[1vw]">
-                    Odd média (geral)
-                  </h2>
-                  <HoverCard>
-                    <HoverCardTrigger>
-                      <Info className="h-4 w-4" color="gray" />
-                    </HoverCardTrigger>
-                    <HoverCardContent className="w-80 bg-[var(--light-white)] text-[var(--gray)]">
-                      <div className="flex justify-between gap-4">
-                        <div className="space-y-1">
-                          <p className="text-sm">
-                            Indica o seu perfil de risco. Odds mais altas podem
-                            significar mais risco e maior retorno potencial.
-                          </p>
-                        </div>
-                      </div>
-                    </HoverCardContent>
-                  </HoverCard>
-                </div>
-                <h2 className="text-2xl font-bold tracking-tight lg:text-[1.5vw]">
-                  <div
-                    className={hideResults ? "blur-[.5rem] select-none" : ""}
-                  >
-                    {!averageOddAll ? (
-                      <Loader2 className="h-4 w-4 animate-spin" />
-                    ) : (
-                      <>{Number(averageOddAll).toFixed(2)}</>
-                    )}
-                  </div>
-                </h2>
-              </div>
-              <div className="flex w-full flex-col items-start justify-center rounded-[.8rem] border border-white/10 bg-[var(--gray-darker)] p-4">
-                <div className="flex w-full items-start justify-between">
-                  <h2 className="font-regular mb-2 text-base tracking-tight lg:text-[1vw]">
-                    Odd média (ganhos)
-                  </h2>
-                  <HoverCard>
-                    <HoverCardTrigger>
-                      <Info className="h-4 w-4" color="gray" />
-                    </HoverCardTrigger>
-                    <HoverCardContent className="w-80 bg-[var(--light-white)] text-[var(--gray)]">
-                      <div className="flex justify-between gap-4">
-                        <div className="space-y-1">
-                          <p className="text-sm">
-                            Mostra a qualidade dos seus acertos. Odds de ganho
-                            muito baixas podem não ser suficientes para cobrir
-                            as perdas.
-                          </p>
-                        </div>
-                      </div>
-                    </HoverCardContent>
-                  </HoverCard>
-                </div>
-                <h2 className="text-2xl font-bold tracking-tight lg:text-[1.5vw]">
-                  <div
-                    className={hideResults ? "blur-[.5rem] select-none" : ""}
-                  >
-                    {!averageOddWins ? (
-                      <Loader2 className="h-4 w-4 animate-spin" />
-                    ) : (
-                      <>{Number(averageOddWins).toFixed(2)}</>
-                    )}
-                  </div>
-                </h2>
-              </div>
-              <div className="flex w-full flex-col items-start justify-center rounded-[.8rem] border border-white/10 bg-[var(--gray-darker)] p-4">
-                <div className="flex w-full items-start justify-between">
-                  <h2 className="font-regular mb-2 text-base tracking-tight lg:text-[1vw]">
-                    Odd média (perdas)
-                  </h2>
-                  <HoverCard>
-                    <HoverCardTrigger>
-                      <Info className="h-4 w-4" color="gray" />
-                    </HoverCardTrigger>
-                    <HoverCardContent className="w-80 bg-[var(--light-white)] text-[var(--gray)]">
-                      <div className="flex justify-between gap-4">
-                        <div className="space-y-1">
-                          <p className="text-sm">
-                            Use para comparar com a odd de ganhos. Perder com
-                            odds baixas é um sinal de alerta, indicando que
-                            apostas seguras estão falhando.
-                          </p>
-                        </div>
-                      </div>
-                    </HoverCardContent>
-                  </HoverCard>
-                </div>
-                <h2 className="text-2xl font-bold tracking-tight lg:text-[1.5vw]">
-                  <div
-                    className={hideResults ? "blur-[.5rem] select-none" : ""}
-                  >
-                    {!averageOddLoses ? (
-                      <Loader2 className="h-4 w-4 animate-spin" />
-                    ) : (
-                      <>{Number(averageOddLoses).toFixed(2)}</>
-                    )}
-                  </div>
-                </h2>
-              </div>
-            </div>
+            <DashboardResults
+              bets={filteredBetsByMonthYear}
+              hideResults={hideResults}
+            />
           </div>
 
-          <div className="hidden lg:block">
+          <div>
             <h1 className="mt-8 text-2xl font-bold tracking-tight md:text-3xl lg:text-[1.3vw]">
               Evolução
             </h1>
