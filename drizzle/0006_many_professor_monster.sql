@@ -1,0 +1,1 @@
+ALTER TABLE "user" ADD COLUMN "unit" numeric(10, 2) DEFAULT '0.00';

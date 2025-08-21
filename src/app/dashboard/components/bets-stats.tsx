@@ -21,7 +21,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Edit, Info, Loader2 } from "lucide-react";
+import { Edit } from "lucide-react";
 
 import { MONTH_NAMES } from "@/lib/constants";
 import { DailyProfitChart } from "./daily-profit-chart";
@@ -34,11 +34,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { authClient } from "@/lib/auth-client";
-import {
-  HoverCard,
-  HoverCardContent,
-  HoverCardTrigger,
-} from "@/components/ui/hover-card";
+
 import Link from "next/link";
 import { Input } from "@/components/ui/input";
 import { DashboardResults } from "@/components/ui/common/dashboard-results";

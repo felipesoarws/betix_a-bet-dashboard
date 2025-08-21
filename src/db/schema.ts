@@ -13,6 +13,7 @@ export const user = pgTable("user", {
   id: text("id").primaryKey(),
   name: text("name").notNull(),
   email: text("email").notNull().unique(),
+  unit: numeric("unit", { precision: 10, scale: 2 }).default("0.00"),
   emailVerified: boolean("email_verified")
     .$defaultFn(() => false)
     .notNull(),

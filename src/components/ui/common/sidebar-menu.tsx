@@ -15,10 +15,12 @@ import {
 import { authClient } from "@/lib/auth-client";
 import {
   ChartColumnStacked,
+  DecimalsArrowRight,
   DollarSign,
   LayoutDashboard,
   LogInIcon,
   LogOutIcon,
+  MonitorCog,
   User2,
   UserCircle,
 } from "lucide-react";
@@ -32,9 +34,9 @@ export function DashSidedarMenu() {
     <div className="bg-[var(--gray)]">
       {session?.user ? (
         <>
-          <Sidebar className="rounded-[.8rem] border-[white]/20 bg-[#171717] text-right lg:mt-21">
-            <SidebarHeader className="rounded-t-[.8rem] bg-[#171717] pt-6 text-[var(--light-white)]">
-              <div className="flex items-center justify-end gap-6">
+          <Sidebar className="fixed top-0 right-0 z-50 h-full w-[250px] rounded-[.8rem] border-[white]/20 bg-[#171717] text-right">
+            <SidebarHeader className="bg-[#171717] pt-6 text-[var(--light-white)] lg:rounded-t-[.8rem]">
+              <div className="flex flex-row-reverse items-center justify-end gap-4 lg:flex-row lg:gap-2">
                 <div>
                   <h3 className="text-[1.3rem] font-bold">
                     {session.user.name}
@@ -43,8 +45,8 @@ export function DashSidedarMenu() {
                     {session.user.email}
                   </h4>
                 </div>
-                <div>
-                  <Avatar className="border border-white/10 bg-black/20 p-7 backdrop-blur-md">
+                <div className="ml-2">
+                  <Avatar className="mt-1 border border-white/10 bg-black/20 p-7 backdrop-blur-md lg:m-0">
                     <AvatarImage
                       src={session?.user?.image as string | undefined}
                     />
@@ -64,7 +66,7 @@ export function DashSidedarMenu() {
                 <SidebarGroupContent>
                   <SidebarMenu className="flex flex-col items-end justify-center">
                     <SidebarMenuItem>
-                      <SidebarMenuButton className="flex rounded-[.8rem] p-4 py-5 text-[.9rem] font-medium transition-all duration-[.3s] ease-in-out hover:bg-[var(--gray)] hover:text-[var(--light-white)]">
+                      <SidebarMenuButton className="flex rounded-[.8rem] p-4 py-5 text-[.85rem] font-medium transition-all duration-[.3s] ease-in-out hover:bg-[var(--gray)] hover:text-[var(--light-white)]">
                         <Link
                           href="/dashboard"
                           className="flex items-center justify-between gap-3"
@@ -78,7 +80,7 @@ export function DashSidedarMenu() {
                       </SidebarMenuButton>
                     </SidebarMenuItem>
                     <SidebarMenuItem>
-                      <SidebarMenuButton className="flex rounded-[.8rem] p-5 pr-4 text-[.9rem] font-medium transition-all duration-[.3s] ease-in-out hover:bg-[var(--gray)] hover:text-[var(--light-white)]">
+                      <SidebarMenuButton className="flex rounded-[.8rem] p-5 pr-4 text-[.85rem] font-medium transition-all duration-[.3s] ease-in-out hover:bg-[var(--gray)] hover:text-[var(--light-white)]">
                         <Link
                           href="/dashboard/categories"
                           className="flex items-center justify-between gap-3"
@@ -92,7 +94,7 @@ export function DashSidedarMenu() {
                       </SidebarMenuButton>
                     </SidebarMenuItem>
                     <SidebarMenuItem>
-                      <SidebarMenuButton className="flex rounded-[.8rem] p-4 py-5 text-[.9rem] font-medium transition-all duration-[.3s] ease-in-out hover:bg-[var(--gray)] hover:text-[var(--light-white)]">
+                      <SidebarMenuButton className="flex rounded-[.8rem] p-4 py-5 text-[.85rem] font-medium transition-all duration-[.3s] ease-in-out hover:bg-[var(--gray)] hover:text-[var(--light-white)]">
                         <Link
                           href="/dashboard/history"
                           className="flex items-center justify-between gap-3"
@@ -107,12 +109,41 @@ export function DashSidedarMenu() {
               </SidebarGroup>
               <SidebarGroup className="flex flex-col items-end justify-center">
                 <SidebarGroupLabel className="text-right text-[.85rem] text-[var(--light-white)]/70">
+                  Apostas
+                </SidebarGroupLabel>
+                <SidebarGroupContent>
+                  <SidebarMenu className="flex flex-col items-end justify-center">
+                    <SidebarMenuItem>
+                      <SidebarMenuButton className="flex rounded-[.8rem] p-4 py-5 text-[.85rem] font-medium transition-all duration-[.3s] ease-in-out hover:bg-[var(--gray)] hover:text-[var(--light-white)]">
+                        <div className="flex items-center justify-between gap-3">
+                          Criar / Editar categoria(s)
+                          <MonitorCog color="rgb(250, 250, 250)" size={15} />
+                        </div>
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                    <SidebarMenuItem>
+                      <SidebarMenuButton className="flex rounded-[.8rem] p-5 pr-4 text-[.85rem] font-medium transition-all duration-[.3s] ease-in-out hover:bg-[var(--gray)] hover:text-[var(--light-white)]">
+                        <div className="flex items-center justify-between gap-3">
+                          Editar valor da unidade
+                          <DecimalsArrowRight
+                            color="rgb(250, 250, 250)"
+                            size={15}
+                          />
+                        </div>
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                  </SidebarMenu>
+                </SidebarGroupContent>
+              </SidebarGroup>
+
+              <SidebarGroup className="flex flex-col items-end justify-center">
+                <SidebarGroupLabel className="text-right text-[.85rem] text-[var(--light-white)]/70">
                   Conta
                 </SidebarGroupLabel>
                 <SidebarGroupContent>
                   <SidebarMenu className="flex flex-col items-end justify-center">
                     <SidebarMenuItem>
-                      <SidebarMenuButton className="flex rounded-[.8rem] p-4 py-5 text-[.9rem] font-medium transition-all duration-[.3s] ease-in-out hover:bg-[var(--gray)] hover:text-[var(--light-white)]">
+                      <SidebarMenuButton className="flex rounded-[.8rem] p-4 py-5 text-[.85rem] font-medium transition-all duration-[.3s] ease-in-out hover:bg-[var(--gray)] hover:text-[var(--light-white)]">
                         <Link
                           href="/myaccount"
                           className="flex items-center justify-between gap-3"
@@ -123,7 +154,7 @@ export function DashSidedarMenu() {
                       </SidebarMenuButton>
                     </SidebarMenuItem>
                     <SidebarMenuItem>
-                      <SidebarMenuButton className="flex rounded-[.8rem] p-4 py-5 text-[.9rem] font-medium transition-all duration-[.3s] ease-in-out hover:bg-[var(--gray)] hover:text-[var(--light-white)]">
+                      <SidebarMenuButton className="flex rounded-[.8rem] p-4 py-5 text-[.85rem] font-medium transition-all duration-[.3s] ease-in-out hover:bg-[var(--gray)] hover:text-[var(--light-white)]">
                         <Link
                           href="/authentication"
                           className="flex items-center justify-between gap-3"
@@ -135,7 +166,7 @@ export function DashSidedarMenu() {
                     </SidebarMenuItem>
                     <SidebarMenuItem>
                       <SidebarMenuButton
-                        className="flex rounded-[.8rem] p-4 py-5 text-[.9rem] font-medium transition-all duration-[.3s] ease-in-out hover:bg-[var(--gray)] hover:text-[var(--light-white)]"
+                        className="flex rounded-[.8rem] p-4 py-5 text-[.85rem] font-medium transition-all duration-[.3s] ease-in-out hover:bg-[var(--gray)] hover:text-[var(--light-white)]"
                         onClick={() => authClient.signOut()}
                       >
                         <Link
@@ -154,9 +185,9 @@ export function DashSidedarMenu() {
           </Sidebar>
         </>
       ) : (
-        <Sidebar className="rounded-[.8rem] border-[white]/20 bg-[#171717] px-4 text-right lg:mt-21">
+        <Sidebar className="fixed top-0 right-0 z-50 h-full w-[250px] rounded-[.8rem] border-[white]/20 bg-[#171717] text-right">
           <SidebarHeader className="bg-[#171717] pt-6 text-[var(--light-white)]">
-            <div className="flex items-center justify-end gap-6">
+            <div className="flex items-center justify-end gap-6 pr-4">
               <div>
                 <h3 className="text-[1.3rem] font-bold">Olá.</h3>
                 <h4 className="font-regular pl-15 text-[.8rem] italic">

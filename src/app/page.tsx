@@ -129,7 +129,7 @@ const Home = () => {
               </div>
             </div>
             <div className="mt-4 rounded-[.8rem] border border-white/10 p-2 lg:p-4">
-              <DailyProfitChart bets={SEED_BETS} />
+              <DailyProfitChart bets={SEED_BETS} hideResults={false} />
             </div>
           </section>
 
