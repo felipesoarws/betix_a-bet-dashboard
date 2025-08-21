@@ -15,11 +15,12 @@ import {
 } from "@/components/ui/dialog";
 import { AddBetForm } from "./components/add-bet-form";
 import { BetsStats } from "./components/bets-stats";
-import { PlusCircle } from "lucide-react";
+import { Eye, EyeClosed, PlusCircle } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
 import { BetSchema } from "./components/bets-stats";
 
 const Dashboard = () => {
+  const [isResultsHidden, setIsResultsHidden] = useState<boolean>(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [bets, setBets] = useState<BetSchema[]>([]);
 
@@ -34,8 +35,14 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
+    const localSave = localStorage.getItem("hideResults");
+    setIsResultsHidden(localSave === "true");
     fetchBets();
   }, []);
+
+  useEffect(() => {
+    localStorage.setItem("hideResults", String(isResultsHidden));
+  }, [isResultsHidden]);
 
   const checkIfHasUserLogged = async () => {
     const session = await authClient.getSession();
@@ -66,34 +73,52 @@ const Dashboard = () => {
                 Seu dashboard
               </h1>
 
-              <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-                <DialogTrigger asChild>
-                  <Button
-                    className="w-full max-w-xs cursor-pointer rounded-[.8rem] bg-[var(--light-white)] text-[var(--gray)] hover:bg-white/90 lg:w-auto lg:px-6"
-                    onClick={() => checkIfHasUserLogged()}
-                  >
-                    <PlusCircle className="mr-2 h-4 w-4" />
-                    Nova Aposta
-                  </Button>
-                </DialogTrigger>
-                <DialogContent className="rounded-[.8rem] border-white/10 bg-black/80 text-white backdrop-blur-md sm:max-w-[550px]">
-                  <DialogHeader>
-                    <DialogTitle className="text-xl">Nova Aposta</DialogTitle>
-                  </DialogHeader>
-                  <div>
-                    <AddBetForm
-                      onBetAdded={() => {
-                        fetchBets();
-                        setIsDialogOpen(false);
-                      }}
-                      setIsDialogOpen={setIsDialogOpen}
-                    />
-                  </div>
-                </DialogContent>
-              </Dialog>
+              <div className="flex items-center justify-center gap-4">
+                {isResultsHidden ? (
+                  <EyeClosed
+                    className="cursor-pointer"
+                    onClick={() => setIsResultsHidden(false)}
+                  />
+                ) : (
+                  <Eye
+                    className="cursor-pointer"
+                    onClick={() => setIsResultsHidden(true)}
+                  />
+                )}
+
+                <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+                  <DialogTrigger asChild>
+                    <Button
+                      className="w-full max-w-xs cursor-pointer rounded-[.8rem] bg-[var(--light-white)] text-[var(--gray)] hover:bg-white/90 lg:w-auto lg:px-6"
+                      onClick={() => checkIfHasUserLogged()}
+                    >
+                      <PlusCircle className="mr-2 h-4 w-4" />
+                      Nova Aposta
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="rounded-[.8rem] border-white/10 bg-black/80 text-white backdrop-blur-md sm:max-w-[550px]">
+                    <DialogHeader>
+                      <DialogTitle className="text-xl">Nova Aposta</DialogTitle>
+                    </DialogHeader>
+                    <div>
+                      <AddBetForm
+                        onBetAdded={() => {
+                          fetchBets();
+                          setIsDialogOpen(false);
+                        }}
+                        setIsDialogOpen={setIsDialogOpen}
+                      />
+                    </div>
+                  </DialogContent>
+                </Dialog>
+              </div>
             </div>
             <Toaster />
-            <BetsStats bets={bets} fetchBets={fetchBets} />
+            <BetsStats
+              bets={bets}
+              fetchBets={fetchBets}
+              hideResults={isResultsHidden}
+            />
           </div>
         </main>
       </div>

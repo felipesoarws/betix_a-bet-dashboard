@@ -61,9 +61,11 @@ export type BetSchema = {
 export function BetsStats({
   fetchBets,
   bets,
+  hideResults,
 }: {
   bets: BetSchema[];
   fetchBets: () => void;
+  hideResults: boolean;
 }) {
   const { data: session } = authClient.useSession();
 
@@ -248,75 +250,88 @@ export function BetsStats({
                   Total de apostas
                 </h2>
                 <h2 className="text-2xl font-bold tracking-tight lg:text-[1.5vw]">
-                  {betsTotal == 0 ? (
-                    <Loader2 className="h-4 w-4 animate-spin" />
-                  ) : (
-                    <>{betsTotal}</>
-                  )}
+                  <div className={hideResults ? "blur-[.5rem]" : ""}>
+                    {betsTotal == 0 ? (
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                    ) : (
+                      <>{betsTotal}</>
+                    )}
+                  </div>
                 </h2>
               </div>
               <div className="flex w-full flex-col items-start justify-center rounded-[.8rem] border border-white/10 bg-[var(--gray-darker)] p-4">
                 <h2 className="font-regular mb-2 text-base tracking-tight lg:text-[1vw]">
                   Total apostado
                 </h2>
+
                 <h2 className="text-2xl font-bold tracking-tight lg:text-[1.5vw]">
-                  {gambledTotal == "0" ? (
-                    <Loader2 className="h-4 w-4 animate-spin" />
-                  ) : (
-                    <>R$ {Number(gambledTotal.replace(",", ".")).toFixed(2)}</>
-                  )}
+                  <div className={hideResults ? "blur-[.5rem]" : ""}>
+                    {gambledTotal == "0" ? (
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                    ) : (
+                      <>
+                        R$ {Number(gambledTotal.replace(",", ".")).toFixed(2)}
+                      </>
+                    )}
+                  </div>
                 </h2>
               </div>
               <div className="flex w-full flex-col items-start justify-center rounded-[.8rem] border border-white/10 bg-[var(--gray-darker)] p-4">
                 <h2 className="font-regular mb-2 text-base tracking-tight lg:text-[1vw]">
                   Lucro / prejuízo total (R$)
                 </h2>
-                {totalProfit == "0.00" ? (
-                  <Loader2 className="h-4 w-4 animate-spin" />
-                ) : (
-                  <>
-                    {Number(totalProfit) > 0 ? (
-                      <h2 className="text-2xl font-bold tracking-tight text-[#00ff00] lg:text-[1.5vw]">
-                        R$ {Number(totalProfit).toFixed(2)}
-                      </h2>
-                    ) : (
-                      <h2 className="text-2xl font-bold tracking-tight text-[#ff0000] lg:text-[1.5vw]">
-                        R$ {Number(totalProfit).toFixed(2)}
-                      </h2>
-                    )}
-                  </>
-                )}
+                <div className={hideResults ? "blur-[.5rem]" : ""}>
+                  {totalProfit == "0.00" ? (
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  ) : (
+                    <>
+                      {Number(totalProfit) > 0 ? (
+                        <h2 className="text-2xl font-bold tracking-tight text-[#00ff00] lg:text-[1.5vw]">
+                          R$ {Number(totalProfit).toFixed(2)}
+                        </h2>
+                      ) : (
+                        <h2 className="text-2xl font-bold tracking-tight text-[#ff0000] lg:text-[1.5vw]">
+                          R$ {Number(totalProfit).toFixed(2)}
+                        </h2>
+                      )}
+                    </>
+                  )}
+                </div>
               </div>
               <div className="flex w-full flex-col items-start justify-center rounded-[.8rem] border border-white/10 bg-[var(--gray-darker)] p-4">
                 <h2 className="font-regular mb-2 text-base tracking-tight lg:text-[1vw]">
                   Lucro / prejuízo total (un.)
                 </h2>
-                {totalUnits == "0.00" ? (
-                  <Loader2 className="h-4 w-4 animate-spin" />
-                ) : (
-                  <>
-                    {Number(totalUnits) > 0 ? (
-                      <h2 className="text-2xl font-bold tracking-tight text-[#00ff00] lg:text-[1.5vw]">
-                        +{Number(totalUnits).toLocaleString("pt-BR")}un
-                      </h2>
-                    ) : (
-                      <h2 className="text-2xl font-bold tracking-tight text-[#ff0000] lg:text-[1.5vw]">
-                        {Number(totalUnits).toLocaleString("pt-BR")}un
-                      </h2>
-                    )}
-                  </>
-                )}
+                <div className={hideResults ? "blur-[.5rem]" : ""}>
+                  {totalUnits == "0.00" ? (
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  ) : (
+                    <>
+                      {Number(totalUnits) > 0 ? (
+                        <h2 className="text-2xl font-bold tracking-tight text-[#00ff00] lg:text-[1.5vw]">
+                          +{Number(totalUnits).toLocaleString("pt-BR")}un
+                        </h2>
+                      ) : (
+                        <h2 className="text-2xl font-bold tracking-tight text-[#ff0000] lg:text-[1.5vw]">
+                          {Number(totalUnits).toLocaleString("pt-BR")}un
+                        </h2>
+                      )}
+                    </>
+                  )}
+                </div>
               </div>
               <div className="flex w-full flex-col items-start justify-center rounded-[.8rem] border border-white/10 bg-[var(--gray-darker)] p-4">
                 <h2 className="font-regular mb-2 text-base tracking-tight lg:text-[1vw]">
                   % de vitórias
                 </h2>
                 <h2 className="text-2xl font-bold tracking-tight lg:text-[1.5vw]">
-                  {percentVictory == "0" ? (
-                    <Loader2 className="h-4 w-4 animate-spin" />
-                  ) : (
-                    <>{percentVictory}%</>
-                  )}
+                  <div className={hideResults ? "blur-[.5rem]" : ""}>
+                    {percentVictory == "0" ? (
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                    ) : (
+                      <>{percentVictory}%</>
+                    )}
+                  </div>
                 </h2>
               </div>
               <div className="flex w-full flex-col items-start justify-center rounded-[.8rem] border border-white/10 bg-[var(--gray-darker)] p-4">
@@ -341,11 +356,13 @@ export function BetsStats({
                   </HoverCard>
                 </div>
                 <h2 className="text-2xl font-bold tracking-tight lg:text-[1.5vw]">
-                  {!averageOddAll ? (
-                    <Loader2 className="h-4 w-4 animate-spin" />
-                  ) : (
-                    <>{Number(averageOddAll).toFixed(2)}</>
-                  )}
+                  <div className={hideResults ? "blur-[.5rem]" : ""}>
+                    {!averageOddAll ? (
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                    ) : (
+                      <>{Number(averageOddAll).toFixed(2)}</>
+                    )}
+                  </div>
                 </h2>
               </div>
               <div className="flex w-full flex-col items-start justify-center rounded-[.8rem] border border-white/10 bg-[var(--gray-darker)] p-4">
@@ -371,11 +388,13 @@ export function BetsStats({
                   </HoverCard>
                 </div>
                 <h2 className="text-2xl font-bold tracking-tight lg:text-[1.5vw]">
-                  {!averageOddWins ? (
-                    <Loader2 className="h-4 w-4 animate-spin" />
-                  ) : (
-                    <>{Number(averageOddWins).toFixed(2)}</>
-                  )}
+                  <div className={hideResults ? "blur-[.5rem]" : ""}>
+                    {!averageOddWins ? (
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                    ) : (
+                      <>{Number(averageOddWins).toFixed(2)}</>
+                    )}
+                  </div>
                 </h2>
               </div>
               <div className="flex w-full flex-col items-start justify-center rounded-[.8rem] border border-white/10 bg-[var(--gray-darker)] p-4">
@@ -401,11 +420,13 @@ export function BetsStats({
                   </HoverCard>
                 </div>
                 <h2 className="text-2xl font-bold tracking-tight lg:text-[1.5vw]">
-                  {!averageOddLoses ? (
-                    <Loader2 className="h-4 w-4 animate-spin" />
-                  ) : (
-                    <>{Number(averageOddLoses).toFixed(2)}</>
-                  )}
+                  <div className={hideResults ? "blur-[.5rem]" : ""}>
+                    {!averageOddLoses ? (
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                    ) : (
+                      <>{Number(averageOddLoses).toFixed(2)}</>
+                    )}
+                  </div>
                 </h2>
               </div>
             </div>
