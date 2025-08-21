@@ -31,13 +31,18 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Edit } from "lucide-react";
+import { Edit, Eye, EyeClosed } from "lucide-react";
 import { EditBet } from "../components/edit-bet";
 
 type BetResult = "Pendente" | "Ganha" | "Perdida" | "Anulada";
 type CategoryResult = "Futebol" | "Basquete" | "eSports" | "Outro";
 
 const BetHistory = () => {
+  const [isResultsHidden, setIsResultsHidden] = useState<boolean>(() => {
+    const localSave = localStorage.getItem("hideResults") || false;
+    return localSave === "true";
+  });
+
   const [bets, setBets] = useState<BetSchema[]>([]);
   const [editingBet, setEditingBet] = useState<BetSchema | null>(null);
 
@@ -60,6 +65,8 @@ const BetHistory = () => {
 
   useEffect(() => {
     fetchBets();
+    const localSave = localStorage.getItem("hideResults");
+    setIsResultsHidden(localSave === "true");
   }, []);
 
   const filteredBets = bets
@@ -80,10 +87,25 @@ const BetHistory = () => {
       <div className="w-full flex-grow">
         <main className="mx-auto flex w-full max-w-7xl flex-grow flex-col p-4 md:p-6 lg:max-w-[85vw]">
           <div className="w-full rounded-[.8rem] bg-[var(--gray-darker)] py-6 lg:py-6">
-            <div className="flex flex-col items-center gap-4 lg:flex-row lg:justify-between">
+            <div className="flex items-center justify-start gap-4">
               <h1 className="text-center text-3xl font-extrabold tracking-tight md:text-4xl lg:text-3xl">
                 Histórico
               </h1>
+              {isResultsHidden ? (
+                <div
+                  className="cursor-pointer rounded-full bg-[var(--light-white)]/20 p-[.5rem]"
+                  onClick={() => setIsResultsHidden(false)}
+                >
+                  <EyeClosed color="var(--gray)" />
+                </div>
+              ) : (
+                <div
+                  className="cursor-pointer rounded-full bg-[var(--light-white)]/80 p-[.5rem]"
+                  onClick={() => setIsResultsHidden(true)}
+                >
+                  <Eye color="var(--gray)" />
+                </div>
+              )}
             </div>
           </div>
           <div className="z-10 mt-8">
@@ -218,13 +240,31 @@ const BetHistory = () => {
                           <TableCell className="text-center text-[.85rem] lg:text-[.75vw]">
                             {bet.category}
                           </TableCell>
-                          <TableCell className="text-center text-[.85rem] lg:text-[.75vw]">
+                          <TableCell
+                            className={
+                              isResultsHidden
+                                ? "text-center text-[.85rem] blur-[.5rem] select-none lg:text-[.75vw]"
+                                : "text-center text-[.85rem] lg:text-[.75vw]"
+                            }
+                          >
                             R$ {String(bet.betValue).replace(".", ",")}
                           </TableCell>
-                          <TableCell className="text-center text-[.85rem] lg:text-[.75vw]">
+                          <TableCell
+                            className={
+                              isResultsHidden
+                                ? "text-center text-[.85rem] blur-[.5rem] select-none lg:text-[.75vw]"
+                                : "text-center text-[.85rem] lg:text-[.75vw]"
+                            }
+                          >
                             {String(bet.unit).replace(".", ",")}
                           </TableCell>
-                          <TableCell className="text-center text-[.85rem] lg:text-[.75vw]">
+                          <TableCell
+                            className={
+                              isResultsHidden
+                                ? "text-center text-[.85rem] blur-[.5rem] select-none lg:text-[.75vw]"
+                                : "text-center text-[.85rem] lg:text-[.75vw]"
+                            }
+                          >
                             {String(bet.odd).replace(".", ",")}
                           </TableCell>
 
@@ -250,17 +290,35 @@ const BetHistory = () => {
                           )}
 
                           {bet.profit && String(bet.profit).includes("-") && (
-                            <TableCell className="text-center text-[.85rem] text-[#ff0000] lg:text-[.75vw]">
+                            <TableCell
+                              className={
+                                isResultsHidden
+                                  ? "text-center text-[.85rem] text-[#ff0000] blur-[.5rem] select-none lg:text-[.75vw]"
+                                  : "text-center text-[.85rem] text-[#ff0000] lg:text-[.75vw]"
+                              }
+                            >
                               R$ {String(bet.profit).replace(".", ",")}
                             </TableCell>
                           )}
                           {bet.profit > 0 && (
-                            <TableCell className="text-center text-[.85rem] text-[#00ff00] lg:text-[.75vw]">
+                            <TableCell
+                              className={
+                                isResultsHidden
+                                  ? "text-center text-[.85rem] text-[#00ff00] blur-[.5rem] select-none lg:text-[.75vw]"
+                                  : "text-center text-[.85rem] text-[#00ff00] lg:text-[.75vw]"
+                              }
+                            >
                               R$ {String(bet.profit).replace(".", ",")}
                             </TableCell>
                           )}
                           {bet.profit == 0 && (
-                            <TableCell className="text-center text-[.85rem] text-[var(--light-white)] lg:text-[.75vw]">
+                            <TableCell
+                              className={
+                                isResultsHidden
+                                  ? "text-center text-[.85rem] text-[var(--light-white)] blur-[.5rem] select-none lg:text-[.75vw]"
+                                  : "text-center text-[.85rem] text-[var(--light-white)] lg:text-[.75vw]"
+                              }
+                            >
                               R$ {String(bet.profit).replace(".", ",")}
                             </TableCell>
                           )}

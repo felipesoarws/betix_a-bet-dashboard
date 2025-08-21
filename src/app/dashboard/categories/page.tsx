@@ -48,8 +48,6 @@ const ResultsByCategory = () => {
 
   const groupedBets = groupByCategory(bets);
 
-  console.log(groupedBets);
-
   useEffect(() => {
     const localSave = localStorage.getItem("hideResults");
 
@@ -67,20 +65,18 @@ const ResultsByCategory = () => {
             </h1>
             <div>
               {isResultsHidden ? (
-                <div className="rounded-full bg-[var(--light-white)]/20 p-[.5rem]">
-                  <EyeClosed
-                    className="cursor-pointer"
-                    color="var(--gray)"
-                    onClick={() => setIsResultsHidden(false)}
-                  />
+                <div
+                  className="cursor-pointer rounded-full bg-[var(--light-white)]/20 p-[.5rem]"
+                  onClick={() => setIsResultsHidden(false)}
+                >
+                  <EyeClosed color="var(--gray)" />
                 </div>
               ) : (
-                <div className="rounded-full bg-[var(--light-white)]/80 p-[.5rem]">
-                  <Eye
-                    className="cursor-pointer"
-                    color="var(--gray)"
-                    onClick={() => setIsResultsHidden(true)}
-                  />
+                <div
+                  className="cursor-pointer rounded-full bg-[var(--light-white)]/80 p-[.5rem]"
+                  onClick={() => setIsResultsHidden(true)}
+                >
+                  <Eye color="var(--gray)" />
                 </div>
               )}
             </div>
