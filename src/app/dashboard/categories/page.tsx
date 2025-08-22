@@ -1,6 +1,6 @@
 "use client";
 
-import { Header } from "@/components/ui/common/header";
+import { DashboardHeader } from "@/components/ui/common/dashboard-header";
 import { useEffect, useState } from "react";
 import { BetSchema } from "../components/bets-stats";
 import { authClient } from "@/lib/auth-client";
@@ -56,14 +56,16 @@ const ResultsByCategory = () => {
     }
   }, []);
 
+  console.log(groupedBets);
+
   return (
     <div className="flex min-h-screen flex-col bg-[var(--gray)] text-[var(--light-white)]">
-      <Header backIcon={true} path="dashboard" />
+      <DashboardHeader backIcon={true} path="dashboard" homeIcon={false} />
       <div>
         <main className="mx-auto flex w-full max-w-7xl flex-col gap-6 p-4 md:p-6 lg:max-w-[85vw]">
           <div className="mt-8 flex items-center justify-start gap-4">
             <h1 className="text-left text-3xl font-extrabold tracking-tight md:text-4xl lg:text-3xl">
-              Seu dashboard
+              Dashboard por categorias
             </h1>
             <div>
               {isResultsHidden ? (
@@ -83,8 +85,18 @@ const ResultsByCategory = () => {
               )}
             </div>
           </div>
+
           {!groupedBets ? (
-            <>carregando</>
+            <div className="mt-4 rounded-[.8rem] border border-white/10 p-2 lg:p-4">
+              <div className="flex h-screen items-center justify-center text-center">
+                <h1 className="mt-8 text-2xl font-bold tracking-tight md:text-3xl lg:text-[1.3vw]">
+                  Ainda sem apostas registradas.
+                  <span className="block">
+                    Registre para visualizar seus resultados.
+                  </span>
+                </h1>
+              </div>
+            </div>
           ) : (
             <>
               {Object.keys(groupedBets).map((category) => (

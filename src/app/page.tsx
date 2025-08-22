@@ -1,6 +1,6 @@
 "use client";
 
-import { Header } from "@/components/ui/common/header";
+import { HomepageHeader } from "@/components/ui/common/homepage-header";
 import FlowingBackground from "@/components/ui/common/flowing-background";
 import { BarChart, Wallet, ShieldCheck, Loader2 } from "lucide-react";
 import Link from "next/link";
@@ -22,12 +22,12 @@ const Home = () => {
 
   return (
     <div className="relative isolate min-h-screen w-full bg-black text-[var(--light-white)]">
-      <Header backIcon={false} path="homepage" />
       <div className="absolute top-0 h-[70vh] w-full lg:h-[100vh]">
         <FlowingBackground />
       </div>
+      <HomepageHeader backIcon={false} path="homepage" />
 
-      <div className="relative z-10 flex min-h-screen flex-col items-center justify-center">
+      <div className="relative z-10 flex min-h-screen flex-col items-center justify-center pt-10">
         <main className="container flex flex-col px-2 lg:px-[8vw]">
           <section className="flex flex-grow flex-col items-center justify-center py-20 text-center">
             <div className="mb-6">

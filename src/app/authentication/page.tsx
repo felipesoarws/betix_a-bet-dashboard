@@ -2,17 +2,17 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import FlowingBackground from "@/components/ui/common/flowing-background";
 import SignInForm from "./components/sign-in-form";
 import SignUpForm from "./components/sign-up-form";
-import { Header } from "@/components/ui/common/header";
+import { HomepageHeader } from "@/components/ui/common/homepage-header";
 
 const Authentication = async () => {
   return (
     <div className="relative isolate min-h-screen bg-black text-[var(--light-white)]">
-      <Header backIcon={false} path="sign-in-up" />
+      <HomepageHeader backIcon={true} path={"sign-in-out"} />
       <div className="absolute top-0 h-[70vh] w-full lg:h-[90vh]">
         <FlowingBackground />
       </div>
 
-      <div className="relative z-10 flex flex-col items-center justify-center">
+      <div className="relative z-10 flex flex-col items-center justify-center pt-25">
         <main className="container flex flex-col items-center justify-center px-2 lg:px-[8vw]">
           <div className="flex w-full flex-col gap-6 p-5 lg:w-[30vw]">
             <Tabs defaultValue="sign-in">

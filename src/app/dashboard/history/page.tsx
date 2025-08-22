@@ -1,5 +1,5 @@
 "use client";
-import { Header } from "@/components/ui/common/header";
+import { DashboardHeader } from "@/components/ui/common/dashboard-header";
 import {
   Table,
   TableBody,
@@ -110,7 +110,7 @@ const BetHistory = () => {
   return (
     <div className="flex min-h-screen flex-col bg-[var(--gray)] text-[var(--light-white)]">
       <div className="w-full flex-grow">
-        <Header path="dashboard" backIcon={true} />
+        <DashboardHeader path="dashboard" backIcon={true} homeIcon={false} />
         <main className="mx-auto flex w-full max-w-7xl flex-grow flex-col p-4 md:p-6 lg:max-w-[85vw]">
           <div className="w-full rounded-[.8rem] bg-[var(--gray-darker)] py-6 lg:py-6">
             <div className="flex items-center justify-start gap-4">

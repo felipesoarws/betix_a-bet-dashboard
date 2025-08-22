@@ -37,11 +37,10 @@ export const DashboardResults = ({
   );
 
   // porcentagem de vitória
-  const percentVictory = (
+  const percentVictory =
     bets.length > 0
       ? (wins.length / filteredBetsByMonthYearButPendent.length) * 100
-      : 0
-  ).toFixed(0);
+      : undefined;
 
   // odd geral média
   const averageOddAll =
@@ -89,10 +88,10 @@ export const DashboardResults = ({
         </h2>
         <h2 className="text-2xl font-bold tracking-tight lg:text-[1.5vw]">
           <div className={hideResults ? "blur-[.5rem] select-none" : ""}>
-            {betsTotal == 0 ? (
+            {betsTotal == undefined ? (
               <Loader2 className="h-4 w-4 animate-spin" />
             ) : (
-              <>{betsTotal}</>
+              <>{Number(betsTotal)}</>
             )}
           </div>
         </h2>
@@ -104,7 +103,7 @@ export const DashboardResults = ({
 
         <h2 className="text-2xl font-bold tracking-tight lg:text-[1.5vw]">
           <div className={hideResults ? "blur-[.5rem] select-none" : ""}>
-            {gambledTotal == "0" ? (
+            {gambledTotal == undefined ? (
               <Loader2 className="h-4 w-4 animate-spin" />
             ) : (
               <>R$ {Number(gambledTotal.replace(",", ".")).toFixed(2)}</>
@@ -117,16 +116,22 @@ export const DashboardResults = ({
           Lucro / prejuízo total (R$)
         </h2>
         <div className={hideResults ? "blur-[.5rem] select-none" : ""}>
-          {totalProfit == "0.00" ? (
+          {totalProfit == undefined ? (
             <Loader2 className="h-4 w-4 animate-spin" />
           ) : (
             <>
-              {Number(totalProfit) > 0 ? (
+              {Number(totalProfit) > 0 && (
                 <h2 className="text-2xl font-bold tracking-tight text-[#00ff00] lg:text-[1.5vw]">
                   R$ {Number(totalProfit).toFixed(2)}
                 </h2>
-              ) : (
+              )}
+              {Number(totalProfit) < 0 && (
                 <h2 className="text-2xl font-bold tracking-tight text-[#ff0000] lg:text-[1.5vw]">
+                  R$ {Number(totalProfit).toFixed(2)}
+                </h2>
+              )}
+              {Number(totalProfit) == 0 && (
+                <h2 className="text-2xl font-bold tracking-tight text-[var(--light-white)] lg:text-[1.5vw]">
                   R$ {Number(totalProfit).toFixed(2)}
                 </h2>
               )}
@@ -139,16 +144,22 @@ export const DashboardResults = ({
           Lucro / prejuízo total (un.)
         </h2>
         <div className={hideResults ? "blur-[.5rem] select-none" : ""}>
-          {totalUnits == "0.00" ? (
+          {totalUnits == undefined ? (
             <Loader2 className="h-4 w-4 animate-spin" />
           ) : (
             <>
-              {Number(totalUnits) > 0 ? (
+              {Number(totalUnits) > 0 && (
                 <h2 className="text-2xl font-bold tracking-tight text-[#00ff00] lg:text-[1.5vw]">
                   +{Number(totalUnits).toLocaleString("pt-BR")}un
                 </h2>
-              ) : (
+              )}
+              {Number(totalUnits) < 0 && (
                 <h2 className="text-2xl font-bold tracking-tight text-[#ff0000] lg:text-[1.5vw]">
+                  {Number(totalUnits).toLocaleString("pt-BR")}un
+                </h2>
+              )}
+              {Number(totalUnits) == 0 && (
+                <h2 className="text-2xl font-bold tracking-tight text-[var(--light-white)] lg:text-[1.5vw]">
                   {Number(totalUnits).toLocaleString("pt-BR")}un
                 </h2>
               )}
@@ -162,10 +173,10 @@ export const DashboardResults = ({
         </h2>
         <h2 className="text-2xl font-bold tracking-tight lg:text-[1.5vw]">
           <div className={hideResults ? "blur-[.5rem] select-none" : ""}>
-            {percentVictory == "0" ? (
+            {percentVictory == undefined ? (
               <Loader2 className="h-4 w-4 animate-spin" />
             ) : (
-              <>{percentVictory}%</>
+              <>{Number(percentVictory).toFixed(0)}%</>
             )}
           </div>
         </h2>
@@ -193,7 +204,7 @@ export const DashboardResults = ({
         </div>
         <h2 className="text-2xl font-bold tracking-tight lg:text-[1.5vw]">
           <div className={hideResults ? "blur-[.5rem] select-none" : ""}>
-            {!averageOddAll ? (
+            {averageOddAll == undefined ? (
               <Loader2 className="h-4 w-4 animate-spin" />
             ) : (
               <>{Number(averageOddAll).toFixed(2)}</>
@@ -224,7 +235,7 @@ export const DashboardResults = ({
         </div>
         <h2 className="text-2xl font-bold tracking-tight lg:text-[1.5vw]">
           <div className={hideResults ? "blur-[.5rem] select-none" : ""}>
-            {!averageOddWins ? (
+            {averageOddWins == undefined ? (
               <Loader2 className="h-4 w-4 animate-spin" />
             ) : (
               <>{Number(averageOddWins).toFixed(2)}</>
@@ -256,7 +267,7 @@ export const DashboardResults = ({
         </div>
         <h2 className="text-2xl font-bold tracking-tight lg:text-[1.5vw]">
           <div className={hideResults ? "blur-[.5rem] select-none" : ""}>
-            {!averageOddLoses ? (
+            {averageOddLoses == undefined ? (
               <Loader2 className="h-4 w-4 animate-spin" />
             ) : (
               <>{Number(averageOddLoses).toFixed(2)}</>

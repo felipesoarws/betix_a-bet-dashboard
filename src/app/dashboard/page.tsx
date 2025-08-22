@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Header } from "@/components/ui/common/header";
+import { DashboardHeader } from "@/components/ui/common/dashboard-header";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { Toaster } from "@/components/ui/sonner";
@@ -44,6 +44,11 @@ const Dashboard = () => {
   }, []);
 
   useEffect(() => {
+    const localUserUnitSave = localStorage.getItem("userUnit");
+    if (localUserUnitSave) {
+      setUserUnit(localUserUnitSave);
+    }
+
     const localSave = localStorage.getItem("hideResults");
     if (localSave) {
       setIsResultsHidden(localSave === "true");
@@ -53,6 +58,10 @@ const Dashboard = () => {
   useEffect(() => {
     localStorage.setItem("hideResults", String(isResultsHidden));
   }, [isResultsHidden]);
+
+  useEffect(() => {
+    localStorage.setItem("userUnit", String(userUnit));
+  }, [userUnit]);
 
   const checkIfHasUserLogged = async () => {
     const session = await authClient.getSession();
@@ -74,7 +83,7 @@ const Dashboard = () => {
 
   return (
     <div className="flex min-h-screen flex-col bg-[var(--gray)] text-[var(--light-white)]">
-      <Header path="dashboard" backIcon={false} />
+      <DashboardHeader path="dashboard" backIcon={false} homeIcon={true} />
       <div className="w-full flex-grow">
         <main className="mx-auto flex w-full max-w-7xl flex-grow flex-col p-4 md:p-6 lg:max-w-[85vw]">
           <div className="relative w-full rounded-[.8rem] border border-white/10 bg-[var(--gray-darker)] px-4 py-6 lg:p-6">
@@ -104,14 +113,18 @@ const Dashboard = () => {
               </div>
 
               <div className="flex items-center justify-center gap-4">
-                <Input
-                  type="number"
-                  step="0.25"
-                  className="rounded-[.8rem] border border-white/10 px-3 py-5 text-[.9rem] placeholder:text-white/30 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none"
-                  placeholder="Digite seu valor da unidade"
-                  onChange={(e) => setUserUnit(e.target.value)}
-                  value={userUnit}
-                />
+                <div
+                  className={`${isResultsHidden ? "hidden blur-[.5rem]" : ""}`}
+                >
+                  <Input
+                    type="number"
+                    step="0.25"
+                    className="[&::-webkit-outer-spin-button]:appearance-none`} border border-white/10 px-3 py-5 text-[.9rem] placeholder:text-white/30 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:m-0"
+                    placeholder="Digite seu valor da unidade"
+                    onChange={(e) => setUserUnit(e.target.value)}
+                    value={userUnit}
+                  />
+                </div>
                 <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                   <DialogTrigger asChild>
                     <Button
@@ -123,11 +136,7 @@ const Dashboard = () => {
                     </Button>
                   </DialogTrigger>
                   <DialogContent
-                    className={
-                      userUnit
-                        ? "rounded-[.8rem] border-white/10 bg-black/80 text-white backdrop-blur-md sm:max-w-[500px] lg:max-w-[40vw]"
-                        : "rounded-[.8rem] border-white/10 bg-black/80 text-white backdrop-blur-md sm:max-w-[500px]"
-                    }
+                    className={`${userUnit && Number(userUnit) > 0 ? "lg:max-w-[40vw]" : ""} rounded-[.8rem] border-white/10 bg-black/80 text-white backdrop-blur-md sm:max-w-[500px]`}
                   >
                     <DialogHeader>
                       <DialogTitle className="text-xl">Nova Aposta</DialogTitle>
@@ -141,27 +150,24 @@ const Dashboard = () => {
                         setIsDialogOpen={setIsDialogOpen}
                       />
                       <Card
-                        className={
-                          userUnit
-                            ? "mt-4 rounded-[.8rem] border-white/10 bg-[#171717] lg:w-[15vw]"
-                            : "mt-4 hidden rounded-[.8rem] border-white/10 bg-[#171717] lg:w-[15vw]"
-                        }
+                        className={`${userUnit && Number(userUnit) > 0 ? "" : "hidden"} mt-4 rounded-[.8rem] border-white/10 bg-[#171717] lg:w-[15vw]`}
                       >
                         <CardContent className="flex flex-col gap-4">
                           <div className="flex flex-col items-start justify-center gap-[1.15rem]">
-                            {UNIT_VALUES.map((un) => (
-                              <>
-                                <div className="flex items-center gap-2">
-                                  <p className="font-regular text-[.9rem] select-none">
-                                    {un.value}:
-                                  </p>
-                                  <span className="font-bold">
-                                    {(Number(userUnit) * un.multiplier).toFixed(
-                                      2,
-                                    )}{" "}
-                                  </span>
-                                </div>
-                              </>
+                            {UNIT_VALUES.map((un, index) => (
+                              <div
+                                className="flex items-center gap-2"
+                                key={index}
+                              >
+                                <p className="font-regular text-[.9rem] select-none">
+                                  {un.value}:
+                                </p>
+                                <span className="font-bold">
+                                  {(Number(userUnit) * un.multiplier).toFixed(
+                                    2,
+                                  )}
+                                </span>
+                              </div>
                             ))}
                           </div>
                         </CardContent>

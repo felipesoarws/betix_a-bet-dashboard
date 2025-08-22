@@ -2,16 +2,18 @@
 import { SidebarTrigger } from "@/components/ui/sidebar";
 
 import { authClient } from "@/lib/auth-client";
-import { Undo2 } from "lucide-react";
+import { Home, Undo2 } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 
-export const Header = ({
+export const DashboardHeader = ({
   path,
   backIcon,
+  homeIcon,
 }: {
   path: string;
   backIcon: boolean;
+  homeIcon: boolean;
 }) => {
   const { data: session } = authClient.useSession();
 
@@ -31,6 +33,17 @@ export const Header = ({
               className="rounded-[.6rem] p-1 transition-all duration-[.3s] ease-in-out hover:scale-115"
             >
               <Undo2 className="cursor-pointer" size={20} />
+            </Link>
+          ) : (
+            <></>
+          )}
+
+          {homeIcon ? (
+            <Link
+              href={"/"}
+              className="rounded-[.6rem] p-1 transition-all duration-[.3s] ease-in-out hover:scale-115"
+            >
+              <Home className="cursor-pointer" size={20} />
             </Link>
           ) : (
             <></>
