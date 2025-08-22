@@ -38,10 +38,7 @@ type BetResult = "Pendente" | "Ganha" | "Perdida" | "Anulada";
 type CategoryResult = "Futebol" | "Basquete" | "eSports" | "Outro";
 
 const BetHistory = () => {
-  const [isResultsHidden, setIsResultsHidden] = useState<boolean>(() => {
-    const localSave = localStorage.getItem("hideResults") || false;
-    return localSave === "true";
-  });
+  const [isResultsHidden, setIsResultsHidden] = useState<boolean>(false);
 
   const [bets, setBets] = useState<BetSchema[]>([]);
   const [editingBet, setEditingBet] = useState<BetSchema | null>(null);
@@ -65,8 +62,13 @@ const BetHistory = () => {
 
   useEffect(() => {
     fetchBets();
+  }, []);
+
+  useEffect(() => {
     const localSave = localStorage.getItem("hideResults");
-    setIsResultsHidden(localSave === "true");
+    if (localSave) {
+      setIsResultsHidden(localSave === "true");
+    }
   }, []);
 
   const filteredBets = bets

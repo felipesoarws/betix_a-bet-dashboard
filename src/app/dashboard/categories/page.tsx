@@ -9,7 +9,7 @@ import { DashboardResults } from "@/components/ui/common/dashboard-results";
 import { Eye, EyeClosed } from "lucide-react";
 
 const ResultsByCategory = () => {
-  const [isResultsHidden, setIsResultsHidden] = useState<boolean>(true);
+  const [isResultsHidden, setIsResultsHidden] = useState<boolean>(false);
   const [bets, setBets] = useState<BetSchema[]>([]);
 
   const fetchBets = async () => {
@@ -46,11 +46,16 @@ const ResultsByCategory = () => {
   const groupedBets = groupByCategory(bets);
 
   useEffect(() => {
-    const localSave = localStorage.getItem("hideResults");
-
-    setIsResultsHidden(localSave === "true");
     fetchBets();
   }, []);
+
+  useEffect(() => {
+    const localSave = localStorage.getItem("hideResults");
+    if (localSave) {
+      setIsResultsHidden(localSave === "true");
+    }
+  }, []);
+
   return (
     <div className="flex min-h-screen flex-col bg-[var(--gray)] text-[var(--light-white)]">
       <Header backIcon={true} path="dashboard" />
