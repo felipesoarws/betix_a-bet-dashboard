@@ -20,10 +20,7 @@ import { authClient } from "@/lib/auth-client";
 import { BetSchema } from "./components/bets-stats";
 
 const Dashboard = () => {
-  const [isResultsHidden, setIsResultsHidden] = useState<boolean>(() => {
-    const localSave = localStorage.getItem("hideResults") || false;
-    return localSave === "true";
-  });
+  const [isResultsHidden, setIsResultsHidden] = useState<boolean>(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [bets, setBets] = useState<BetSchema[]>([]);
 
@@ -38,10 +35,14 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
-    const localSave = localStorage.getItem("hideResults");
-
-    setIsResultsHidden(localSave === "true");
     fetchBets();
+  }, []);
+
+  useEffect(() => {
+    const localSave = localStorage.getItem("hideResults");
+    if (localSave) {
+      setIsResultsHidden(localSave === "true");
+    }
   }, []);
 
   useEffect(() => {
