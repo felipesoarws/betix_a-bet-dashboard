@@ -61,7 +61,7 @@ const ResultsByCategory = () => {
         <main className="mx-auto flex w-full max-w-7xl flex-col gap-6 p-4 md:p-6 lg:max-w-[85vw]">
           <div className="mt-8 flex items-center justify-start gap-4">
             <h1 className="text-left text-3xl font-extrabold tracking-tight md:text-4xl lg:text-3xl">
-              Seu dashboard
+              Seu dashboardd
             </h1>
             <div>
               {isResultsHidden ? (
