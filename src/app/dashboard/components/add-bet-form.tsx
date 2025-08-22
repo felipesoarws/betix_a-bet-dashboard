@@ -24,7 +24,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import * as z from "zod";
-import { BET_CATEGORIES, BET_RESULTS } from "@/lib/constants";
+import { BET_RESULTS } from "@/lib/constants";
+import { getUserCategoriesAction } from "@/app/actions/categories.actions";
 import {
   Popover,
   PopoverContent,
@@ -32,10 +33,10 @@ import {
 } from "@/components/ui/popover";
 import { ChevronDownIcon, Loader2 } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type BetResult = "Pendente" | "Ganha" | "Perdida" | "Anulada";
-type CategoryResult = "Futebol" | "Basquete" | "eSports" | "Outro";
+type CategoryResult = string;
 
 type CreateBetInput = {
   userId: string;
@@ -58,9 +59,7 @@ const addBetSchema = z.object({
     .string()
     .min(2, "Informe o mercado.")
     .max(41, "Diminua o nome do mercado."),
-  category: z.enum(BET_CATEGORIES, {
-    message: "Selecione uma categoria.",
-  }),
+  category: z.string().min(1, "Selecione uma categoria."),
   betValue: z
     .number({ error: "Informe um valor válido para a aposta." })
     .gt(0, "O valor precisa ser maior que 0."),
@@ -88,12 +87,35 @@ export function AddBetForm({
   const [open, setOpen] = useState(false);
   const [date, setDate] = useState<Date | undefined>(undefined);
 
+  const [categories, setCategories] = useState<string[]>([]);
+  const [, setIsLoadingCategories] = useState(true);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      const defaultCategories = ["Futebol", "Basquete", "eSports"];
+      const result = await getUserCategoriesAction();
+
+      if (result.success && result.categories) {
+        const userCategories = result.categories.map((c) => c.name);
+        const allCategories = [
+          ...new Set([...defaultCategories, ...userCategories]),
+        ];
+        setCategories(allCategories.sort());
+      } else {
+        setCategories(defaultCategories.sort());
+      }
+      setIsLoadingCategories(false);
+    };
+
+    fetchCategories();
+  }, []);
+
   const form = useForm<AddBetFormValues>({
     resolver: zodResolver(addBetSchema),
     defaultValues: {
       event: "",
       market: "",
-      category: "Outro",
+      category: undefined,
       betValue: 0,
       odd: 0,
       unit: 0,
@@ -191,11 +213,11 @@ export function AddBetForm({
                       >
                         <FormControl className="w-full">
                           <SelectTrigger className="rounded-[.8rem] border border-white/10 px-3 py-5 text-[.9rem] placeholder:text-white/30">
-                            <SelectValue placeholder="Selecione uma categoria" />
+                            <SelectValue placeholder="Categoria" />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent className="rounded-[.8rem] bg-[var(--light-white)] text-[var(--gray)]">
-                          {BET_CATEGORIES.map((category) => (
+                          {categories.map((category) => (
                             <SelectItem
                               key={category}
                               value={category}
@@ -226,13 +248,13 @@ export function AddBetForm({
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent className="rounded-[.8rem] bg-[var(--light-white)] text-[var(--gray)]">
-                          {BET_RESULTS.map((category) => (
+                          {BET_RESULTS.map((result) => (
                             <SelectItem
-                              key={category}
-                              value={category}
+                              key={result}
+                              value={result}
                               className="bg-[var(--light-white)] hover:bg-white/90"
                             >
-                              {category}
+                              {result}
                             </SelectItem>
                           ))}
                         </SelectContent>

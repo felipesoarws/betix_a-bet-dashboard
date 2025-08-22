@@ -50,6 +50,27 @@
       "when": 1755809196722,
       "tag": "0006_many_professor_monster",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1755824596291,
+      "tag": "0007_clean_adam_destine",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1755825658961,
+      "tag": "0008_wide_expediter",
+      "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1755828510249,
+      "tag": "0009_wild_gladiator",
+      "breakpoints": true
     }
   ]
 }

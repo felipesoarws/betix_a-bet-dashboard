@@ -2,10 +2,10 @@
 
 import { db } from "@/db";
 import { betsTable } from "@/db/schema";
+import { CategoryResult } from "@/lib/constants";
 import { revalidatePath } from "next/cache";
 
 type BetResult = "Pendente" | "Ganha" | "Perdida" | "Anulada";
-type CategoryResult = "Futebol" | "Basquete" | "eSports" | "Outro";
 
 type CreateBetInput = {
   userId: string;

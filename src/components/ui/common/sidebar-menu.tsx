@@ -15,7 +15,6 @@ import {
 import { authClient } from "@/lib/auth-client";
 import {
   ChartColumnStacked,
-  DecimalsArrowRight,
   DollarSign,
   LayoutDashboard,
   LogInIcon,
@@ -27,7 +26,12 @@ import {
 import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "../avatar";
 
+import { ManageCategoriesDialog } from "./manage-categories-dialog";
+import { useState } from "react";
+import { Dialog, DialogContent, DialogTrigger } from "../dialog";
+
 export function DashSidedarMenu() {
+  const [, setIsManageCategoriesOpen] = useState(false);
   const { data: session } = authClient.useSession();
 
   return (
@@ -35,7 +39,7 @@ export function DashSidedarMenu() {
       {session?.user ? (
         <>
           <Sidebar className="fixed top-0 right-0 z-50 h-full w-[250px] rounded-[.8rem] border-[white]/20 bg-[#171717] text-right">
-            <SidebarHeader className="bg-[#171717] pt-6 text-[var(--light-white)] lg:rounded-t-[.8rem]">
+            <SidebarHeader className="bg-[#171717] pt-6 text-[var(--light-white)]">
               <div className="flex flex-row-reverse items-center justify-end gap-4 lg:flex-row lg:gap-2">
                 <div>
                   <h3 className="text-[1.3rem] font-bold">
@@ -59,6 +63,33 @@ export function DashSidedarMenu() {
               </div>
             </SidebarHeader>
             <SidebarContent className="bg-[#171717] pt-4 text-[var(--light-white)]">
+              <SidebarGroup className="flex flex-col items-end justify-center">
+                <SidebarGroupLabel className="text-right text-[.85rem] text-[var(--light-white)]/70">
+                  Apostas
+                </SidebarGroupLabel>
+                <SidebarGroupContent>
+                  <SidebarMenu className="flex flex-col items-end justify-center">
+                    <SidebarMenuItem>
+                      <SidebarMenuButton asChild className="">
+                        <Dialog>
+                          <DialogTrigger
+                            className="flex cursor-pointer items-center justify-between gap-3 rounded-[.8rem] px-4 py-3 text-[.85rem] font-medium transition-all duration-[.3s] ease-in-out hover:bg-[var(--gray)] hover:text-[var(--light-white)]"
+                            onClick={() => setIsManageCategoriesOpen(true)}
+                          >
+                            Gerenciar categoria(s)
+                            <MonitorCog color="rgb(250, 250, 250)" size={15} />
+                          </DialogTrigger>
+                          <DialogContent className="border border-[var(--light-white)]/20 bg-[var(--gray)]">
+                            <div>
+                              <ManageCategoriesDialog />
+                            </div>
+                          </DialogContent>
+                        </Dialog>
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                  </SidebarMenu>
+                </SidebarGroupContent>
+              </SidebarGroup>
               <SidebarGroup className="flex flex-col items-end justify-center">
                 <SidebarGroupLabel className="text-right text-[.85rem] text-[var(--light-white)]/70">
                   Páginas
@@ -102,34 +133,6 @@ export function DashSidedarMenu() {
                           Histórico de apostas
                           <DollarSign color="rgb(250, 250, 250)" size={15} />
                         </Link>
-                      </SidebarMenuButton>
-                    </SidebarMenuItem>
-                  </SidebarMenu>
-                </SidebarGroupContent>
-              </SidebarGroup>
-              <SidebarGroup className="flex flex-col items-end justify-center">
-                <SidebarGroupLabel className="text-right text-[.85rem] text-[var(--light-white)]/70">
-                  Apostas
-                </SidebarGroupLabel>
-                <SidebarGroupContent>
-                  <SidebarMenu className="flex flex-col items-end justify-center">
-                    <SidebarMenuItem>
-                      <SidebarMenuButton className="flex rounded-[.8rem] p-4 py-5 text-[.85rem] font-medium transition-all duration-[.3s] ease-in-out hover:bg-[var(--gray)] hover:text-[var(--light-white)]">
-                        <div className="flex items-center justify-between gap-3">
-                          Criar / Editar categoria(s)
-                          <MonitorCog color="rgb(250, 250, 250)" size={15} />
-                        </div>
-                      </SidebarMenuButton>
-                    </SidebarMenuItem>
-                    <SidebarMenuItem>
-                      <SidebarMenuButton className="flex rounded-[.8rem] p-5 pr-4 text-[.85rem] font-medium transition-all duration-[.3s] ease-in-out hover:bg-[var(--gray)] hover:text-[var(--light-white)]">
-                        <div className="flex items-center justify-between gap-3">
-                          Editar valor da unidade
-                          <DecimalsArrowRight
-                            color="rgb(250, 250, 250)"
-                            size={15}
-                          />
-                        </div>
                       </SidebarMenuButton>
                     </SidebarMenuItem>
                   </SidebarMenu>

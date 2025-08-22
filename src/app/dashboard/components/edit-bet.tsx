@@ -35,11 +35,12 @@ import { ChevronDownIcon, Loader2, Save, Trash } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { BET_CATEGORIES, BET_RESULTS } from "@/lib/constants";
+import { BET_RESULTS } from "@/lib/constants";
 import { toast } from "sonner";
 import { BetSchema } from "./bets-stats";
 import { Card } from "@/components/ui/card";
 import { DialogDescription } from "@radix-ui/react-dialog";
+import { getUserCategoriesAction } from "@/app/actions/categories.actions";
 
 const editBetSchema = z.object({
   event: z
@@ -50,9 +51,7 @@ const editBetSchema = z.object({
     .string()
     .min(2, "Informe o mercado.")
     .max(41, "Diminua o nome do mercado."),
-  category: z.enum(BET_CATEGORIES, {
-    message: "Selecione uma categoria.",
-  }),
+  category: z.string().min(1, "Selecione uma categoria."),
   betValue: z
     .number({ error: "Informe um valor válido para a aposta." })
     .gt(0, "O valor precisa ser maior que 0."),
@@ -78,6 +77,30 @@ export function EditBet({ bet, onSave, onClose }: EditBetProps) {
   const [loading, setLoading] = useState<boolean>(false);
   const [open, setOpen] = useState(false);
   const [date, setDate] = useState<Date | undefined>(undefined);
+
+  const [categories, setCategories] = useState<string[]>([]);
+  const [, setIsLoadingCategories] = useState(true);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      const defaultCategories = ["Futebol", "Basquete", "eSports"];
+
+      const result = await getUserCategoriesAction();
+
+      if (result.success && result.categories) {
+        const userCategories = result.categories.map((c) => c.name);
+        const allCategories = [
+          ...new Set([...defaultCategories, ...userCategories]),
+        ];
+        setCategories(allCategories.sort());
+      } else {
+        setCategories(defaultCategories.sort());
+      }
+      setIsLoadingCategories(false);
+    };
+
+    fetchCategories();
+  }, []);
 
   const form = useForm<EditBetFormValues>({
     resolver: zodResolver(editBetSchema),
@@ -228,7 +251,7 @@ export function EditBet({ bet, onSave, onClose }: EditBetProps) {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent className="rounded-[.8rem] bg-[var(--light-white)] text-[var(--gray)]">
-                        {BET_CATEGORIES.map((category) => (
+                        {categories.map((category) => (
                           <SelectItem
                             key={category}
                             value={category}

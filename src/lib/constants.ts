@@ -1,11 +1,6 @@
 import { BetSchema } from "@/app/dashboard/components/bets-stats";
 
-export const BET_CATEGORIES = [
-  "Futebol",
-  "Basquete",
-  "eSports",
-  "Outro",
-] as const;
+export type CategoryResult = string;
 
 export const BET_RESULTS = ["Pendente", "Ganha", "Perdida", "Anulada"];
 
@@ -22,6 +17,49 @@ export const MONTH_NAMES = [
   "Outubro",
   "Novembro",
   "Dezembro",
+];
+
+export const UNIT_VALUES = [
+  {
+    value: "3un",
+    multiplier: 3,
+  },
+  {
+    value: "2.75un",
+    multiplier: 2.75,
+  },
+  {
+    value: "2.5un",
+    multiplier: 2.5,
+  },
+  {
+    value: "2un",
+    multiplier: 2,
+  },
+  {
+    value: "1.75un",
+    multiplier: 1.75,
+  },
+  {
+    value: "1.5un",
+    multiplier: 1.5,
+  },
+  {
+    value: "1.25un",
+    multiplier: 1.25,
+  },
+  {
+    value: "0.75un",
+    multiplier: 0.75,
+  },
+  {
+    value: "0.50un",
+    multiplier: 0.5,
+  },
+  {
+    value: "0.25un",
+    multiplier: 0.25,
+  },
 ];
 
 export const SEED_BETS: BetSchema[] = [

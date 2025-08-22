@@ -20,7 +20,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { BET_CATEGORIES, BET_RESULTS } from "@/lib/constants";
+import { BET_RESULTS } from "@/lib/constants";
 import { Input } from "@/components/ui/input";
 import { AnimatePresence, motion } from "framer-motion";
 import {
@@ -33,6 +33,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Edit, Eye, EyeClosed } from "lucide-react";
 import { EditBet } from "../components/edit-bet";
+import { getUserCategoriesAction } from "@/app/actions/categories.actions";
 
 type BetResult = "Pendente" | "Ganha" | "Perdida" | "Anulada";
 type CategoryResult = "Futebol" | "Basquete" | "eSports" | "Outro";
@@ -42,6 +43,29 @@ const BetHistory = () => {
 
   const [bets, setBets] = useState<BetSchema[]>([]);
   const [editingBet, setEditingBet] = useState<BetSchema | null>(null);
+
+  const [categories, setCategories] = useState<string[]>([]);
+  const [, setIsLoadingCategories] = useState(true);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      const defaultCategories = ["Futebol", "Basquete", "eSports", "Outro"];
+      const result = await getUserCategoriesAction();
+
+      if (result.success && result.categories) {
+        const userCategories = result.categories.map((c) => c.name);
+        const allCategories = [
+          ...new Set([...defaultCategories, ...userCategories]),
+        ];
+        setCategories(allCategories.sort());
+      } else {
+        setCategories(defaultCategories.sort());
+      }
+      setIsLoadingCategories(false);
+    };
+
+    fetchCategories();
+  }, []);
 
   // filtros na tabela
   const [resultFilter, setResultFilter] = useState<BetResult | "all">("all");
@@ -157,7 +181,7 @@ const BetHistory = () => {
                       </SelectLabel>
                       <SelectItem value="all">Todas</SelectItem>
                       <>
-                        {BET_CATEGORIES.map((category, id) => (
+                        {categories.map((category, id) => (
                           <SelectItem key={id} value={category}>
                             {category}
                           </SelectItem>

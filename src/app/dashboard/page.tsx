@@ -18,11 +18,15 @@ import { BetsStats } from "./components/bets-stats";
 import { Eye, EyeClosed, PlusCircle } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
 import { BetSchema } from "./components/bets-stats";
+import { Input } from "@/components/ui/input";
+import { Card, CardContent } from "@/components/ui/card";
+import { UNIT_VALUES } from "@/lib/constants";
 
 const Dashboard = () => {
   const [isResultsHidden, setIsResultsHidden] = useState<boolean>(false);
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
   const [bets, setBets] = useState<BetSchema[]>([]);
+  const [userUnit, setUserUnit] = useState<string>("");
 
   const fetchBets = async () => {
     const session = await authClient.getSession();
@@ -31,6 +35,7 @@ const Dashboard = () => {
 
     const res = await fetch(`/api/bets/user/${userId}`);
     const data = await res.json();
+
     setBets(data);
   };
 
@@ -81,26 +86,32 @@ const Dashboard = () => {
 
                 <div>
                   {isResultsHidden ? (
-                    <div className="rounded-full bg-[var(--light-white)]/20 p-[.5rem]">
-                      <EyeClosed
-                        className="cursor-pointer"
-                        color="var(--gray)"
-                        onClick={() => setIsResultsHidden(false)}
-                      />
+                    <div
+                      className="cursor-pointer rounded-full bg-[var(--light-white)]/20 p-[.5rem]"
+                      onClick={() => setIsResultsHidden(false)}
+                    >
+                      <EyeClosed color="var(--gray)" />
                     </div>
                   ) : (
-                    <div className="rounded-full bg-[var(--light-white)]/80 p-[.5rem]">
-                      <Eye
-                        className="cursor-pointer"
-                        color="var(--gray)"
-                        onClick={() => setIsResultsHidden(true)}
-                      />
+                    <div
+                      className="cursor-pointer rounded-full bg-[var(--light-white)]/80 p-[.5rem]"
+                      onClick={() => setIsResultsHidden(true)}
+                    >
+                      <Eye color="var(--gray)" />
                     </div>
                   )}
                 </div>
               </div>
 
               <div className="flex items-center justify-center gap-4">
+                <Input
+                  type="number"
+                  step="0.25"
+                  className="rounded-[.8rem] border border-white/10 px-3 py-5 text-[.9rem] placeholder:text-white/30 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none"
+                  placeholder="Digite seu valor da unidade"
+                  onChange={(e) => setUserUnit(e.target.value)}
+                  value={userUnit}
+                />
                 <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                   <DialogTrigger asChild>
                     <Button
@@ -111,11 +122,17 @@ const Dashboard = () => {
                       Nova Aposta
                     </Button>
                   </DialogTrigger>
-                  <DialogContent className="rounded-[.8rem] border-white/10 bg-black/80 text-white backdrop-blur-md sm:max-w-[550px]">
+                  <DialogContent
+                    className={
+                      userUnit
+                        ? "rounded-[.8rem] border-white/10 bg-black/80 text-white backdrop-blur-md sm:max-w-[500px] lg:max-w-[40vw]"
+                        : "rounded-[.8rem] border-white/10 bg-black/80 text-white backdrop-blur-md sm:max-w-[500px]"
+                    }
+                  >
                     <DialogHeader>
                       <DialogTitle className="text-xl">Nova Aposta</DialogTitle>
                     </DialogHeader>
-                    <div>
+                    <div className="flex items-start justify-center">
                       <AddBetForm
                         onBetAdded={() => {
                           fetchBets();
@@ -123,6 +140,32 @@ const Dashboard = () => {
                         }}
                         setIsDialogOpen={setIsDialogOpen}
                       />
+                      <Card
+                        className={
+                          userUnit
+                            ? "mt-4 rounded-[.8rem] border-white/10 bg-[#171717] lg:w-[15vw]"
+                            : "mt-4 hidden rounded-[.8rem] border-white/10 bg-[#171717] lg:w-[15vw]"
+                        }
+                      >
+                        <CardContent className="flex flex-col gap-4">
+                          <div className="flex flex-col items-start justify-center gap-[1.15rem]">
+                            {UNIT_VALUES.map((un) => (
+                              <>
+                                <div className="flex items-center gap-2">
+                                  <p className="font-regular text-[.9rem] select-none">
+                                    {un.value}:
+                                  </p>
+                                  <span className="font-bold">
+                                    {(Number(userUnit) * un.multiplier).toFixed(
+                                      2,
+                                    )}{" "}
+                                  </span>
+                                </div>
+                              </>
+                            ))}
+                          </div>
+                        </CardContent>
+                      </Card>
                     </div>
                   </DialogContent>
                 </Dialog>

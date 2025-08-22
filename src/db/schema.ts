@@ -6,6 +6,8 @@ import {
   boolean,
   index,
   uuid,
+  varchar,
+  uniqueIndex,
 } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
 
@@ -13,7 +15,6 @@ export const user = pgTable("user", {
   id: text("id").primaryKey(),
   name: text("name").notNull(),
   email: text("email").notNull().unique(),
-  unit: numeric("unit", { precision: 10, scale: 2 }).default("0.00"),
   emailVerified: boolean("email_verified")
     .$defaultFn(() => false)
     .notNull(),
@@ -57,6 +58,25 @@ export const account = pgTable("account", {
   updatedAt: timestamp("updated_at").notNull(),
 });
 
+export const categoriesTable = pgTable(
+  "categories",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    name: varchar("name", { length: 256 }).notNull(),
+    userId: text("user_id")
+      .notNull()
+      .references(() => user.id, { onDelete: "cascade" }),
+  },
+  (table) => {
+    return {
+      nameUserIdUnique: uniqueIndex("name_user_id_unique_idx").on(
+        table.name,
+        table.userId,
+      ),
+    };
+  },
+);
+
 export const betsTable = pgTable(
   "bets",
   {
@@ -84,11 +104,19 @@ export const betsTable = pgTable(
 
 export const usersRelations = relations(user, ({ many }) => ({
   bets: many(betsTable),
+  categories: many(categoriesTable),
 }));
 
 export const betsRelations = relations(betsTable, ({ one }) => ({
   user: one(user, {
     fields: [betsTable.userId],
+    references: [user.id],
+  }),
+}));
+
+export const categoriesRelations = relations(categoriesTable, ({ one }) => ({
+  user: one(user, {
+    fields: [categoriesTable.userId],
     references: [user.id],
   }),
 }));

@@ -20,7 +20,7 @@ export const Header = ({
   return (
     <div className="h-[8vh] pb-15">
       <header
-        className={`fixed top-0 left-0 bg-black/20 backdrop-blur-md transition-all duration-300 ease-in-out lg:z-100 ${
+        className={`bg-black/20 backdrop-blur-md transition-all duration-300 ease-in-out md:z-100 ${
           isSidebarOpen ? "right-[250px]" : "right-0"
         }`}
       >
