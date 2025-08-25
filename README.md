@@ -51,5 +51,24 @@ O Betix oferece um conjunto completo de ferramentas para o gerenciamento de apos
 
 1. **Clone o repositório**:
    ```bash
-   git clone https://github.com/seu-usuario/betting-dashboard.git
+   git clone https://github.com/felipesoarws/bets-dashboard.git
    cd betting-dashboard
+
+2. **Instale as dependências**:
+   ```bash
+   npm install
+
+3. **Configure as variáveis de ambiente**:
+   ```.env
+   DATABASE_URL="postgresql://user:password@host:port/database"
+   BETTER_AUTH_SECRET="XXXXXXXXXXXXXXXXXXX"
+
+4. **Execute as migrações do banco de dados**:
+   ```bash
+   npm drizzle-kit push
+
+5. **Inicie o servidor de desenvolvimento**:
+   ```bash
+   npm drizzle-kit push
+
+6. **Abra no navegador!**
