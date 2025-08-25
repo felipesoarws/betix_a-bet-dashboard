@@ -44,7 +44,7 @@ O Betix oferece um conjunto completo de ferramentas para o gerenciamento de apos
 
 ### ✅ Pré-requisitos
 - [Node.js](https://nodejs.org/) (versão **20+**)  
-- [pnpm](https://pnpm.io/) (ou npm/yarn)  
+- [npm](https://www.npmjs.com/) (ou pnpm/yarn)  
 - Uma instância do **PostgreSQL** em execução  
 
 ### 📌 Passo a Passo
@@ -72,3 +72,10 @@ O Betix oferece um conjunto completo de ferramentas para o gerenciamento de apos
    npm drizzle-kit push
 
 6. **Abra no navegador!**
+
+
+## ©️ Licença
+Este projeto é de código aberto e está licenciado sob a Licença MIT.
+Sinta-se à vontade para usar, modificar e distribuir o código.
+
+⚠️ Aposte com responsabilidade.
