@@ -51,8 +51,8 @@ O Betix oferece um conjunto completo de ferramentas para o gerenciamento de apos
 
 1. **Clone o repositório**:
    ```bash
-   git clone https://github.com/felipesoarws/bets-dashboard.git
-   cd betting-dashboard
+   git clone https://github.com/felipesoarws/betix_a-bet-dashboard.git
+   cd betix_a-bet-dashboard
 
 2. **Instale as dependências**:
    ```bash
