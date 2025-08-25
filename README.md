@@ -1,36 +1,55 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🎲 Betix - Dashboard de Gerenciamento de Apostas
 
-## Getting Started
+Bem-vindo ao **Betix**, uma aplicação web moderna e intuitiva projetada para ajudar apostadores a registrar, gerenciar e analisar suas apostas esportivas de forma eficiente.  
+Com uma interface elegante e ferramentas visuais, o Betix transforma o acompanhamento de apostas em uma experiência organizada e poderosa.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## ✨ Funcionalidades Principais
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+O Betix oferece um conjunto completo de ferramentas para o gerenciamento de apostas:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- 🔐 **Autenticação Segura**: Sistema completo de login e criação de contas para proteger os dados do usuário.  
+- 📊 **Dashboard Centralizado**: Uma visão geral dos resultados, incluindo lucro total, ROI, taxa de acerto e outras métricas importantes, com filtros por mês e ano.  
+- ➕ **Registro Rápido de Apostas**: Formulário intuitivo para adicionar novas apostas, especificando evento, mercado, valor, odd, unidade e categoria.  
+- 📈 **Gráfico de Evolução**: Visualize seu lucro diário em um gráfico de barras interativo.  
+- 📜 **Histórico Detalhado**: Tabela completa com todas as apostas, com filtros por evento, categoria e resultado.  
+- ✏️ **Edição e Exclusão**: Edite ou exclua apostas a qualquer momento.  
+- 📱 **Design Responsivo**: Totalmente acessível em desktop, tablet ou smartphone.  
+- 🙈 **Modo de Privacidade**: Oculte valores financeiros com um único clique para maior privacidade.  
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## 🛠️ Tecnologias Utilizadas
 
-To learn more about Next.js, take a look at the following resources:
+### **Frontend**
+- Framework: [Next.js](https://nextjs.org/) (com App Router e Turbopack)  
+- Linguagem: **TypeScript**  
+- Estilização: [Tailwind CSS](https://tailwindcss.com/)  
+- Componentes UI: [shadcn/ui](https://ui.shadcn.com/)  
+- Animações: [Framer Motion](https://www.framer.com/motion/)  
+- Formulários: [React Hook Form](https://react-hook-form.com/) + [Zod](https://zod.dev/)  
+- Gráficos: [Recharts](https://recharts.org/)  
+- Notificações: [Sonner](https://sonner.emilkowal.ski/)  
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### **Backend & Banco de Dados**
+- Autenticação: **Better Auth**  
+- Banco de Dados: **PostgreSQL**  
+- ORM: [Drizzle ORM](https://orm.drizzle.team/)  
+- API: **Next.js API Routes (Server Actions)**  
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## 🚀 Como Rodar o Projeto Localmente
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### ✅ Pré-requisitos
+- [Node.js](https://nodejs.org/) (versão **20+**)  
+- [pnpm](https://pnpm.io/) (ou npm/yarn)  
+- Uma instância do **PostgreSQL** em execução  
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### 📌 Passo a Passo
+
+1. **Clone o repositório**:
+   ```bash
+   git clone https://github.com/seu-usuario/betting-dashboard.git
+   cd betting-dashboard
