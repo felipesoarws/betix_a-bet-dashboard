@@ -69,7 +69,7 @@ O Betix oferece um conjunto completo de ferramentas para o gerenciamento de apos
 
 5. **Inicie o servidor de desenvolvimento**:
    ```bash
-   npm drizzle-kit push
+   npm run dev
 
 6. **Abra no navegador!**
 
