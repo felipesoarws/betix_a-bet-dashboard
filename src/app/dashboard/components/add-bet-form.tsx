@@ -92,7 +92,14 @@ export function AddBetForm({
 
   useEffect(() => {
     const fetchCategories = async () => {
-      const defaultCategories = ["Futebol", "Basquete", "eSports"];
+      const defaultCategories = [
+        "Futebol",
+        "Basquete",
+        "League of Legends",
+        "Counter Strike",
+        "Valorant",
+        "Outro",
+      ];
       const result = await getUserCategoriesAction();
 
       if (result.success && result.categories) {

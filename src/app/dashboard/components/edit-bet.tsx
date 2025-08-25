@@ -83,7 +83,14 @@ export function EditBet({ bet, onSave, onClose }: EditBetProps) {
 
   useEffect(() => {
     const fetchCategories = async () => {
-      const defaultCategories = ["Futebol", "Basquete", "eSports"];
+      const defaultCategories = [
+        "Futebol",
+        "Basquete",
+        "League of Legends",
+        "Counter Strike",
+        "Valorant",
+        "Outro",
+      ];
 
       const result = await getUserCategoriesAction();
 

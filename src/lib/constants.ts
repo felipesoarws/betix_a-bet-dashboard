@@ -44,9 +44,14 @@ export const UNIT_VALUES = [
     value: "1.5un",
     multiplier: 1.5,
   },
+
   {
     value: "1.25un",
     multiplier: 1.25,
+  },
+  {
+    value: "1un",
+    multiplier: 1,
   },
   {
     value: "0.75un",
@@ -55,10 +60,6 @@ export const UNIT_VALUES = [
   {
     value: "0.50un",
     multiplier: 0.5,
-  },
-  {
-    value: "0.25un",
-    multiplier: 0.25,
   },
 ];
 

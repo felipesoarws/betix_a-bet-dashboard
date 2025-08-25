@@ -69,16 +69,22 @@ export const DashboardResults = ({
       const unitValue = Number(bet.unit);
 
       if (bet.result === "Ganha") {
-        return sum + unitValue;
+        return sum + unitValue * (bet.odd - 1);
+        // 0 + 2un * (1,31 -1)
+        // 0 + 2un * 0,31
+        // 0 + 0,62
+        // +0,62un
       }
 
       if (bet.result === "Perdida") {
         return sum - unitValue;
+        // 0 - 1,5
+        // -1,5un
       }
 
       return sum;
     }, 0)
-    .toFixed(2);
+    .toFixed(1);
 
   return (
     <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
